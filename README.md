@@ -1,4 +1,4 @@
-# GlyphTS
+![Glyph Banner](/docs/media/GlyphBanner.png)
 
 MinHash text fingerprints ("glyphs") for fast similarity comparison.
 
@@ -24,3 +24,32 @@ const { similarity, distance, matches } = compare(a, b);
 ## License
 
 MIT
+
+<div align="center">
+  <table>
+    <tr>
+      <td colspan="3" align="center">
+        <a href="https://docs.koda.sh/?alias=blit">
+          <img src="/docs/media/FooterBanner.png" alt="View Blit docs on Koda" width="800">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/Koda-OSS">
+          <img src="/docs/media/FooterGithub.png" alt="GitHub">
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://koda.sh">
+          <img src="/docs/media/FooterKoda.png" alt="Koda">
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://discord.gg/Uc2Dnyb3Ej">
+          <img src="/docs/media/FooterDiscord.png" alt="Discord">
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
