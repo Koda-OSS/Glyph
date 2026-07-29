@@ -2,7 +2,7 @@
 
 MinHash text fingerprints ("glyphs") for fast similarity comparison.
 
-**Docs:** [docs/](./docs/README.md)
+**Docs:** [docs/README.md](./docs/README.md)
 
 ## Install
 

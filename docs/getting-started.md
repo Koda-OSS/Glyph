@@ -1,6 +1,8 @@
 # Getting started
 
-GlyphTS turns text into compact **MinHash fingerprints** (glyphs), then estimates Jaccard similarity by comparing those fingerprints.
+> Fingerprint text. Compare similarity in one call.
+
+GlyphTS builds **MinHash** signatures from text. You use `create()` to fingerprint, then `compare()` to score overlap.
 
 ## Install
 
@@ -8,7 +10,7 @@ GlyphTS turns text into compact **MinHash fingerprints** (glyphs), then estimate
 npm install glyph-ts
 ```
 
-Requires Node.js 18+.
+Node.js 18 or newer is required.
 
 ## First compare
 
@@ -19,35 +21,45 @@ const a = create("the quick brown fox jumps over the lazy dog");
 const b = create("the quick brown fox leaped over the lazy dog");
 
 const { similarity, distance, matches, size } = compare(a, b);
-
-console.log(similarity); // 0–1 Jaccard estimate
-console.log(matches, "/", size);
-console.log(distance);   // size - matches
 ```
+
+| Field | Range / type | Meaning |
+| --- | --- | --- |
+| `similarity` | `0`–`1` | Estimated Jaccard similarity |
+| `matches` | integer | Matching signature slots |
+| `distance` | integer | `size - matches` |
+| `size` | integer | Signature length |
 
 ## Mental model
 
-1. **Tokenize** the text into words.
-2. Build a feature bag of **tokens**, **unigrams**, and **vgrams**.
-3. Hash that bag into a fixed-length `Uint32Array` signature (the glyph).
-4. **Compare** two glyphs by counting matching signature slots.
+1. **Tokenize** input text into words.
+2. Build a feature bag: **tokens**, **unigrams**, **vgrams**.
+3. Run **bag MinHash** to produce a `Uint32Array` (**glyph**).
+4. **Compare** glyphs by counting equal slots.
 
-Identical text → similarity `1`. Unrelated text → near `0`. Partial overlap lands in between.
+Identical normalized text gives `similarity: 1`. Unrelated text is near `0`.
 
-## What you get back from `create`
+## What `create` returns
 
-```ts
-const record = create("hello world");
-
-record.version;   // create algorithm version
-record.glyph;     // Uint32Array fingerprint
-record.createdAt; // ms since epoch
+```json
+{
+  "version": 1,
+  "glyph": "<Uint32Array>",
+  "createdAt": 1710000000000
+}
 ```
 
-Pass either the full record or `record.glyph` into `compare` / `serialize`.
+- `version` — create pipeline version.
+- `glyph` — the fingerprint bytes.
+- `createdAt` — milliseconds since epoch (changes each call).
 
-## Next
+You can pass a full record or `record.glyph` into `compare` and `serialize`.
 
-- [Creating glyphs](./create.md)
-- [Comparing](./compare.md)
-- [Groups](./groups.md)
+## Next steps
+
+| Goal | Doc |
+| --- | --- |
+| Store many glyphs and search | [Building an index](./building-an-index.md) |
+| All exports | [API surface](./api-surface.md) |
+| Fingerprint options | [Create](./core/create.md) |
+| Group compare | [Groups](./core/groups.md) |
