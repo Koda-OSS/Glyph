@@ -58,7 +58,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
     <tr>
       <td align="center">
         <a href="https://github.com/Koda-OSS">
-          <img src="/docs/media/FooterGithub.png" alt="GitHub">
+          <img src="/docs/media/footerGithub.png" alt="GitHub">
         </a>
       </td>
       <td align="center">
@@ -68,7 +68,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
       </td>
       <td align="center">
         <a href="https://discord.gg/Uc2Dnyb3Ej">
-          <img src="/docs/media/FooterDiscord.png" alt="Discord">
+          <img src="/docs/media/footerDiscord.png" alt="Discord">
         </a>
       </td>
     </tr>

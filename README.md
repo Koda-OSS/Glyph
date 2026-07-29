@@ -37,7 +37,7 @@ MIT
     <tr>
       <td align="center">
         <a href="https://github.com/Koda-OSS">
-          <img src="/docs/media/FooterGithub.png" alt="GitHub">
+          <img src="/docs/media/footerGithub.png" alt="GitHub">
         </a>
       </td>
       <td align="center">
@@ -47,7 +47,7 @@ MIT
       </td>
       <td align="center">
         <a href="https://discord.gg/Uc2Dnyb3Ej">
-          <img src="/docs/media/FooterDiscord.png" alt="Discord">
+          <img src="/docs/media/footerDiscord.png" alt="Discord">
         </a>
       </td>
     </tr>
