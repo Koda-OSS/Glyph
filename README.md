@@ -23,14 +23,14 @@ const { similarity, distance, matches } = compare(a, b);
 
 ## License
 
-MIT
+Mozilla Public Licence Version 2.0
 
 <div align="center">
   <table>
     <tr>
       <td colspan="3" align="center">
-        <a href="https://docs.koda.sh/?alias=blit">
-          <img src="/docs/media/FooterBanner.png" alt="View Blit docs on Koda" width="800">
+        <a href="https://docs.koda.sh/?alias=glyph">
+          <img src="/docs/media/FooterBanner.png" alt="View Glyph docs on Koda" width="800">
         </a>
       </td>
     </tr>
