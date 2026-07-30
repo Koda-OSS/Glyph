@@ -89,6 +89,25 @@ export interface GlyphQueryResult {
   matched?: string | number;
 }
 
+// Glyph Collections types
+export interface GlyphCollectionOptions {
+  create?: GlyphCreateOptions;
+}
+
+export interface GlyphCollectionInstance {
+  Add(key: string, example: string | Glyph): void;
+  AddGroup(group: Record<string, Glyph>): void;
+  Remove(key: string): void;
+  Clear(): void;
+  Examples(): Record<string, Glyph>;
+  Has(key: string): boolean;
+  Count(): number;
+  Query(
+    index: GlyphIndexInstance,
+    options?: GlyphQueryOptions,
+  ): GlyphQueryResult[];
+}
+
 // Glyph Completions types
 export interface GlyphCompletionChainOptions {
   order?: number;

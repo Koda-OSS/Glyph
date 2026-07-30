@@ -4,7 +4,7 @@
 
 > Every public export from `glyph-ts`, grouped by layer.
 
-Deep docs live under [Core](./core/glyph.md), [Query](./query/index.md), and [Completions](./completions/chain.md).
+Deep docs live under [Core](./core/glyph.md), [Query](./query/index.md), [Collections](./collections/collection.md), and [Completions](./completions/chain.md).
 
 ## Core
 
@@ -125,6 +125,34 @@ interface GlyphQueryResult {
 ```
 
 Result fields: [Query results](./query/results.md).
+
+## Collections
+
+### Functions
+
+| Export | Signature | Doc |
+| --- | --- | --- |
+| `collections.new` | `(options?) => GlyphCollectionInstance` | [Collections](./collections/collection.md) |
+| `CollectionQuery` | `(collection, index, options?) => GlyphQueryResult[]` | [Collection query](./collections/query.md) |
+
+### Collections types
+
+```ts
+interface GlyphCollectionOptions {
+  create?: GlyphCreateOptions;
+}
+
+interface GlyphCollectionInstance {
+  Add(key: string, example: string | Glyph): void;
+  AddGroup(group: Record<string, Glyph>): void;
+  Remove(key: string): void;
+  Clear(): void;
+  Examples(): Record<string, Glyph>;
+  Has(key: string): boolean;
+  Count(): number;
+  Query(index: GlyphIndexInstance, options?: GlyphQueryOptions): GlyphQueryResult[];
+}
+```
 
 ## Completions
 

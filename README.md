@@ -11,7 +11,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Getting started](./docs/getting-started.md) | Install, first compare, mental model |
 | [Building an index](./docs/building-an-index.md) | Populate an index and run a query |
 | [Demo CLI](./docs/demo.md) | Compare, search, and complete from the terminal |
-| [API surface](./docs/api-surface.md) | Full export list (Core + Query + Completions) |
+| [API surface](./docs/api-surface.md) | Full export list (Core + Query + Collections + Completions) |
 
 ![Glyph Core](/docs/media/RibbonCore.png)
 
@@ -34,6 +34,13 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Query options](./docs/query/options.md) | `limit`, `threshold`, `normalize`, `aggregate` |
 | [Query results](./docs/query/results.md) | `GlyphQueryResult` shape |
 
+![Glyph Ribbon](/docs/media/RibbonGlyph.png)
+
+| Doc | Topic |
+| --- | --- |
+| [Collections](./docs/collections/collection.md) | `collections.new()`, add labeled examples |
+| [Collection query](./docs/collections/query.md) | `CollectionQuery()` / `collection.Query()` |
+
 ![Glyph Completions](/docs/media/RibbonCompletions.png)
 
 | Doc | Topic |
@@ -49,6 +56,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | --- | --- |
 | In-memory index | Implemented |
 | Linear scan query | Implemented |
+| Collections (example probes) | Implemented |
 | Glyph completions (Markov + rank) | Implemented |
 | Disk persistence | Not implemented |
 | Approximate nearest neighbor (ANN) | Not implemented |

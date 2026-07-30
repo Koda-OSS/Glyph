@@ -81,6 +81,7 @@ Details: [Query options](./query/options.md).
 | Goal | API |
 | --- | --- |
 | Find similar **documents** | `query()` — [Query](./query/query.md) |
+| Search with **labeled examples** | `CollectionQuery()` — [Collections](./collections/collection.md) |
 | Suggest the **next word** in a prefix | `completions.complete()` — [Completions](./completions/complete.md) |
 
 ## Demo: search project docs
