@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest";
 import {
+  Compare,
+  Create,
+  CreateGroup,
   CreateTokens,
   CreateUnigrams,
   CreateVGrams,
+  Deserialize,
+  Serialize,
   TextFilter,
   TextStrip,
-  compare,
-  create,
-  createGroup,
-  deserialize,
-  serialize,
-  tokenize,
+  Tokenize,
 } from "../index";
 
 describe("TextFilter", () => {
@@ -68,9 +68,9 @@ describe("CreateVGrams", () => {
   });
 });
 
-describe("tokenize", () => {
+describe("Tokenize", () => {
   it("returns filtered tokens, stripped unigrams, and stripped vgrams", () => {
-    const result = tokenize("Alpha, Beta! Gamma Delta", {
+    const result = Tokenize("Alpha, Beta! Gamma Delta", {
       vgramSize: 2,
       normalize: true,
     });
@@ -85,9 +85,9 @@ describe("tokenize", () => {
   });
 });
 
-describe("create", () => {
+describe("Create", () => {
   it("returns a glyph record with the requested signature size", () => {
-    const record = create("the quick brown fox jumps over the lazy dog", {
+    const record = Create("the quick brown fox jumps over the lazy dog", {
       size: 32,
       vgramSize: 3,
     });
@@ -100,48 +100,48 @@ describe("create", () => {
 
   it("is deterministic for the same input and options", () => {
     const options = { size: 64, vgramSize: 2, normalize: true } as const;
-    const a = create("same text every time", options);
-    const b = create("same text every time", options);
+    const a = Create("same text every time", options);
+    const b = Create("same text every time", options);
 
     expect(Array.from(a.glyph)).toEqual(Array.from(b.glyph));
   });
 });
 
-describe("serialize", () => {
+describe("Serialize", () => {
   it("round-trips a glyph record back to an equivalent glyph", () => {
-    const record = create("serialize me please", { size: 32 });
-    const encoded = serialize(record);
-    const glyph = deserialize(encoded);
+    const record = Create("serialize me please", { size: 32 });
+    const encoded = Serialize(record);
+    const glyph = Deserialize(encoded);
 
     expect(encoded.startsWith("r1.")).toBe(true);
     expect(Array.from(glyph)).toEqual(Array.from(record.glyph));
-    expect(compare(record, glyph).similarity).toBe(1);
+    expect(Compare(record, glyph).similarity).toBe(1);
   });
 
   it("round-trips a bare glyph and a signature", () => {
-    const record = create("another payload", { size: 16 });
+    const record = Create("another payload", { size: 16 });
     const signature = { version: record.version, glyph: record.glyph };
 
-    const fromGlyph = deserialize(serialize(record.glyph));
-    const fromSignature = deserialize(serialize(signature));
+    const fromGlyph = Deserialize(Serialize(record.glyph));
+    const fromSignature = Deserialize(Serialize(signature));
 
-    expect(serialize(record.glyph).startsWith("g1.")).toBe(true);
-    expect(serialize(signature).startsWith("s1.")).toBe(true);
+    expect(Serialize(record.glyph).startsWith("g1.")).toBe(true);
+    expect(Serialize(signature).startsWith("s1.")).toBe(true);
     expect(Array.from(fromGlyph)).toEqual(Array.from(record.glyph));
     expect(Array.from(fromSignature)).toEqual(Array.from(record.glyph));
   });
 
   it("rejects invalid payloads", () => {
-    expect(() => deserialize("nope")).toThrow(/invalid/i);
-    expect(() => deserialize("g2.abc")).toThrow(/unsupported/i);
+    expect(() => Deserialize("nope")).toThrow(/invalid/i);
+    expect(() => Deserialize("g2.abc")).toThrow(/unsupported/i);
   });
 });
 
-describe("compare", () => {
+describe("Compare", () => {
   it("reports perfect similarity for identical text", () => {
-    const a = create("identical fingerprint input", { size: 64 });
-    const b = create("identical fingerprint input", { size: 64 });
-    const result = compare(a, b);
+    const a = Create("identical fingerprint input", { size: 64 });
+    const b = Create("identical fingerprint input", { size: 64 });
+    const result = Compare(a, b);
 
     expect(result.similarity).toBe(1);
     expect(result.distance).toBe(0);
@@ -150,9 +150,9 @@ describe("compare", () => {
   });
 
   it("scores shared words in short phrases", () => {
-    const a = create("Goodbye moon");
-    const b = create("Goodbye sun");
-    const result = compare(a, b);
+    const a = Create("Goodbye moon");
+    const b = Create("Goodbye sun");
+    const result = Compare(a, b);
 
     expect(result.similarity).toBeGreaterThan(0.15);
     expect(result.similarity).toBeLessThan(0.6);
@@ -161,21 +161,21 @@ describe("compare", () => {
   it("scores similar texts higher than unrelated texts", () => {
     const options = { size: 256, vgramSize: 2, normalize: true } as const;
 
-    const base = create(
+    const base = Create(
       "the quick brown fox jumps over the lazy dog near the river bank",
       options,
     );
-    const similar = create(
+    const similar = Create(
       "the quick brown fox jumps over a lazy dog near the river bank",
       options,
     );
-    const unrelated = create(
+    const unrelated = Create(
       "baking sourdough bread requires flour water salt and patience",
       options,
     );
 
-    const similarScore = compare(base, similar).similarity;
-    const unrelatedScore = compare(base, unrelated).similarity;
+    const similarScore = Compare(base, similar).similarity;
+    const unrelatedScore = Compare(base, unrelated).similarity;
 
     expect(similarScore).toBeGreaterThan(unrelatedScore);
     expect(similarScore).toBeGreaterThan(0.5);
@@ -183,19 +183,19 @@ describe("compare", () => {
   });
 
   it("throws when glyph sizes differ", () => {
-    const a = create("size mismatch left", { size: 16 });
-    const b = create("size mismatch right", { size: 32 });
+    const a = Create("size mismatch left", { size: 16 });
+    const b = Create("size mismatch right", { size: 32 });
 
-    expect(() => compare(a, b)).toThrow(/size mismatch/i);
+    expect(() => Compare(a, b)).toThrow(/size mismatch/i);
   });
 });
 
-describe("group", () => {
-  it("createGroup accepts glyphs or strings", () => {
-    const fromStrings = createGroup(["Goodbye moon", "hello world"]);
-    const fromGlyphs = createGroup([
-      create("Goodbye moon").glyph,
-      create("hello world").glyph,
+describe("CreateGroup", () => {
+  it("accepts glyphs or strings", () => {
+    const fromStrings = CreateGroup(["Goodbye moon", "hello world"]);
+    const fromGlyphs = CreateGroup([
+      Create("Goodbye moon").glyph,
+      Create("hello world").glyph,
     ]);
 
     expect(Array.isArray(fromStrings)).toBe(true);
@@ -204,26 +204,26 @@ describe("group", () => {
     expect(fromStrings[0]).toBeInstanceOf(Uint32Array);
   });
 
-  it("compare uses max aggregate for glyph vs group", () => {
-    const query = create("Goodbye moon").glyph;
-    const group = createGroup([
+  it("Compare uses max aggregate for glyph vs group", () => {
+    const probe = Create("Goodbye moon").glyph;
+    const group = CreateGroup([
       "totally unrelated pasta recipe",
       "Goodbye moon",
       "something else entirely",
     ]);
 
-    const direct = compare(query, create("Goodbye moon").glyph);
-    const grouped = compare(query, group);
+    const direct = Compare(probe, Create("Goodbye moon").glyph);
+    const grouped = Compare(probe, group);
 
     expect(grouped.similarity).toBe(direct.similarity);
     expect(grouped.similarity).toBe(1);
   });
 
-  it("compare routes group inputs through group compare", () => {
-    const left = createGroup(["alpha beta", "gamma delta"]);
-    const right = createGroup(["gamma delta", "unrelated zz"]);
+  it("Compare routes group inputs through CompareGroups", () => {
+    const left = CreateGroup(["alpha beta", "gamma delta"]);
+    const right = CreateGroup(["gamma delta", "unrelated zz"]);
 
-    const result = compare(left, right);
+    const result = Compare(left, right);
     expect(result.similarity).toBe(1);
   });
 });

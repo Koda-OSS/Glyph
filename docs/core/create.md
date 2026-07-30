@@ -1,17 +1,17 @@
-![Glyph Core](/docs/media/RibbonCore.png)
+![Glyph Ribbon](/docs/media/RibbonGlyph.png)
 
 # Create
 
-> Turn text into a glyph record with `create()`.
+> Turn text into a glyph record with `Create()`.
 
-`create(text, options?)` tokenizes input, builds a feature bag, and runs bag MinHash.
+`Create(text, options?)` tokenizes input, builds a feature bag, and runs bag MinHash.
 
 ## Usage
 
 ```ts
-import { create } from "glyph-ts";
+import { Create } from "glyph-ts";
 
-const record = create("hello world", {
+const record = Create("hello world", {
   size: 128,
   vgramSize: 4,
   normalize: true,

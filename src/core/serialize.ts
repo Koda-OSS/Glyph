@@ -5,7 +5,7 @@ const FORMAT_VERSION = 1;
 /**
  * Serialize a glyph, signature, or record to a portable string.
  */
-export function serialize(
+export function Serialize(
   value: Glyph | GlyphSignature | GlyphRecord,
 ): string {
   if (isGlyph(value)) {
@@ -22,7 +22,7 @@ export function serialize(
 /**
  * Deserialize a serialized string back into a glyph.
  */
-export function deserialize(value: string): Glyph {
+export function Deserialize(value: string): Glyph {
   const parts = value.split(".");
 
   if (parts.length < 2) {

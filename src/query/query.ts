@@ -6,7 +6,7 @@ import type {
   GlyphQueryResult,
   GlyphSignature,
 } from "../types";
-import { compare } from "../core/compare";
+import { Compare } from "../core/compare";
 import { GroupAggregateMax } from "../core/group";
 import { isGlyphGroup } from "../core/utils";
 
@@ -29,7 +29,7 @@ export function query(
   const results: GlyphQueryResult[] = [];
 
   for (const [key, value] of glyphIndex.entries()) {
-    const comparison = compare(queryGlyph, value, compareOptions);
+    const comparison = Compare(queryGlyph, value, compareOptions);
 
     if (comparison.similarity < threshold) {
       continue;

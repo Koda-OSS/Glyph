@@ -1,37 +1,56 @@
-![Glyph Core](/docs/media/RibbonCore.png)
+![Glyph Ribbon](/docs/media/RibbonGlyph.png)
 
 # Compare
 
-> Score similarity between glyphs with `compare()` or `GlyphDirectCompare()`.
+> Score similarity between glyphs with `Compare()`, `CompareGlyphs()`, or `CompareGroups()`.
 
 Comparison estimates **Jaccard similarity** between two text feature bags by counting equal MinHash slots.
 
-## `compare(a, b, options?)`
+## `Compare(a, b, options?)`
 
 Routes automatically:
 
 | Input on either side | Path |
 | --- | --- |
-| Single glyph, signature, or record | Direct compare |
-| `GlyphGroup` (array or record) | Group compare |
+| Single glyph, signature, or record | `CompareGlyphs` |
+| `GlyphGroup` (array or record) | `CompareGroups` |
 
 ```ts
-import { create, compare } from "glyph-ts";
+import { Create, Compare } from "glyph-ts";
 
-const a = create("Goodbye moon");
-const b = create("Goodbye sun");
+const a = Create("Goodbye moon");
+const b = Create("Goodbye sun");
 
-compare(a, b);
-compare(a.glyph, b.glyph);
+Compare(a, b);
+Compare(a.glyph, b.glyph);
 ```
 
 Accepts `Glyph`, `GlyphSignature`, `GlyphRecord`, or `GlyphGroup`.
 
-## `GlyphDirectCompare(a, b, options?)`
+## `CompareGlyphs(a, b, options?)`
 
 Pairwise compare only. Use when both sides are single glyphs (or signatures/records).
 
-Group compare uses this internally for every pair.
+```ts
+import { Create, CompareGlyphs } from "glyph-ts";
+
+CompareGlyphs(Create("a"), Create("b"));
+```
+
+`CompareGroups` uses this internally for every pair.
+
+## `CompareGroups(group1, group2, options?)`
+
+Explicit group compare. Scores every pair, then aggregates (default: max).
+
+```ts
+import { CreateGroup, CompareGroups } from "glyph-ts";
+
+CompareGroups(
+  CreateGroup(["alpha beta", "gamma delta"]),
+  CreateGroup(["gamma delta", "unrelated"]),
+);
+```
 
 ## Result: `GlyphComparisonResult`
 
@@ -55,11 +74,11 @@ Group compare uses this internally for every pair.
 
 ```ts
 interface GlyphComparisonOptions {
-  aggregate?: GroupAggregate; // group compare only
+  aggregate?: GroupAggregate; // CompareGroups only
 }
 ```
 
-Direct compare ignores `aggregate`. See [Groups](./groups.md).
+`CompareGlyphs` ignores `aggregate`. See [Groups](./groups.md).
 
 ## Errors
 

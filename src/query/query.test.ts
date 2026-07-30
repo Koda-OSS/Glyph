@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { create, createGroup, index, query } from "../index";
+import { Create, CreateGroup, index, query } from "../index";
 
 describe("glyph query index", () => {
   it("supports set/get/has/remove/size/clear", () => {
     const idx = index.new();
-    const glyph = create("hello world").glyph;
+    const glyph = Create("hello world").glyph;
 
     expect(idx.size()).toBe(0);
     idx.set("a", glyph);
@@ -27,8 +27,8 @@ describe("glyph query index", () => {
 
   it("promotes a single glyph to a group on add", () => {
     const idx = index.new();
-    const a = create("alpha").glyph;
-    const b = create("beta").glyph;
+    const a = Create("alpha").glyph;
+    const b = Create("beta").glyph;
 
     idx.set("doc", a);
     idx.add("doc", b);
@@ -40,16 +40,16 @@ describe("glyph query index", () => {
 
   it("creates a key on add when missing", () => {
     const idx = index.new();
-    const glyph = create("fresh key").glyph;
+    const glyph = Create("fresh key").glyph;
     idx.add("new", glyph);
     expect(idx.get("new")).toBe(glyph);
   });
 
   it("merges into record groups with auto keys", () => {
     const idx = index.new();
-    const a = create("one").glyph;
-    const b = create("two").glyph;
-    const c = create("three").glyph;
+    const a = Create("one").glyph;
+    const b = Create("two").glyph;
+    const c = Create("three").glyph;
 
     idx.set("doc", { title: a });
     idx.add("doc", [b, c]);
@@ -66,11 +66,11 @@ describe("glyph query index", () => {
 describe("glyph query", () => {
   it("ranks matches and respects limit/threshold", () => {
     const idx = index.new();
-    idx.set("moon", create("Goodbye moon").glyph);
-    idx.set("sun", create("Goodbye sun").glyph);
-    idx.set("pasta", create("totally unrelated pasta recipe").glyph);
+    idx.set("moon", Create("Goodbye moon").glyph);
+    idx.set("sun", Create("Goodbye sun").glyph);
+    idx.set("pasta", Create("totally unrelated pasta recipe").glyph);
 
-    const results = query(create("Goodbye moon").glyph, idx, {
+    const results = query(Create("Goodbye moon").glyph, idx, {
       threshold: 0.1,
       limit: 2,
     });
@@ -84,10 +84,10 @@ describe("glyph query", () => {
 
   it("normalizes scores by dividing by the top score", () => {
     const idx = index.new();
-    idx.set("moon", create("Goodbye moon").glyph);
-    idx.set("sun", create("Goodbye sun").glyph);
+    idx.set("moon", Create("Goodbye moon").glyph);
+    idx.set("sun", Create("Goodbye sun").glyph);
 
-    const results = query(create("Goodbye moon").glyph, idx, {
+    const results = query(Create("Goodbye moon").glyph, idx, {
       normalize: true,
     });
 
@@ -98,8 +98,8 @@ describe("glyph query", () => {
 
   it("sets matched for array and record groups", () => {
     const idx = index.new();
-    const moon = create("Goodbye moon").glyph;
-    const pasta = create("totally unrelated pasta recipe").glyph;
+    const moon = Create("Goodbye moon").glyph;
+    const pasta = Create("totally unrelated pasta recipe").glyph;
 
     idx.set("array-doc", [pasta, moon]);
     idx.set("record-doc", { noise: pasta, hit: moon });
@@ -114,11 +114,11 @@ describe("glyph query", () => {
 
   it("finds the best doc when querying a group against singles", () => {
     const idx = index.new();
-    idx.set("a", create("serialize glyphs to strings").glyph);
-    idx.set("b", create("compare two fingerprints").glyph);
+    idx.set("a", Create("serialize glyphs to strings").glyph);
+    idx.set("b", Create("compare two fingerprints").glyph);
 
     const results = query(
-      createGroup(["how to serialize a glyph", "encode fingerprint"]),
+      CreateGroup(["how to serialize a glyph", "encode fingerprint"]),
       idx,
       { limit: 1 },
     );
@@ -143,11 +143,11 @@ describe("glyph query stress", () => {
     "indexes random docs until a query takes longer than 10ms",
     () => {
       const idx = index.new();
-      const probe = create(randomGarbage(2048)).glyph;
+      const probe = Create(randomGarbage(2048)).glyph;
       let queryMs = 0;
 
       while (queryMs <= 10) {
-        idx.set(`doc-${idx.size()}`, create(randomGarbage(4096)).glyph);
+        idx.set(`doc-${idx.size()}`, Create(randomGarbage(4096)).glyph);
 
         const started = performance.now();
         query(probe, idx, { limit: 5 });

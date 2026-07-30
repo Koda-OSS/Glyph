@@ -19,14 +19,14 @@ query(
 ## Example
 
 ```ts
-import { create, index, query } from "glyph-ts";
+import { Create, index, query } from "glyph-ts";
 
 const idx = index.new();
-idx.set("moon", create("Goodbye moon").glyph);
-idx.set("sun", create("Goodbye sun").glyph);
-idx.set("pasta", create("unrelated pasta recipe").glyph);
+idx.set("moon", Create("Goodbye moon").glyph);
+idx.set("sun", Create("Goodbye sun").glyph);
+idx.set("pasta", Create("unrelated pasta recipe").glyph);
 
-const results = query(create("Goodbye moon").glyph, idx, {
+const results = query(Create("Goodbye moon").glyph, idx, {
   limit: 5,
   threshold: 0.1,
   normalize: true,
@@ -37,7 +37,7 @@ const results = query(create("Goodbye moon").glyph, idx, {
 
 ```text
 for each [key, value] in index.entries():
-  comparison = compare(queryGlyph, value, compareOptions)
+  comparison = Compare(queryGlyph, value, compareOptions)
   if comparison.similarity < threshold: skip
   collect { key, similarity, comparison }
 
@@ -51,8 +51,8 @@ return results
 
 | Index value | Compare path |
 | --- | --- |
-| Single glyph | Direct compare |
-| `Glyph[]` or record | Group compare (default aggregate: max) |
+| Single glyph | `CompareGlyphs` |
+| `Glyph[]` or record | `CompareGroups` (default aggregate: max) |
 
 Pass `aggregate` or `compare` in options. See [Query options](./options.md).
 

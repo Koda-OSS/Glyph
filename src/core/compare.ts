@@ -5,7 +5,7 @@ import type {
   GlyphGroup,
   GlyphSignature,
 } from "../types";
-import { GroupComparison } from "./group";
+import { CompareGroups } from "./group";
 import {
   IsGlyphSignature,
   isGlyph,
@@ -14,9 +14,9 @@ import {
 } from "./utils";
 
 /**
- * Direct MinHash Jaccard comparison between two individual glyphs.
+ * Compare two individual glyphs (or signatures/records).
  */
-export function GlyphDirectCompare(
+export function CompareGlyphs(
   a: Glyph | GlyphSignature,
   b: Glyph | GlyphSignature,
   _options: GlyphComparisonOptions = {},
@@ -33,16 +33,10 @@ export function GlyphDirectCompare(
   const size = left.length;
 
   if (size === 0) {
-    return {
-      similarity: 1,
-      distance: 0,
-      matches: 0,
-      size: 0,
-    };
+    return { similarity: 1, distance: 0, matches: 0, size: 0 };
   }
 
   let matches = 0;
-
   for (let i = 0; i < size; i++) {
     if (left[i] === right[i]) {
       matches += 1;
@@ -58,19 +52,19 @@ export function GlyphDirectCompare(
 }
 
 /**
- * Compare glyphs or groups. Uses group compare when either side is a group,
- * otherwise falls back to direct compare.
+ * Compare glyphs or groups.
+ * Routes to CompareGroups when either side is a group, otherwise CompareGlyphs.
  */
-export function compare(
+export function Compare(
   a: Glyph | GlyphSignature | GlyphGroup,
   b: Glyph | GlyphSignature | GlyphGroup,
   options: GlyphComparisonOptions = {},
 ): GlyphComparisonResult {
   if (isGlyphGroup(a) || isGlyphGroup(b)) {
-    return GroupComparison(asGroup(a), asGroup(b), options);
+    return CompareGroups(asGroup(a), asGroup(b), options);
   }
 
-  return GlyphDirectCompare(
+  return CompareGlyphs(
     a as Glyph | GlyphSignature,
     b as Glyph | GlyphSignature,
     options,

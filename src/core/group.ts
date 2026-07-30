@@ -5,8 +5,8 @@ import type {
   GlyphGroupComparisonResult,
   GroupAggregate,
 } from "../types";
-import { create } from "./create";
-import { GlyphDirectCompare } from "./compare";
+import { Create } from "./create";
+import { CompareGlyphs } from "./compare";
 import { resolveGlyphsToArray } from "./utils";
 
 /**
@@ -23,10 +23,10 @@ export const GroupAggregateMax: GroupAggregate = ({ scores }) => {
 /**
  * Build a glyph group from glyphs or raw text strings.
  */
-export function createGroup(glyphs: Glyph[] | string[]): GlyphGroup {
+export function CreateGroup(glyphs: Glyph[] | string[]): GlyphGroup {
   return glyphs.map((glyph) => {
     if (typeof glyph === "string") {
-      return create(glyph).glyph;
+      return Create(glyph).glyph;
     }
 
     return glyph;
@@ -37,7 +37,7 @@ export function createGroup(glyphs: Glyph[] | string[]): GlyphGroup {
  * Compare two glyph groups by scoring every pair, then aggregating.
  * Includes matchedLeft/matchedRight for the winning pair when using max aggregate.
  */
-export function GroupComparison(
+export function CompareGroups(
   group1: GlyphGroup,
   group2: GlyphGroup,
   options: GlyphComparisonOptions = {},
@@ -56,16 +56,18 @@ export function GroupComparison(
 
   for (let i = 0; i < left.length; i++) {
     for (let j = 0; j < right.length; j++) {
-      const result = GlyphDirectCompare(left[i]!, right[j]!, options);
+      const result = CompareGlyphs(left[i]!, right[j]!, options);
       const paired: GlyphGroupComparisonResult = { ...result };
       const leftKey = leftKeys[i];
       const rightKey = rightKeys[j];
+
       if (leftKey !== undefined) {
         paired.matchedLeft = leftKey;
       }
       if (rightKey !== undefined) {
         paired.matchedRight = rightKey;
       }
+
       results.push(paired);
       scores.push(result.similarity);
     }

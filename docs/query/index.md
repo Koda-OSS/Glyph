@@ -32,11 +32,11 @@ const idx = index.new();
 ## `set(key, glyphs?)`
 
 ```ts
-idx.set("doc", create("text").glyph);
+idx.set("doc", Create("text").glyph);
 idx.set("doc"); // deletes "doc"
 ```
 
-Values must be `Glyph`, `Glyph[]`, or `Record<string, Glyph>`. The index does **not** accept raw strings (call `create()` first).
+Values must be `Glyph`, `Glyph[]`, or `Record<string, Glyph>`. The index does **not** accept raw strings (call `Create()` first).
 
 ## `add(key, glyphs)` promotion
 

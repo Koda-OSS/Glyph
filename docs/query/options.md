@@ -66,7 +66,7 @@ See [Groups](../core/groups.md).
 
 ## `compare`
 
-Extra options forwarded to `compare()` for each entry.
+Extra options forwarded to `Compare()` for each entry.
 
 ```ts
 query(probe, idx, {

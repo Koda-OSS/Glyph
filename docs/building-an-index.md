@@ -9,15 +9,15 @@ An **index** maps string keys to one glyph or a **glyph group**. Use `query()` t
 ## Basic workflow
 
 ```ts
-import { create, index, query } from "glyph-ts";
+import { Create, index, query } from "glyph-ts";
 
 const idx = index.new();
 
-idx.set("doc-a", create("first document text").glyph);
-idx.set("doc-b", create("second document text").glyph);
-idx.set("doc-c", create("third document text").glyph);
+idx.set("doc-a", Create("first document text").glyph);
+idx.set("doc-b", Create("second document text").glyph);
+idx.set("doc-c", Create("third document text").glyph);
 
-const probe = create("document text").glyph;
+const probe = Create("document text").glyph;
 const hits = query(probe, idx, {
   limit: 5,
   threshold: 0,
@@ -34,7 +34,7 @@ for (const hit of hits) {
 | Step | Action |
 | --- | --- |
 | 1 | Call `index.new()` |
-| 2 | Fingerprint source text with `create()` |
+| 2 | Fingerprint source text with `Create()` |
 | 3 | Store with `idx.set(key, glyph)` or `idx.add(key, glyph)` |
 | 4 | Build a probe glyph from query text |
 | 5 | Call `query(probe, idx, options)` |
@@ -42,7 +42,7 @@ for (const hit of hits) {
 ## Store one glyph per key
 
 ```ts
-idx.set("readme", create(readFileText).glyph);
+idx.set("readme", Create(readFileText).glyph);
 ```
 
 ## Store multiple glyphs per key
@@ -51,16 +51,16 @@ Use a group when one key has several fingerprints (for example, many chunks).
 
 ```ts
 idx.set("article", [
-  create("section one").glyph,
-  create("section two").glyph,
+  Create("section one").glyph,
+  Create("section two").glyph,
 ]);
 ```
 
 Or use `add` to append over time:
 
 ```ts
-idx.set("article", create("section one").glyph);
-idx.add("article", create("section two").glyph);
+idx.set("article", Create("section one").glyph);
+idx.add("article", Create("section two").glyph);
 // value is now [glyph1, glyph2]
 ```
 

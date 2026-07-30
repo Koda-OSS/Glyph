@@ -12,18 +12,18 @@ Deep docs live under [Core](./core/glyph.md), [Query](./query/index.md), and [Co
 
 | Export | Signature | Doc |
 | --- | --- | --- |
-| `create` | `(text, options?) => GlyphRecord` | [Create](./core/create.md) |
-| `compare` | `(a, b, options?) => GlyphComparisonResult` | [Compare](./core/compare.md) |
-| `GlyphDirectCompare` | `(a, b, options?) => GlyphComparisonResult` | [Compare](./core/compare.md) |
-| `createGroup` | `(glyphs: Glyph[] \| string[]) => GlyphGroup` | [Groups](./core/groups.md) |
-| `GroupComparison` | `(group1, group2, options?) => GlyphComparisonResult` | [Groups](./core/groups.md) |
+| `Create` | `(text, options?) => GlyphRecord` | [Create](./core/create.md) |
+| `Compare` | `(a, b, options?) => GlyphComparisonResult` | [Compare](./core/compare.md) |
+| `CompareGlyphs` | `(a, b, options?) => GlyphComparisonResult` | [Compare](./core/compare.md) |
+| `CreateGroup` | `(glyphs: Glyph[] \| string[]) => GlyphGroup` | [Groups](./core/groups.md) |
+| `CompareGroups` | `(group1, group2, options?) => GlyphComparisonResult` | [Groups](./core/groups.md) |
 | `GroupAggregateMax` | `GroupAggregate` | [Groups](./core/groups.md) |
-| `serialize` | `(Glyph \| GlyphSignature \| GlyphRecord) => string` | [Serialize](./core/serialize.md) |
-| `deserialize` | `(string) => Glyph` | [Serialize](./core/serialize.md) |
+| `Serialize` | `(Glyph \| GlyphSignature \| GlyphRecord) => string` | [Serialize](./core/serialize.md) |
+| `Deserialize` | `(string) => Glyph` | [Serialize](./core/serialize.md) |
 | `CreateTokens` | `(text, normalize?) => GlyphToken[]` | [Tokenize](./core/tokenize.md) |
 | `CreateUnigrams` | `(text, normalize?) => GlyphUnigram[]` | [Tokenize](./core/tokenize.md) |
 | `CreateVGrams` | `(text, vgramSize, normalize?) => GlyphVGram[]` | [Tokenize](./core/tokenize.md) |
-| `tokenize` | `(text, options?) => GlyphTokenizationResult` | [Tokenize](./core/tokenize.md) |
+| `Tokenize` | `(text, options?) => GlyphTokenizationResult` | [Tokenize](./core/tokenize.md) |
 | `TextFilter` | `(text) => string` | [Text normalization](./core/text-normalization.md) |
 | `TextStrip` | `(text) => string` | [Text normalization](./core/text-normalization.md) |
 
@@ -52,7 +52,7 @@ interface GlyphCreateOptions {
 }
 
 interface GlyphTokenizationOptions {
-  vgramSize?: number;   // default 2 in tokenize()
+  vgramSize?: number;   // default 2 in Tokenize()
   normalize?: boolean;  // default true
 }
 

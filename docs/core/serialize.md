@@ -1,21 +1,21 @@
-![Glyph Core](/docs/media/RibbonCore.png)
+![Glyph Ribbon](/docs/media/RibbonGlyph.png)
 
 # Serialize
 
 > Encode a glyph as a portable string. Decode back to a `Glyph`.
 
-## `serialize(value)`
+## `Serialize(value)`
 
 Accepts `Glyph`, `GlyphSignature`, or `GlyphRecord`.
 
 ```ts
-import { create, serialize } from "glyph-ts";
+import { Create, Serialize } from "glyph-ts";
 
-const record = create("some text");
+const record = Create("some text");
 
-serialize(record.glyph); // g1.<payload>
-serialize(record);       // r1.<version>.<createdAt>.<payload>
-serialize({
+Serialize(record.glyph); // g1.<payload>
+Serialize(record);       // r1.<version>.<createdAt>.<payload>
+Serialize({
   version: record.version,
   glyph: record.glyph,
 });                      // s1.<version>.<payload>
@@ -31,17 +31,17 @@ serialize({
 
 Payload = raw little-endian `Uint32Array` bytes, base64url-encoded.
 
-## `deserialize(string)`
+## `Deserialize(string)`
 
 Always returns a **`Glyph`**. Metadata on records and signatures is not restored.
 
 ```ts
-import { create, serialize, deserialize, compare } from "glyph-ts";
+import { Create, Serialize, Deserialize, Compare } from "glyph-ts";
 
-const record = create("some text");
-const glyph = deserialize(serialize(record));
+const record = Create("some text");
+const glyph = Deserialize(Serialize(record));
 
-compare(record, glyph); // similarity: 1
+Compare(record, glyph); // similarity: 1
 ```
 
 ## Errors

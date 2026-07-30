@@ -2,19 +2,19 @@
  * GlyphTS — MinHash text fingerprints for similarity comparison.
  */
 
-export { create } from "./core/create";
-export { compare, GlyphDirectCompare } from "./core/compare";
+export { Create } from "./core/create";
+export { Compare, CompareGlyphs } from "./core/compare";
 export {
-  createGroup,
-  GroupComparison,
+  CreateGroup,
+  CompareGroups,
   GroupAggregateMax,
 } from "./core/group";
-export { serialize, deserialize } from "./core/serialize";
+export { Serialize, Deserialize } from "./core/serialize";
 export {
   CreateTokens,
   CreateUnigrams,
   CreateVGrams,
-  tokenize,
+  Tokenize,
 } from "./core/tokenize";
 export { TextStrip, TextFilter } from "./core/utils";
 export { index } from "./query/index";

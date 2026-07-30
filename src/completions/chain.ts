@@ -7,8 +7,8 @@ import type {
   GlyphCompletionResult,
   GlyphToken,
 } from "../types";
-import { GlyphDirectCompare } from "../core/compare";
-import { create } from "../core/create";
+import { CompareGlyphs } from "../core/compare";
+import { Create } from "../core/create";
 import { CreateUnigrams } from "../core/tokenize";
 
 type StateKey = string;
@@ -54,7 +54,7 @@ function createChain(
         return;
       }
 
-      const glyph = create(text, createOptions).glyph;
+      const glyph = Create(text, createOptions).glyph;
 
       for (let i = order - 1; i < tokens.length; i++) {
         const nextToken = tokens[i]!;
@@ -82,7 +82,7 @@ function createChain(
         return [];
       }
 
-      const probe = create(prefix, createOptions).glyph;
+      const probe = Create(prefix, createOptions).glyph;
       const results: GlyphCompletionResult[] = [];
 
       for (const [token, entry] of transitions) {
@@ -176,10 +176,10 @@ function scoreTransition(
   let weightedSum = 0;
   let totalWeight = 0;
   let bestSource = entry.sources[0]!;
-  let bestComparison = GlyphDirectCompare(probe, bestSource.glyph);
+  let bestComparison = CompareGlyphs(probe, bestSource.glyph);
 
   for (const source of entry.sources) {
-    const comparison = GlyphDirectCompare(probe, source.glyph);
+    const comparison = CompareGlyphs(probe, source.glyph);
     weightedSum += comparison.similarity * source.weight;
     totalWeight += source.weight;
 

@@ -9,7 +9,7 @@
 ```ts
 interface GlyphCompletionChainOptions {
   order?: number;               // default 3
-  create?: GlyphCreateOptions;  // forwarded to create()
+  create?: GlyphCreateOptions;  // forwarded to Create()
 }
 ```
 
@@ -17,7 +17,7 @@ interface GlyphCompletionChainOptions {
 | --- | --- | --- |
 | `order` | `3` | Markov order; state uses previous `order - 1` tokens |
 | `create.size` | `128` | Signature length for document and probe glyphs |
-| `create.vgramSize` | `4` | Vgram width inside `create()` |
+| `create.vgramSize` | `4` | Vgram width inside `Create()` |
 | `create.normalize` | `true` | Same strip path for ingest and complete tokens |
 
 ### Order examples

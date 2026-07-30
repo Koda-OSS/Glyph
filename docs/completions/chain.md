@@ -20,7 +20,7 @@ const chain = completions.new({
 | Option | Default | Meaning |
 | --- | --- | --- |
 | `order` | `3` | Markov order (state = previous `order - 1` tokens) |
-| `create` | `{}` | Options forwarded to `create()` on ingest and complete |
+| `create` | `{}` | Options forwarded to `Create()` on ingest and complete |
 
 ## Ingest documents
 

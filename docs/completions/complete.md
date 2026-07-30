@@ -14,7 +14,7 @@ const results = chain.complete("goodbye", {
 ## Flow
 
 ```text
-1. probe = create(prefix).glyph
+1. probe = Create(prefix).glyph
 2. tokens = CreateUnigrams(prefix)   // TextStrip — letters/digits only
 3. if tokens.length < order - 1 → return []
 4. stateKey = last (order - 1) tokens joined
@@ -29,7 +29,7 @@ const results = chain.complete("goodbye", {
 Markov structure defines **which** tokens are valid. Glyph similarity defines **rank**.
 
 ```text
-glyphScore = sum(weight_i * compare(probe, source_i).similarity) / sum(weight_i)
+glyphScore = sum(weight_i * CompareGlyphs(probe, source_i).similarity) / sum(weight_i)
 ```
 
 | Rank factor | Role |

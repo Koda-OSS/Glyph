@@ -1,6 +1,6 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
-import { compare, completions, create, index, query, serialize } from "./src/index.ts";
+import { Compare, completions, Create, index, query, Serialize } from "./src/index.ts";
 
 type Input = {
   label: string;
@@ -92,12 +92,12 @@ function runDocsSearch(searchText: string): void {
 
   const indexStarted = performance.now();
   for (const doc of docs) {
-    idx.set(doc.key, create(doc.text).glyph);
+    idx.set(doc.key, Create(doc.text).glyph);
   }
   const indexMs = performance.now() - indexStarted;
 
   const queryStarted = performance.now();
-  const results = query(create(searchText).glyph, idx, {
+  const results = query(Create(searchText).glyph, idx, {
     limit: 5,
     threshold: 0,
     normalize: true,
@@ -173,16 +173,16 @@ function runCompare(leftArg: string, rightArg: string): void {
   const leftInput = resolveInput(leftArg);
   const rightInput = resolveInput(rightArg);
 
-  const left = create(leftInput.text, { size: 128 });
-  const right = create(rightInput.text, { size: 128 });
-  const result = compare(left, right);
+  const left = Create(leftInput.text, { size: 128 });
+  const right = Create(rightInput.text, { size: 128 });
+  const result = Compare(left, right);
 
   const showSerialized = false;
   console.log(
-    `A: ${leftInput.label}${showSerialized ? ` ${serialize(left)}` : ""}`,
+    `A: ${leftInput.label}${showSerialized ? ` ${Serialize(left)}` : ""}`,
   );
   console.log(
-    `B: ${rightInput.label}${showSerialized ? ` ${serialize(right)}` : ""}`,
+    `B: ${rightInput.label}${showSerialized ? ` ${Serialize(right)}` : ""}`,
   );
   console.log();
   console.log(`similarity: ${(result.similarity * 100).toFixed(2)}%`);

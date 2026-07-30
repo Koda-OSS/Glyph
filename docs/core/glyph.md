@@ -12,7 +12,7 @@ A **glyph** is a `Uint32Array` tagged at the type level. It stores one MinHash f
 | --- | --- | --- |
 | `Glyph` | `Uint32Array` | Raw fingerprint |
 | `GlyphSignature` | `version`, `glyph` | Versioned fingerprint without timestamp |
-| `GlyphRecord` | `version`, `glyph`, `createdAt` | Output of `create()` |
+| `GlyphRecord` | `version`, `glyph`, `createdAt` | Output of `Create()` |
 
 ```ts
 type Glyph = Uint32Array & { readonly __glyph: true };
@@ -46,8 +46,8 @@ type GlyphGroup = Glyph[] | Record<string, Glyph>;
 
 | Rule | Detail |
 | --- | --- |
-| Same options → same glyph | `create()` is deterministic for `glyph` bytes |
-| `createdAt` changes | Each `create()` call gets a new timestamp |
+| Same options → same glyph | `Create()` is deterministic for `glyph` bytes |
+| `createdAt` changes | Each `Create()` call gets a new timestamp |
 | Compare needs equal `size` | Mismatched signature lengths throw |
 
 ## See also

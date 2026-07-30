@@ -4,12 +4,12 @@
 
 > Fingerprint text. Compare similarity in one call.
 
-GlyphTS builds **MinHash** signatures from text. You use `create()` to fingerprint, then `compare()` to score overlap.
+GlyphTS builds **MinHash** signatures from text. You use `Create()` to fingerprint, then `Compare()` to score overlap.
 
 ## Install
 
 ```typescript
-// NPM release coming soon! You can copy src into your project if you'd like (for now)
+// NPM release coming soon! You can copy src into your project if you'd like.
 ```
 
 Node.js 18 or newer is required.
@@ -17,12 +17,12 @@ Node.js 18 or newer is required.
 ## First compare
 
 ```ts
-import { create, compare } from "npm package or src location";
+import { Create, Compare } from "glyph-ts";
 
-const a = create("the quick brown fox jumps over the lazy dog");
-const b = create("the quick brown fox leaped over the lazy dog");
+const a = Create("the quick brown fox jumps over the lazy dog");
+const b = Create("the quick brown fox leaped over the lazy dog");
 
-const { similarity, distance, matches, size } = compare(a, b);
+const { similarity, distance, matches, size } = Compare(a, b);
 ```
 
 | Field | Range / type | Meaning |
@@ -41,7 +41,7 @@ const { similarity, distance, matches, size } = compare(a, b);
 
 Identical normalized text gives `similarity: 1`. Unrelated text is near `0`.
 
-## What `create` returns
+## What `Create` returns
 
 ```json
 {
@@ -55,7 +55,7 @@ Identical normalized text gives `similarity: 1`. Unrelated text is near `0`.
 - `glyph` — the fingerprint bytes.
 - `createdAt` — milliseconds since epoch (changes each call).
 
-You can pass a full record or `record.glyph` into `compare` and `serialize`.
+You can pass a full record or `record.glyph` into `Compare` and `Serialize`.
 
 ## Next steps
 

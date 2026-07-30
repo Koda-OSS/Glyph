@@ -17,10 +17,10 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | Doc | Topic |
 | --- | --- |
 | [Glyph](./core/glyph.md) | Types: `Glyph`, `GlyphRecord`, `GlyphSignature` |
-| [Create](./core/create.md) | `create()` and fingerprint options |
-| [Compare](./core/compare.md) | `compare()`, `GlyphDirectCompare()`, results |
-| [Groups](./core/groups.md) | `GlyphGroup`, `createGroup()`, aggregate compare |
-| [Serialize](./core/serialize.md) | `serialize()`, `deserialize()`, string formats |
+| [Create](./core/create.md) | `Create()` and fingerprint options |
+| [Compare](./core/compare.md) | `Compare()`, `CompareGlyphs()`, results |
+| [Groups](./core/groups.md) | `GlyphGroup`, `CreateGroup()`, aggregate compare |
+| [Serialize](./core/serialize.md) | `Serialize()`, `Deserialize()`, string formats |
 | [Tokenize](./core/tokenize.md) | Tokens, unigrams, vgrams |
 | [Text normalization](./core/text-normalization.md) | `TextFilter`, `TextStrip` |
 

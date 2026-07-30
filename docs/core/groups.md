@@ -9,28 +9,28 @@ A **glyph group** is `Glyph[]` or `Record<string, Glyph>`. Group compare scores 
 ## Build a group
 
 ```ts
-import { create, createGroup } from "glyph-ts";
+import { Create, CreateGroup } from "glyph-ts";
 
-// from strings (calls create internally)
-const fromText = createGroup(["chunk one", "chunk two"]);
+// from strings (calls Create internally)
+const fromText = CreateGroup(["chunk one", "chunk two"]);
 
 // from glyphs
-const fromGlyphs = createGroup([
-  create("chunk one").glyph,
-  create("chunk two").glyph,
+const fromGlyphs = CreateGroup([
+  Create("chunk one").glyph,
+  Create("chunk two").glyph,
 ]);
 ```
 
-## `GroupComparison(group1, group2, options?)`
+## `CompareGroups(group1, group2, options?)`
 
-Explicit group compare. `compare()` calls this when either side is a group.
+Explicit group compare. `Compare()` calls this when either side is a group.
 
 ```ts
-import { GroupComparison, createGroup } from "glyph-ts";
+import { CompareGroups, CreateGroup } from "glyph-ts";
 
-GroupComparison(
-  createGroup(["alpha beta", "gamma delta"]),
-  createGroup(["gamma delta", "unrelated"]),
+CompareGroups(
+  CreateGroup(["alpha beta", "gamma delta"]),
+  CreateGroup(["gamma delta", "unrelated"]),
 );
 ```
 
@@ -47,12 +47,13 @@ import { GroupAggregateMax } from "glyph-ts";
 ## Custom aggregate
 
 ```ts
+import { Compare } from "glyph-ts";
 import type { GroupAggregate } from "glyph-ts";
 
 const average: GroupAggregate = ({ scores }) =>
   scores.reduce((sum, n) => sum + n, 0) / scores.length;
 
-compare(groupA, groupB, { aggregate: average });
+Compare(groupA, groupB, { aggregate: average });
 ```
 
 `GroupAggregateContext`:
@@ -65,9 +66,9 @@ compare(groupA, groupB, { aggregate: average });
 }
 ```
 
-## How `compare` wraps singles
+## How `Compare` wraps singles
 
-A lone glyph passed to `compare()` is wrapped as a one-item array before group logic runs. You do not need to wrap manually.
+A lone glyph passed to `Compare()` is wrapped as a one-item array before group logic runs. You do not need to wrap manually.
 
 ## Record groups and internal flattening
 

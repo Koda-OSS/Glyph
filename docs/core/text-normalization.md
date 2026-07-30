@@ -44,7 +44,7 @@ TextStrip("foo-bar baz 123"); // "foobarbaz123"
 | Unigram | `TextStrip` | Raw tokens |
 | Vgram | `TextStrip` on joined window | Raw joined window |
 
-Set `normalize: false` in `create()` or `tokenize()` to skip both helpers.
+Set `normalize: false` in `Create()` or `Tokenize()` to skip both helpers.
 
 ## See also
 

@@ -4,7 +4,7 @@
 
 > Split text into tokens, unigrams, and vgrams.
 
-Low-level helpers used by `create()`. Use them to debug or build a custom pipeline.
+Low-level helpers used by `Create()`. Use them to debug or build a custom pipeline.
 
 ## Pipeline
 
@@ -22,17 +22,17 @@ import {
   CreateTokens,
   CreateUnigrams,
   CreateVGrams,
-  tokenize,
+  Tokenize,
 } from "glyph-ts";
 
 CreateTokens("Hello, world!");
 CreateUnigrams("Hello, world!");
 CreateVGrams("one two three four", 3);
 
-tokenize("alpha beta gamma", { vgramSize: 2, normalize: true });
+Tokenize("alpha beta gamma", { vgramSize: 2, normalize: true });
 ```
 
-### `tokenize(text, options?)`
+### `Tokenize(text, options?)`
 
 Returns all three lists:
 
@@ -44,12 +44,12 @@ Returns all three lists:
 }
 ```
 
-| Option | Default in `tokenize()` | Default in `create()` |
+| Option | Default in `Tokenize()` | Default in `Create()` |
 | --- | --- | --- |
 | `vgramSize` | `2` | `4` |
 | `normalize` | `true` | `true` |
 
-> Pass the same `vgramSize` in `tokenize()` and `create()` when you need identical vgrams.
+> Pass the same `vgramSize` in `Tokenize()` and `Create()` when you need identical vgrams.
 
 ## Tokens
 
@@ -73,7 +73,7 @@ CreateVGrams("one two three four five", 3, true);
 | `tokens.length < vgramSize` | `[]` (empty) |
 | Enough tokens | One stripped vgram per window |
 
-Short text still fingerprints via tokens and unigrams inside `create()`.
+Short text still fingerprints via tokens and unigrams inside `Create()`.
 
 ## See also
 

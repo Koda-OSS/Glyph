@@ -50,7 +50,7 @@ export function CreateVGrams(
 /**
  * Tokenize text into filtered tokens, stripped unigrams, and stripped vgrams.
  */
-export function tokenize(
+export function Tokenize(
   text: string,
   options: GlyphTokenizationOptions = {},
 ): GlyphTokenizationResult {

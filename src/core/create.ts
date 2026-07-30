@@ -20,7 +20,7 @@ const DefaultCreateOptions = {
   normalize: true,
 } as const;
 
-export function create(
+export function Create(
   text: string,
   options: GlyphCreateOptions = {},
 ): GlyphRecord {
