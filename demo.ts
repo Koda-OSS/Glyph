@@ -1,6 +1,6 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
-import { compare, create, index, query, serialize } from "./src/index.ts";
+import { compare, completions, create, index, query, serialize } from "./src/index.ts";
 
 type Input = {
   label: string;
@@ -12,9 +12,11 @@ function printUsage(): never {
   console.error("  npm run demo -- <file-or-text-a> <file-or-text-b>");
   console.error('  npm run demo -- "text a|text b"');
   console.error('  npm run demo -- search "your query"');
+  console.error('  npm run demo -- complete "your prefix"');
   console.error("");
   console.error("Compare mode: each arg is a file path if it exists, otherwise literal text.");
   console.error("Search mode: indexes docs/**/*.md and ranks matches.");
+  console.error("Complete mode: ingests docs and suggests next words for a prefix.");
   process.exit(1);
 }
 
@@ -36,9 +38,8 @@ function listMarkdownFiles(dir: string): string[] {
   return files;
 }
 
-function runDocsSearch(searchText: string): void {
+function loadDocs(): { key: string; text: string }[] {
   const docsDir = resolve("docs");
-  const idx = index.new();
   const files = listMarkdownFiles(docsDir);
 
   if (files.length === 0) {
@@ -46,10 +47,48 @@ function runDocsSearch(searchText: string): void {
     process.exit(1);
   }
 
-  const docs = files.map((filePath) => ({
+  return files.map((filePath) => ({
     key: relative(docsDir, filePath).replaceAll("\\", "/"),
     text: readFileSync(filePath, "utf8"),
   }));
+}
+
+function runDocsComplete(prefix: string): void {
+  const docs = loadDocs();
+  const chain = completions.new();
+
+  const ingestStarted = performance.now();
+  for (const doc of docs) {
+    chain.ingest(doc.key, doc.text);
+  }
+  const ingestMs = performance.now() - ingestStarted;
+
+  const completeStarted = performance.now();
+  const results = chain.complete(prefix, { limit: 5, minCount: 1 });
+  const completeMs = performance.now() - completeStarted;
+
+  console.log(
+    `Ingested ${docs.length} docs in ${ingestMs.toFixed(2)} ms (${(ingestMs / docs.length).toFixed(2)} ms/doc)`,
+  );
+  console.log(`Completed in ${completeMs.toFixed(2)} ms`);
+  console.log(`Prefix: ${prefix}`);
+  console.log();
+
+  if (results.length === 0) {
+    console.log("No suggestions.");
+    return;
+  }
+
+  for (const [i, hit] of results.entries()) {
+    console.log(
+      `${i + 1}. ${hit.token}  score ${(hit.score * 100).toFixed(2)}%  count ${hit.count}  source ${hit.source.key}`,
+    );
+  }
+}
+
+function runDocsSearch(searchText: string): void {
+  const docs = loadDocs();
+  const idx = index.new();
 
   const indexStarted = performance.now();
   for (const doc of docs) {
@@ -159,6 +198,12 @@ if (args[0] === "search" || args[0] === "--search") {
     printUsage();
   }
   runDocsSearch(searchText);
+} else if (args[0] === "complete" || args[0] === "--complete") {
+  const prefix = args.slice(1).join(" ").trim();
+  if (!prefix) {
+    printUsage();
+  }
+  runDocsComplete(prefix);
 } else {
   const [leftArg, rightArg] = parseCompareArgs(process.argv);
   runCompare(leftArg, rightArg);

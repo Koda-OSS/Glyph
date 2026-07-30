@@ -126,3 +126,42 @@ describe("glyph query", () => {
     expect(results[0]!.key).toBe("a");
   });
 });
+
+const GARBAGE_ALPHABET =
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+function randomGarbage(length: number): string {
+  let text = "";
+  for (let i = 0; i < length; i++) {
+    text += GARBAGE_ALPHABET[Math.floor(Math.random() * GARBAGE_ALPHABET.length)]!;
+  }
+  return text;
+}
+
+describe("glyph query stress", () => {
+  it(
+    "indexes random docs until a query takes longer than 10ms",
+    () => {
+      const idx = index.new();
+      const probe = create(randomGarbage(2048)).glyph;
+      let queryMs = 0;
+
+      while (queryMs <= 10) {
+        idx.set(`doc-${idx.size()}`, create(randomGarbage(4096)).glyph);
+
+        const started = performance.now();
+        query(probe, idx, { limit: 5 });
+        queryMs = performance.now() - started;
+      }
+
+      const counted = idx.size();
+      console.log(
+        `Stress: indexed ${counted} docs before query exceeded 10ms (${queryMs.toFixed(2)} ms)`,
+      );
+
+      expect(queryMs).toBeGreaterThan(10);
+      expect(counted).toBeGreaterThan(0);
+    },
+    120_000,
+  );
+});

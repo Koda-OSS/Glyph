@@ -1,27 +1,60 @@
 ![Glyph Banner](/docs/media/GlyphBanner.png)
 
-MinHash text fingerprints ("glyphs") for fast similarity comparison.
+> MinHash fingerprints for text. Compare fast. Search in memory.
 
-**Docs:** [docs/README.md](./docs/README.md)
+GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two glyphs, build an in-memory **index** and **query** it for ranked matches, or use **completions** for glyph-guided next-word suggestions.
 
-## Install
+![Glyph Ribbon](/docs/media/RibbonGlyph.png)
 
-```bash
-npm install glyph-ts
-```
+| Doc | Purpose |
+| --- | --- |
+| [Getting started](./getting-started.md) | Install, first compare, mental model |
+| [Building an index](./building-an-index.md) | Populate an index and run a query |
+| [API surface](./api-surface.md) | Full export list (Core + Query + Completions) |
 
-## Quick start
+![Glyph Core](/docs/media/RibbonCore.png)
 
-```ts
-import { create, compare } from "glyph-ts";
+| Doc | Topic |
+| --- | --- |
+| [Glyph](./core/glyph.md) | Types: `Glyph`, `GlyphRecord`, `GlyphSignature` |
+| [Create](./core/create.md) | `create()` and fingerprint options |
+| [Compare](./core/compare.md) | `compare()`, `GlyphDirectCompare()`, results |
+| [Groups](./core/groups.md) | `GlyphGroup`, `createGroup()`, aggregate compare |
+| [Serialize](./core/serialize.md) | `serialize()`, `deserialize()`, string formats |
+| [Tokenize](./core/tokenize.md) | Tokens, unigrams, vgrams |
+| [Text normalization](./core/text-normalization.md) | `TextFilter`, `TextStrip` |
 
-const a = create("the quick brown fox jumps over the lazy dog");
-const b = create("the quick brown fox leaped over the lazy dog");
+![Glyph Query](/docs/media/RibbonQuery.png)
 
-const { similarity, distance, matches } = compare(a, b);
-```
+| Doc | Topic |
+| --- | --- |
+| [Index](./query/index.md) | `index.new()`, store and manage entries |
+| [Query](./query/query.md) | `query()` ranked search |
+| [Query options](./query/options.md) | `limit`, `threshold`, `normalize`, `aggregate` |
+| [Query results](./query/results.md) | `GlyphQueryResult` shape |
 
-## License
+![Glyph Completions](/docs/media/RibbonCompletions.png)
+
+| Doc | Topic |
+| --- | --- |
+| [Chain](./completions/chain.md) | `completions.new()`, ingest, storage |
+| [Complete](./completions/complete.md) | `complete()` ranked next-word suggestions |
+| [Completion options](./completions/options.md) | `order`, `create`, `limit`, `minCount` |
+| [Completion results](./completions/results.md) | `GlyphCompletionResult` shape |
+
+### Limits (current version)
+
+| Feature | Status |
+| --- | --- |
+| In-memory index | Implemented |
+| Linear scan query | Implemented |
+| Glyph completions (Markov + rank) | Implemented |
+| Disk persistence | Not implemented |
+| Approximate nearest neighbor (ANN) | Not implemented |
+| Chain persistence | Not implemented |
+| `matched` on query results | Not documented (spec not met) |
+
+### License
 
 Mozilla Public Licence Version 2.0
 
@@ -36,18 +69,18 @@ Mozilla Public Licence Version 2.0
     </tr>
     <tr>
       <td align="center">
-        <a href="https://github.com/Koda-OSS">
-          <img src="/docs/media/footerGithub.png" alt="GitHub">
-        </a>
-      </td>
-      <td align="center">
-        <a href="https://koda.sh">
-          <img src="/docs/media/FooterKoda.png" alt="Koda">
-        </a>
-      </td>
-      <td align="center">
         <a href="https://discord.gg/Uc2Dnyb3Ej">
-          <img src="/docs/media/footerDiscord.png" alt="Discord">
+          <img src="/docs/media/FooterDiscord.png" alt="Discord">
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/Koda-OSS">
+          <img src="/docs/media/FooterGithub.png" alt="Github">
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://Koda.sh">
+          <img src="/docs/media/FooterKoda.png" alt="Koda">
         </a>
       </td>
     </tr>

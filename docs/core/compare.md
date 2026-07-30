@@ -1,3 +1,5 @@
+![Glyph Core](/docs/media/RibbonCore.png)
+
 # Compare
 
 > Score similarity between glyphs with `compare()` or `GlyphDirectCompare()`.

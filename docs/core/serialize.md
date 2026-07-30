@@ -1,3 +1,5 @@
+![Glyph Core](/docs/media/RibbonCore.png)
+
 # Serialize
 
 > Encode a glyph as a portable string. Decode back to a `Glyph`.

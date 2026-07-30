@@ -1,3 +1,5 @@
+![Glyph Query](/docs/media/RibbonQuery.png)
+
 # Query options
 
 > Control ranking, filtering, and compare behavior for `query()`.

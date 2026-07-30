@@ -1,3 +1,5 @@
+![Glyph Core](/docs/media/RibbonCore.png)
+
 # Groups
 
 > Compare many glyphs at once with aggregate scoring.

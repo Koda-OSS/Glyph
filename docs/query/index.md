@@ -1,3 +1,5 @@
+![Glyph Query](/docs/media/RibbonQuery.png)
+
 # Index
 
 > Store glyphs under string keys with `index.new()`.

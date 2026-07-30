@@ -1,8 +1,10 @@
+![Glyph Ribbon](/docs/media/RibbonGlyph.png)
+
 # API surface
 
 > Every public export from `glyph-ts`, grouped by layer.
 
-Deep docs live under [Core](./core/glyph.md) and [Query](./query/index.md).
+Deep docs live under [Core](./core/glyph.md), [Query](./query/index.md), and [Completions](./completions/chain.md).
 
 ## Core
 
@@ -123,3 +125,45 @@ interface GlyphQueryResult {
 ```
 
 Result fields: [Query results](./query/results.md).
+
+## Completions
+
+### Functions
+
+| Export | Signature | Doc |
+| --- | --- | --- |
+| `completions.new` | `(options?) => CompletionChainInstance` | [Chain](./completions/chain.md) |
+
+### Completions types
+
+```ts
+interface GlyphCompletionChainOptions {
+  order?: number;               // default 3
+  create?: GlyphCreateOptions;
+}
+
+interface GlyphCompletionOptions {
+  limit?: number;    // default 5
+  minCount?: number; // default 1
+}
+
+interface GlyphCompletionResult {
+  token: string;
+  score: number;
+  count: number;
+  comparison: GlyphComparisonResult;
+  source: {
+    key: string;
+    glyph: Glyph;
+  };
+}
+
+interface CompletionChainInstance {
+  ingest(key: string, text: string): void;
+  complete(prefix: string, options?: GlyphCompletionOptions): GlyphCompletionResult[];
+  clear(): void;
+  size(): number;
+}
+```
+
+Result fields: [Completion results](./completions/results.md).

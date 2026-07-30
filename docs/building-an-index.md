@@ -1,3 +1,5 @@
+![Glyph Ribbon](/docs/media/RibbonGlyph.png)
+
 # Building an index
 
 > Create glyphs once. Query many keys in memory.
@@ -74,15 +76,23 @@ See [Index](./query/index.md) for `add` promotion rules.
 
 Details: [Query options](./query/options.md).
 
+## Completions vs query
+
+| Goal | API |
+| --- | --- |
+| Find similar **documents** | `query()` — [Query](./query/query.md) |
+| Suggest the **next word** in a prefix | `completions.complete()` — [Completions](./completions/complete.md) |
+
 ## Demo: search project docs
 
 The repo demo indexes `docs/**/*.md` and ranks matches.
 
 ```bash
 npm run demo -- search "how do groups work"
+npm run demo -- complete "how do groups"
 ```
 
-Output includes index time, query time, and ranked doc paths. File reads are prefetched before the index timer starts.
+Output includes ingest/index time, query/complete time, and ranked results.
 
 ## Limits
 

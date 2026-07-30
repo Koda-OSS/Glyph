@@ -1,3 +1,5 @@
+![Glyph Core](/docs/media/RibbonCore.png)
+
 # Create
 
 > Turn text into a glyph record with `create()`.

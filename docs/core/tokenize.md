@@ -1,3 +1,5 @@
+![Glyph Core](/docs/media/RibbonCore.png)
+
 # Tokenize
 
 > Split text into tokens, unigrams, and vgrams.

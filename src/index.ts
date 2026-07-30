@@ -19,6 +19,7 @@ export {
 export { TextStrip, TextFilter } from "./core/utils";
 export { index } from "./query/index";
 export { query } from "./query/query";
+export { completions } from "./completions/index";
 
 export type {
   Glyph,
@@ -39,4 +40,8 @@ export type {
   GlyphIndexInstance,
   GlyphQueryOptions,
   GlyphQueryResult,
+  GlyphCompletionChainOptions,
+  GlyphCompletionOptions,
+  GlyphCompletionResult,
+  CompletionChainInstance,
 } from "./types";

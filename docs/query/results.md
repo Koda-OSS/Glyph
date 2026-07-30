@@ -1,3 +1,5 @@
+![Glyph Query](/docs/media/RibbonQuery.png)
+
 # Query results
 
 > Shape of each hit returned by `query()`.

@@ -1,3 +1,5 @@
+![Glyph Core](/docs/media/RibbonCore.png)
+
 # Text normalization
 
 > Filter tokens. Strip unigrams and vgrams.

@@ -1,3 +1,5 @@
+![Glyph Core](/docs/media/RibbonCore.png)
+
 # Glyph
 
 > A glyph is a fixed-size MinHash signature over text features.

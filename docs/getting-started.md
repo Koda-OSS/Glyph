@@ -1,3 +1,5 @@
+![Glyph Ribbon](/docs/media/RibbonGlyph.png)
+
 # Getting started
 
 > Fingerprint text. Compare similarity in one call.
@@ -6,8 +8,8 @@ GlyphTS builds **MinHash** signatures from text. You use `create()` to fingerpri
 
 ## Install
 
-```bash
-npm install glyph-ts
+```typescript
+// NPM release coming soon! You can copy src into your project if you'd like (for now)
 ```
 
 Node.js 18 or newer is required.
@@ -15,7 +17,7 @@ Node.js 18 or newer is required.
 ## First compare
 
 ```ts
-import { create, compare } from "glyph-ts";
+import { create, compare } from "npm package or src location";
 
 const a = create("the quick brown fox jumps over the lazy dog");
 const b = create("the quick brown fox leaped over the lazy dog");
@@ -60,6 +62,7 @@ You can pass a full record or `record.glyph` into `compare` and `serialize`.
 | Goal | Doc |
 | --- | --- |
 | Store many glyphs and search | [Building an index](./building-an-index.md) |
+| Suggest the next word | [Your first completion](./your-first-completion.md) |
 | All exports | [API surface](./api-surface.md) |
 | Fingerprint options | [Create](./core/create.md) |
 | Group compare | [Groups](./core/groups.md) |

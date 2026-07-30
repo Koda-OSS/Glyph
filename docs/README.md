@@ -1,21 +1,19 @@
-# Glyph Documentation
-
 ![Glyph Banner](/docs/media/GlyphBanner.png)
-
 
 > MinHash fingerprints for text. Compare fast. Search in memory.
 
-GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two glyphs, or build an in-memory **index** and **query** it for ranked matches.
+GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two glyphs, build an in-memory **index** and **query** it for ranked matches, or use **completions** for glyph-guided next-word suggestions.
 
-## Start here
+![Glyph Ribbon](/docs/media/RibbonGlyph.png)
 
 | Doc | Purpose |
 | --- | --- |
 | [Getting started](./getting-started.md) | Install, first compare, mental model |
 | [Building an index](./building-an-index.md) | Populate an index and run a query |
-| [API surface](./api-surface.md) | Full export list (Core + Query) |
+| [Your first completion](./your-first-completion.md) | Ingest docs and suggest the next word |
+| [API surface](./api-surface.md) | Full export list (Core + Query + Completions) |
 
-## Core
+![Glyph Core](/docs/media/RibbonCore.png)
 
 | Doc | Topic |
 | --- | --- |
@@ -27,7 +25,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Tokenize](./core/tokenize.md) | Tokens, unigrams, vgrams |
 | [Text normalization](./core/text-normalization.md) | `TextFilter`, `TextStrip` |
 
-## Query
+![Glyph Query](/docs/media/RibbonQuery.png)
 
 | Doc | Topic |
 | --- | --- |
@@ -36,15 +34,30 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Query options](./query/options.md) | `limit`, `threshold`, `normalize`, `aggregate` |
 | [Query results](./query/results.md) | `GlyphQueryResult` shape |
 
-## Limits (current version)
+![Glyph Completions](/docs/media/RibbonCompletions.png)
+
+| Doc | Topic |
+| --- | --- |
+| [Chain](./completions/chain.md) | `completions.new()`, ingest, storage |
+| [Complete](./completions/complete.md) | `complete()` ranked next-word suggestions |
+| [Completion options](./completions/options.md) | `order`, `create`, `limit`, `minCount` |
+| [Completion results](./completions/results.md) | `GlyphCompletionResult` shape |
+
+### Limits (current version)
 
 | Feature | Status |
 | --- | --- |
 | In-memory index | Implemented |
 | Linear scan query | Implemented |
+| Glyph completions (Markov + rank) | Implemented |
 | Disk persistence | Not implemented |
 | Approximate nearest neighbor (ANN) | Not implemented |
+| Chain persistence | Not implemented |
 | `matched` on query results | Not documented (spec not met) |
+
+### License
+
+Mozilla Public Licence Version 2.0
 
 <div align="center">
   <table>
@@ -57,18 +70,18 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
     </tr>
     <tr>
       <td align="center">
-        <a href="https://github.com/Koda-OSS">
-          <img src="/docs/media/footerGithub.png" alt="GitHub">
-        </a>
-      </td>
-      <td align="center">
-        <a href="https://koda.sh">
-          <img src="/docs/media/FooterKoda.png" alt="Koda">
-        </a>
-      </td>
-      <td align="center">
         <a href="https://discord.gg/Uc2Dnyb3Ej">
-          <img src="/docs/media/footerDiscord.png" alt="Discord">
+          <img src="/docs/media/FooterDiscord.png" alt="Discord">
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/Koda-OSS">
+          <img src="/docs/media/FooterGithub.png" alt="Github">
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://Koda.sh">
+          <img src="/docs/media/FooterKoda.png" alt="Koda">
         </a>
       </td>
     </tr>

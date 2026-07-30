@@ -1,3 +1,5 @@
+![Glyph Query](/docs/media/RibbonQuery.png)
+
 # Query
 
 > Rank index entries against a probe glyph with `query()`.
