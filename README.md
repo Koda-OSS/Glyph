@@ -8,40 +8,40 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 
 | Doc | Purpose |
 | --- | --- |
-| [Getting started](./getting-started.md) | Install, first compare, mental model |
-| [Building an index](./building-an-index.md) | Populate an index and run a query |
-| [Demo CLI](./demo.md) | Compare, search, and complete from the terminal |
-| [API surface](./api-surface.md) | Full export list (Core + Query + Completions) |
+| [Getting started](./docs/getting-started.md) | Install, first compare, mental model |
+| [Building an index](./docs/building-an-index.md) | Populate an index and run a query |
+| [Demo CLI](./docs/demo.md) | Compare, search, and complete from the terminal |
+| [API surface](./docs/api-surface.md) | Full export list (Core + Query + Completions) |
 
 ![Glyph Core](/docs/media/RibbonCore.png)
 
 | Doc | Topic |
 | --- | --- |
-| [Glyph](./core/glyph.md) | Types: `Glyph`, `GlyphRecord`, `GlyphSignature` |
-| [Create](./core/create.md) | `Create()` and fingerprint options |
-| [Compare](./core/compare.md) | `Compare()`, `CompareGlyphs()`, results |
-| [Groups](./core/groups.md) | `GlyphGroup`, `CreateGroup()`, aggregate compare |
-| [Serialize](./core/serialize.md) | `Serialize()`, `Deserialize()`, string formats |
-| [Tokenize](./core/tokenize.md) | Tokens, unigrams, vgrams |
-| [Text normalization](./core/text-normalization.md) | `TextFilter`, `TextStrip` |
+| [Glyph](./docs/core/glyph.md) | Types: `Glyph`, `GlyphRecord`, `GlyphSignature` |
+| [Create](./docs/core/create.md) | `Create()` and fingerprint options |
+| [Compare](./docs/core/compare.md) | `Compare()`, `CompareGlyphs()`, results |
+| [Groups](./docs/core/groups.md) | `GlyphGroup`, `CreateGroup()`, aggregate compare |
+| [Serialize](./docs/core/serialize.md) | `Serialize()`, `Deserialize()`, string formats |
+| [Tokenize](./docs/core/tokenize.md) | Tokens, unigrams, vgrams |
+| [Text normalization](./docs/core/text-normalization.md) | `TextFilter`, `TextStrip` |
 
 ![Glyph Query](/docs/media/RibbonQuery.png)
 
 | Doc | Topic |
 | --- | --- |
-| [Index](./query/index.md) | `index.new()`, store and manage entries |
-| [Query](./query/query.md) | `query()` ranked search |
-| [Query options](./query/options.md) | `limit`, `threshold`, `normalize`, `aggregate` |
-| [Query results](./query/results.md) | `GlyphQueryResult` shape |
+| [Index](./docs/query/index.md) | `index.new()`, store and manage entries |
+| [Query](./docs/query/query.md) | `query()` ranked search |
+| [Query options](./docs/query/options.md) | `limit`, `threshold`, `normalize`, `aggregate` |
+| [Query results](./docs/query/results.md) | `GlyphQueryResult` shape |
 
 ![Glyph Completions](/docs/media/RibbonCompletions.png)
 
 | Doc | Topic |
 | --- | --- |
-| [Chain](./completions/chain.md) | `completions.new()`, ingest, storage |
-| [Complete](./completions/complete.md) | `complete()` ranked next-word suggestions |
-| [Completion options](./completions/options.md) | `order`, `create`, `limit`, `minCount` |
-| [Completion results](./completions/results.md) | `GlyphCompletionResult` shape |
+| [Chain](./docs/docs/completions/chain.md) | `completions.new()`, ingest, storage |
+| [Complete](./docs/completions/complete.md) | `complete()` ranked next-word suggestions |
+| [Completion options](./docs/completions/options.md) | `order`, `create`, `limit`, `minCount` |
+| [Completion results](./docs/completions/results.md) | `GlyphCompletionResult` shape |
 
 ### Limits (current version)
 
