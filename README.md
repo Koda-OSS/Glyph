@@ -38,7 +38,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 
 | Doc | Topic |
 | --- | --- |
-| [Chain](./docs/docs/completions/chain.md) | `completions.new()`, ingest, storage |
+| [Chain](./docs/completions/chain.md) | `completions.new()`, ingest, storage |
 | [Complete](./docs/completions/complete.md) | `complete()` ranked next-word suggestions |
 | [Completion options](./docs/completions/options.md) | `order`, `create`, `limit`, `minCount` |
 | [Completion results](./docs/completions/results.md) | `GlyphCompletionResult` shape |
