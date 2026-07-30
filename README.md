@@ -34,7 +34,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Query options](./docs/query/options.md) | `limit`, `threshold`, `normalize`, `aggregate` |
 | [Query results](./docs/query/results.md) | `GlyphQueryResult` shape |
 
-![Glyph Ribbon](/docs/media/RibbonGlyph.png)
+![Glyph Collections](/docs/media/RibbonCollections.png)
 
 | Doc | Topic |
 | --- | --- |
