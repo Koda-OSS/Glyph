@@ -10,6 +10,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | --- | --- |
 | [Getting started](./getting-started.md) | Install, first compare, mental model |
 | [Building an index](./building-an-index.md) | Populate an index and run a query |
+| [Demo CLI](./demo.md) | Compare, search, and complete from the terminal |
 | [API surface](./api-surface.md) | Full export list (Core + Query + Completions) |
 
 ![Glyph Core](/docs/media/RibbonCore.png)

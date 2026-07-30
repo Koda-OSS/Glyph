@@ -85,7 +85,7 @@ Details: [Query options](./query/options.md).
 
 ## Demo: search project docs
 
-The repo demo indexes `docs/**/*.md` and ranks matches.
+The repo demo indexes `docs/**/*.md` and ranks matches. See [Demo CLI](./demo.md) for all modes.
 
 ```bash
 npm run demo -- search "how do groups work"

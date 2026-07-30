@@ -63,6 +63,7 @@ You can pass a full record or `record.glyph` into `Compare` and `Serialize`.
 | --- | --- |
 | Store many glyphs and search | [Building an index](./building-an-index.md) |
 | Suggest the next word | [Your first completion](./your-first-completion.md) |
+| Try it in the terminal | [Demo CLI](./demo.md) |
 | All exports | [API surface](./api-surface.md) |
 | Fingerprint options | [Create](./core/create.md) |
 | Group compare | [Groups](./core/groups.md) |
