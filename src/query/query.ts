@@ -1,6 +1,6 @@
 import type {
   Glyph,
-  GlyphGroup,
+  GlyphGroupInput,
   GlyphIndexInstance,
   GlyphQueryOptions,
   GlyphQueryResult,
@@ -14,7 +14,7 @@ import { isGlyphGroup } from "../core/utils";
  * Search a Glyph Query index and return ranked matches.
  */
 export function query(
-  queryGlyph: Glyph | GlyphSignature | GlyphGroup,
+  queryGlyph: Glyph | GlyphSignature | GlyphGroupInput,
   glyphIndex: GlyphIndexInstance,
   options: GlyphQueryOptions = {},
 ): GlyphQueryResult[] {

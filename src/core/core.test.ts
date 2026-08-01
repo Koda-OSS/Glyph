@@ -191,17 +191,18 @@ describe("Compare", () => {
 });
 
 describe("CreateGroup", () => {
-  it("accepts glyphs or strings", () => {
+  it("accepts glyphs or strings and returns a map", () => {
     const fromStrings = CreateGroup(["Goodbye moon", "hello world"]);
     const fromGlyphs = CreateGroup([
       Create("Goodbye moon").glyph,
       Create("hello world").glyph,
     ]);
 
-    expect(Array.isArray(fromStrings)).toBe(true);
-    expect(fromStrings).toHaveLength(2);
-    expect(fromGlyphs).toHaveLength(2);
-    expect(fromStrings[0]).toBeInstanceOf(Uint32Array);
+    expect(Array.isArray(fromStrings)).toBe(false);
+    expect(Object.keys(fromStrings)).toEqual(["0", "1"]);
+    expect(Object.keys(fromGlyphs)).toEqual(["0", "1"]);
+    expect(fromStrings["0"]).toBeInstanceOf(Uint32Array);
+    expect(fromGlyphs["1"]).toBeInstanceOf(Uint32Array);
   });
 
   it("Compare uses max aggregate for glyph vs group", () => {
@@ -217,6 +218,7 @@ describe("CreateGroup", () => {
 
     expect(grouped.similarity).toBe(direct.similarity);
     expect(grouped.similarity).toBe(1);
+    expect(grouped.matchedRight).toBe(1);
   });
 
   it("Compare routes group inputs through CompareGroups", () => {
@@ -225,5 +227,49 @@ describe("CreateGroup", () => {
 
     const result = Compare(left, right);
     expect(result.similarity).toBe(1);
+    expect(result.matchedLeft).toBe(1);
+    expect(result.matchedRight).toBe(0);
+  });
+
+  it("preserves named keys on matched attribution", () => {
+    const probe = Create("Goodbye moon").glyph;
+    const result = Compare(probe, {
+      pasta: Create("totally unrelated pasta recipe").glyph,
+      moon: Create("Goodbye moon").glyph,
+    });
+
+    expect(result.similarity).toBe(1);
+    expect(result.matchedRight).toBe("moon");
+  });
+});
+
+describe("group normalization helpers", () => {
+  it("NormalizeGroup, GroupEntries, and ToMatchedKey behave as documented", async () => {
+    const { NormalizeGroup, GroupEntries, ToMatchedKey } = await import(
+      "./utils"
+    );
+
+    const a = Create("a", { size: 8 }).glyph;
+    const b = Create("b", { size: 8 }).glyph;
+    const c = Create("c", { size: 8 }).glyph;
+
+    expect(NormalizeGroup(a)).toEqual({ "0": a });
+    expect(NormalizeGroup([a, b])).toEqual({ "0": a, "1": b });
+    expect(NormalizeGroup({ title: a, body: b })).toEqual({
+      title: a,
+      body: b,
+    });
+
+    const entries = GroupEntries({ "10": c, "2": b, title: a, "1": a });
+    expect(entries.map((entry) => entry.key)).toEqual([
+      "1",
+      "2",
+      "10",
+      "title",
+    ]);
+
+    expect(ToMatchedKey("1")).toBe(1);
+    expect(ToMatchedKey("10")).toBe(10);
+    expect(ToMatchedKey("title")).toBe("title");
   });
 });

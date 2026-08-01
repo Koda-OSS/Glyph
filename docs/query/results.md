@@ -9,18 +9,29 @@ interface GlyphQueryResult {
   key: string;
   similarity: number;
   comparison: GlyphComparisonResult;
+  matched?: string | number;
 }
 ```
 
 ## Fields
 
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `key` | `string` | Index key for this entry |
+| `similarity` | `number` | Score for ranking (`0`–`1`, or normalized) |
+| `comparison` | `GlyphComparisonResult` | Full compare output for this pair |
+| `matched` | `string \| number` | Winning member key when the index value is a group |
 
-| Field        | Type                    | Meaning                                    |
-| ------------ | ----------------------- | ------------------------------------------ |
-| `key`        | `string`                | Index key for this entry                   |
-| `similarity` | `number`                | Score for ranking (`0`–`1`, or normalized) |
-| `comparison` | `GlyphComparisonResult` | Full compare output for this pair          |
+## `matched`
 
+Present when the index entry is a **group**. It is the winning member on the index side (`comparison.matchedRight`).
+
+| How the group was passed | Example `matched` |
+| --- | --- |
+| Array `[pasta, moon]` (index `1` wins) | `1` (number) |
+| Map `{ noise: pasta, hit: moon }` | `"hit"` (string) |
+
+Pure-digit map keys are coerced to numbers so array-style usage stays intuitive. Named keys stay strings.
 
 ## `comparison` object
 
@@ -29,7 +40,9 @@ interface GlyphQueryResult {
   "similarity": 0.35,
   "matches": 45,
   "distance": 83,
-  "size": 128
+  "size": 128,
+  "matchedLeft": 0,
+  "matchedRight": "hit"
 }
 ```
 
@@ -46,18 +59,6 @@ Results are sorted by `similarity` descending. Index iteration order does not af
 - The index has no keys, or
 - Every entry is below `threshold`
 
-
-
-## Coming soon
-
-
-| Field     | Status                                                                 | Reason                                                                                                                                                                                                                                                |
-| --------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `matched` | **Not documented.** *Compliant Implementation* coming in next release. | For performance reasons, all groups get flattened into arrays. This means we lose group keys, which is where `matched` is meant to come from. Until then, `matched` exists, but it is always the flattened index, which is substantially less useful. |
-
-
-
-
 ## Example output
 
 ```ts
@@ -73,22 +74,22 @@ Results are sorted by `similarity` descending. Index iteration order does not af
     }
   },
   {
-    "key": "compare.md",
+    "key": "article",
     "similarity": 0.67,
+    "matched": "body",
     "comparison": {
       "similarity": 0.67,
       "matches": 86,
       "distance": 42,
-      "size": 128
+      "size": 128,
+      "matchedRight": "body"
     }
   }
 ]
 ```
 
-
-
 ## See also
 
 - [Query](./query.md)
 - [Query options](./options.md)
-
+- [Groups](../core/groups.md)

@@ -62,7 +62,6 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | Disk persistence | Not implemented |
 | Approximate nearest neighbor (ANN) | Not implemented |
 | Chain persistence | Not implemented |
-| `matched` on query results | Not documented (spec not met) |
 
 ### License
 

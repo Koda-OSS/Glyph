@@ -5,7 +5,8 @@ export type GlyphVGram = string;
 export type Glyph = Uint32Array & {
   readonly __glyph: true;
 };
-export type GlyphGroup = Glyph[] | Record<string, Glyph>;
+export type GlyphGroup = Record<string, Glyph>;
+export type GlyphGroupInput = GlyphGroup | Glyph[];
 
 // Creation related types
 export interface GlyphSignature {
@@ -63,8 +64,8 @@ export type GlyphGroupComparisonResult = GlyphComparisonResult;
 // Glyph Query types
 export interface GlyphIndexInstance {
   get(key: string): Glyph | GlyphGroup | undefined;
-  set(key: string, glyphs?: Glyph | GlyphGroup): void;
-  add(key: string, glyphs: Glyph | GlyphGroup): void;
+  set(key: string, glyphs?: Glyph | GlyphGroupInput): void;
+  add(key: string, glyphs: Glyph | GlyphGroupInput): void;
   remove(key: string): void;
   has(key: string): boolean;
   clear(): void;
@@ -96,10 +97,10 @@ export interface GlyphCollectionOptions {
 
 export interface GlyphCollectionInstance {
   Add(key: string, example: string | Glyph): void;
-  AddGroup(group: Record<string, Glyph>): void;
+  AddGroup(group: GlyphGroupInput): void;
   Remove(key: string): void;
   Clear(): void;
-  Examples(): Record<string, Glyph>;
+  Examples(): GlyphGroup;
   Has(key: string): boolean;
   Count(): number;
   Query(

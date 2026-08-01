@@ -52,7 +52,7 @@ return results
 | Index value | Compare path |
 | --- | --- |
 | Single glyph | `CompareGlyphs` |
-| `Glyph[]` or record | `CompareGroups` (default aggregate: max) |
+| Map group (or array input, normalized) | `CompareGroups` (default aggregate: max) |
 
 Pass `aggregate` or `compare` in options. See [Query options](./options.md).
 

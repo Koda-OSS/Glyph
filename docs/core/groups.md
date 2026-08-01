@@ -4,14 +4,14 @@
 
 > Compare many glyphs at once with aggregate scoring.
 
-A **glyph group** is `Glyph[]` or `Record<string, Glyph>`. Group compare scores every pair, then runs an **aggregate** function (default: **max**).
+A **glyph group** is stored as `Record<string, Glyph>` (a map). You can still pass a `Glyph[]` anywhere a group is accepted — arrays are normalized invisibly to `{ "0": …, "1": … }`.
 
 ## Build a group
 
 ```ts
 import { Create, CreateGroup } from "glyph-ts";
 
-// from strings (calls Create internally)
+// from strings (calls Create internally) → { "0": glyph, "1": glyph }
 const fromText = CreateGroup(["chunk one", "chunk two"]);
 
 // from glyphs
@@ -19,7 +19,23 @@ const fromGlyphs = CreateGroup([
   Create("chunk one").glyph,
   Create("chunk two").glyph,
 ]);
+
+// named members
+const named = {
+  title: Create("chunk one").glyph,
+  body: Create("chunk two").glyph,
+};
 ```
+
+## Input vs storage
+
+| You pass | Stored / returned as |
+| --- | --- |
+| `Glyph[]` | `{ "0": g0, "1": g1, … }` |
+| `Record<string, Glyph>` | same map (shallow copy) |
+| single `Glyph` (via `Compare`) | `{ "0": glyph }` |
+
+You do not need to convert arrays yourself. Pass whichever form is convenient.
 
 ## `CompareGroups(group1, group2, options?)`
 
@@ -32,6 +48,20 @@ CompareGroups(
   CreateGroup(["alpha beta", "gamma delta"]),
   CreateGroup(["gamma delta", "unrelated"]),
 );
+```
+
+## Matched keys
+
+Winning members are reported on `matchedLeft` / `matchedRight`:
+
+| Origin key | `matched*` value |
+| --- | --- |
+| Array index `1` (stored as `"1"`) | number `1` |
+| Named key `"title"` | string `"title"` |
+
+```ts
+const result = Compare(probe, [pasta, moon]);
+result.matchedRight; // 1  — same as the array index you passed
 ```
 
 ## Default aggregate: max
@@ -56,25 +86,19 @@ const average: GroupAggregate = ({ scores }) =>
 Compare(groupA, groupB, { aggregate: average });
 ```
 
-`GroupAggregateContext`:
+`GroupAggregateContext` receives **normalized maps** for `left` and `right` (keys preserved).
 
 ```json
 {
   "scores": [0.1, 0.5, 0.3],
-  "left": "<GlyphGroup>",
-  "right": "<GlyphGroup>"
+  "left": { "0": "<Glyph>", "1": "<Glyph>" },
+  "right": { "title": "<Glyph>", "body": "<Glyph>" }
 }
 ```
 
 ## How `Compare` wraps singles
 
-A lone glyph passed to `Compare()` is wrapped as a one-item array before group logic runs. You do not need to wrap manually.
-
-## Record groups and internal flattening
-
-`resolveGlyphsToArray()` turns record groups into `Object.values(group)`. Pairwise scoring uses that flat list. **Field names are not used during scoring.**
-
-> Do not rely on record key names for match attribution until a future spec defines stable `matched` behavior.
+A lone glyph passed against a group is wrapped as `{ "0": glyph }` before group logic runs. You do not need to wrap manually.
 
 ## See also
 

@@ -61,7 +61,7 @@ Or use `add` to append over time:
 ```ts
 idx.set("article", Create("section one").glyph);
 idx.add("article", Create("section two").glyph);
-// value is now [glyph1, glyph2]
+// value is now { "0": glyph1, "1": glyph2 }
 ```
 
 See [Index](./query/index.md) for `add` promotion rules.

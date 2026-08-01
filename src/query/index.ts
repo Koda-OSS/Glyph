@@ -1,7 +1,13 @@
-import type { Glyph, GlyphGroup, GlyphIndexInstance } from "../types";
-import { isGlyph } from "../core/utils";
+import type {
+  Glyph,
+  GlyphGroup,
+  GlyphGroupInput,
+  GlyphIndexInstance,
+} from "../types";
+import { isGlyph, NormalizeGroup } from "../core/utils";
 
 type IndexValue = Glyph | GlyphGroup;
+type IndexInput = Glyph | GlyphGroupInput;
 
 function createIndex(): GlyphIndexInstance {
   const store = new Map<string, IndexValue>();
@@ -11,7 +17,7 @@ function createIndex(): GlyphIndexInstance {
       return store.get(key);
     },
 
-    set(key: string, glyphs?: IndexValue) {
+    set(key: string, glyphs?: IndexInput) {
       if (glyphs === undefined) {
         store.delete(key);
         return;
@@ -20,29 +26,31 @@ function createIndex(): GlyphIndexInstance {
       store.set(key, normalizeStoredValue(glyphs));
     },
 
-    add(key: string, glyphs: IndexValue) {
-      const incoming = flattenToGlyphs(glyphs);
-      if (incoming.length === 0) {
+    add(key: string, glyphs: IndexInput) {
+      const incoming = NormalizeGroup(
+        isGlyph(glyphs) ? [glyphs] : glyphs,
+      );
+      const incomingKeys = Object.keys(incoming);
+      if (incomingKeys.length === 0) {
         return;
       }
 
       const existing = store.get(key);
       if (existing === undefined) {
-        store.set(key, incoming.length === 1 ? incoming[0]! : incoming);
+        if (incomingKeys.length === 1) {
+          store.set(key, incoming[incomingKeys[0]!]!);
+          return;
+        }
+        store.set(key, incoming);
         return;
       }
 
       if (isGlyph(existing)) {
-        store.set(key, [existing, ...incoming]);
+        store.set(key, mergeRecordGroup({ "0": existing }, Object.values(incoming)));
         return;
       }
 
-      if (Array.isArray(existing)) {
-        store.set(key, [...existing, ...incoming]);
-        return;
-      }
-
-      store.set(key, mergeRecordGroup(existing, incoming));
+      store.set(key, mergeRecordGroup(existing, Object.values(incoming)));
     },
 
     remove(key: string) {
@@ -75,35 +83,19 @@ function createIndex(): GlyphIndexInstance {
   };
 }
 
-function normalizeStoredValue(value: IndexValue): IndexValue {
+function normalizeStoredValue(value: IndexInput): IndexValue {
   if (isGlyph(value)) {
     return value;
   }
 
-  if (Array.isArray(value)) {
-    return [...value];
-  }
-
-  return { ...value };
-}
-
-function flattenToGlyphs(value: IndexValue): Glyph[] {
-  if (isGlyph(value)) {
-    return [value];
-  }
-
-  if (Array.isArray(value)) {
-    return [...value];
-  }
-
-  return Object.values(value);
+  return NormalizeGroup(value);
 }
 
 function mergeRecordGroup(
-  existing: Record<string, Glyph>,
+  existing: GlyphGroup,
   incoming: Glyph[],
-): Record<string, Glyph> {
-  const next: Record<string, Glyph> = { ...existing };
+): GlyphGroup {
+  const next: GlyphGroup = { ...existing };
   let cursor = 0;
 
   for (const glyph of incoming) {

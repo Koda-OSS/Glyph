@@ -34,7 +34,7 @@ describe("glyph collections", () => {
     expect(col.Has("b")).toBe(false);
   });
 
-  it("AddGroup merges record keys and rejects arrays", () => {
+  it("AddGroup merges record keys and normalizes arrays", () => {
     const col = collections.new({ create: { size: 32 } });
     const a = Create("alpha", { size: 32 }).glyph;
     const b = Create("beta", { size: 32 }).glyph;
@@ -49,9 +49,10 @@ describe("glyph collections", () => {
     expect(col.Examples().b).toBe(c);
     expect(col.Has("keep")).toBe(true);
 
-    expect(() => col.AddGroup([a, b] as unknown as Record<string, typeof a>)).toThrow(
-      /Record<string, Glyph>/,
-    );
+    col.AddGroup([a, b]);
+    expect(col.Examples()["0"]).toBe(a);
+    expect(col.Examples()["1"]).toBe(b);
+    expect(col.Count()).toBe(5);
   });
 
   it("Examples returns a snapshot copy", () => {

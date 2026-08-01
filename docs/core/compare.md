@@ -13,7 +13,7 @@ Routes automatically:
 | Input on either side | Path |
 | --- | --- |
 | Single glyph, signature, or record | `CompareGlyphs` |
-| `GlyphGroup` (array or record) | `CompareGroups` |
+| `GlyphGroup` / `GlyphGroupInput` (map or array) | `CompareGroups` |
 
 ```ts
 import { Create, Compare } from "glyph-ts";
@@ -25,7 +25,7 @@ Compare(a, b);
 Compare(a.glyph, b.glyph);
 ```
 
-Accepts `Glyph`, `GlyphSignature`, `GlyphRecord`, or `GlyphGroup`.
+Accepts `Glyph`, `GlyphSignature`, `GlyphRecord`, or `GlyphGroupInput` (map or array).
 
 ## `CompareGlyphs(a, b, options?)`
 

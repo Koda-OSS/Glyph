@@ -33,32 +33,31 @@ const idx = index.new();
 
 ```ts
 idx.set("doc", Create("text").glyph);
+idx.set("doc", [glyphA, glyphB]); // stored as { "0": glyphA, "1": glyphB }
 idx.set("doc"); // deletes "doc"
 ```
 
-Values must be `Glyph`, `Glyph[]`, or `Record<string, Glyph>`. The index does **not** accept raw strings (call `Create()` first).
+Values may be `Glyph`, `Glyph[]`, or `Record<string, Glyph>`. Arrays and records are normalized to a map on write. The index does **not** accept raw strings (call `Create()` first).
+
+`get()` always returns a bare `Glyph` or a **map** group — never an array.
 
 ## `add(key, glyphs)` promotion
 
 | Existing value | You `add` | Result |
 | --- | --- | --- |
 | (missing) | one glyph | that glyph |
-| (missing) | many glyphs | `Glyph[]` |
-| single `Glyph` | more glyphs | `[old, ...added]` |
-| `Glyph[]` | more glyphs | concatenated array |
-| `Record<string, Glyph>` | glyphs | merged record; new keys `"0"`, `"1"`, … (skip collisions) |
+| (missing) | many glyphs | map group |
+| single `Glyph` | more glyphs | `{ "0": old, "1": … }` |
+| map group | more glyphs | merged map; new keys `"0"`, `"1"`, … (skip collisions) |
 
 ```ts
 idx.set("doc", glyphA);
 idx.add("doc", glyphB);
-// get("doc") === [glyphA, glyphB]
+// get("doc") === { "0": glyphA, "1": glyphB }
 ```
-
-## Record vs array storage
-
-Both forms are valid `GlyphGroup` values. Group compare flattens records with `Object.values()`. See [Groups](../core/groups.md).
 
 ## See also
 
 - [Building an index](../building-an-index.md)
 - [Query](./query.md)
+- [Groups](../core/groups.md)

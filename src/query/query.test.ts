@@ -25,7 +25,7 @@ describe("glyph query index", () => {
     expect(idx.size()).toBe(0);
   });
 
-  it("promotes a single glyph to a group on add", () => {
+  it("promotes a single glyph to a map group on add", () => {
     const idx = index.new();
     const a = Create("alpha").glyph;
     const b = Create("beta").glyph;
@@ -34,8 +34,8 @@ describe("glyph query index", () => {
     idx.add("doc", b);
 
     const value = idx.get("doc");
-    expect(Array.isArray(value)).toBe(true);
-    expect(value).toHaveLength(2);
+    expect(Array.isArray(value)).toBe(false);
+    expect(value).toEqual({ "0": a, "1": b });
   });
 
   it("creates a key on add when missing", () => {
@@ -43,6 +43,15 @@ describe("glyph query index", () => {
     const glyph = Create("fresh key").glyph;
     idx.add("new", glyph);
     expect(idx.get("new")).toBe(glyph);
+  });
+
+  it("normalizes array set into a map", () => {
+    const idx = index.new();
+    const a = Create("one").glyph;
+    const b = Create("two").glyph;
+
+    idx.set("doc", [a, b]);
+    expect(idx.get("doc")).toEqual({ "0": a, "1": b });
   });
 
   it("merges into record groups with auto keys", () => {

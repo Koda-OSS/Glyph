@@ -25,7 +25,7 @@ const col = collections.new({
 | Method | Behavior |
 | --- | --- |
 | `Add(key, string \| Glyph)` | Store an example (strings are fingerprinted) |
-| `AddGroup(record)` | Merge a `Record<string, Glyph>` (arrays throw) |
+| `AddGroup(group)` | Merge a `Glyph[]` or `Record<string, Glyph>` (arrays normalize to `"0"`, `"1"`, …) |
 | `Remove(key)` | Delete one example |
 | `Clear()` | Remove all examples |
 | `Examples()` | Snapshot copy of every key → glyph |
@@ -46,9 +46,14 @@ col.Add("sun", Create("goodbye sun hello day").glyph);
 col.AddGroup({
   stars: Create("stars shine across the sky").glyph,
 });
+
+col.AddGroup([
+  Create("more examples").glyph,
+  Create("even more").glyph,
+]);
 ```
 
-`Add` overwrites an existing key. `AddGroup` rejects arrays — use map keys as example keys.
+`Add` overwrites an existing key. `AddGroup` accepts arrays or maps — arrays become keys `"0"`, `"1"`, ….
 
 ## See also
 

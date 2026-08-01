@@ -31,7 +31,8 @@ Deep docs live under [Core](./core/glyph.md), [Query](./query/index.md), [Collec
 
 ```ts
 type Glyph = Uint32Array & { readonly __glyph: true };
-type GlyphGroup = Glyph[] | Record<string, Glyph>;
+type GlyphGroup = Record<string, Glyph>;
+type GlyphGroupInput = GlyphGroup | Glyph[];
 type GlyphToken = string;
 type GlyphUnigram = string;
 type GlyphVGram = string;
@@ -67,7 +68,10 @@ interface GlyphComparisonResult {
   distance: number;
   matches: number;
   size: number;
+  matchedLeft?: string | number;
+  matchedRight?: string | number;
 }
+
 
 interface GlyphComparisonOptions {
   aggregate?: GroupAggregate;
@@ -98,8 +102,8 @@ See [Glyph](./core/glyph.md) for type notes.
 ```ts
 interface GlyphIndexInstance {
   get(key: string): Glyph | GlyphGroup | undefined;
-  set(key: string, glyphs?: Glyph | GlyphGroup): void;
-  add(key: string, glyphs: Glyph | GlyphGroup): void;
+  set(key: string, glyphs?: Glyph | GlyphGroupInput): void;
+  add(key: string, glyphs: Glyph | GlyphGroupInput): void;
   remove(key: string): void;
   has(key: string): boolean;
   clear(): void;
@@ -121,6 +125,7 @@ interface GlyphQueryResult {
   key: string;
   similarity: number;
   comparison: GlyphComparisonResult;
+  matched?: string | number;
 }
 ```
 
@@ -144,10 +149,10 @@ interface GlyphCollectionOptions {
 
 interface GlyphCollectionInstance {
   Add(key: string, example: string | Glyph): void;
-  AddGroup(group: Record<string, Glyph>): void;
+  AddGroup(group: GlyphGroupInput): void;
   Remove(key: string): void;
   Clear(): void;
-  Examples(): Record<string, Glyph>;
+  Examples(): GlyphGroup;
   Has(key: string): boolean;
   Count(): number;
   Query(index: GlyphIndexInstance, options?: GlyphQueryOptions): GlyphQueryResult[];

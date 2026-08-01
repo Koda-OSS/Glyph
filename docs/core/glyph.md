@@ -29,18 +29,19 @@ interface GlyphRecord extends GlyphSignature {
 
 ## GlyphGroup
 
-A **glyph group** is many glyphs treated as one entry for compare and query.
+A **glyph group** is many glyphs treated as one entry for compare and query. The canonical form is a map:
 
 ```ts
-type GlyphGroup = Glyph[] | Record<string, Glyph>;
+type GlyphGroup = Record<string, Glyph>;
+type GlyphGroupInput = GlyphGroup | Glyph[];
 ```
 
-| Form | Example |
-| --- | --- |
-| Array | `[glyphA, glyphB]` |
-| Record | `{ title: glyphA, body: glyphB }` |
+| Form | Example | Notes |
+| --- | --- | --- |
+| Map (canonical) | `{ title: glyphA, body: glyphB }` | Stored and returned shape |
+| Array (input sugar) | `[glyphA, glyphB]` | Normalized to `{ "0": glyphA, "1": glyphB }` |
 
-> Group compare flattens records with `Object.values()` internally. Named fields are not preserved during pairwise scoring.
+Pass either form at API boundaries. Internally, groups are always maps. `matched` values use numbers for pure-digit keys so array-style usage stays intuitive (`matched === 1` for index `1`).
 
 ## Rules
 

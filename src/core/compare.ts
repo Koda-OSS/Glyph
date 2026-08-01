@@ -3,6 +3,7 @@ import type {
   GlyphComparisonOptions,
   GlyphComparisonResult,
   GlyphGroup,
+  GlyphGroupInput,
   GlyphSignature,
 } from "../types";
 import { CompareGroups } from "./group";
@@ -10,6 +11,7 @@ import {
   IsGlyphSignature,
   isGlyph,
   isGlyphGroup,
+  NormalizeGroup,
   resolveGlyph,
 } from "./utils";
 
@@ -56,8 +58,8 @@ export function CompareGlyphs(
  * Routes to CompareGroups when either side is a group, otherwise CompareGlyphs.
  */
 export function Compare(
-  a: Glyph | GlyphSignature | GlyphGroup,
-  b: Glyph | GlyphSignature | GlyphGroup,
+  a: Glyph | GlyphSignature | GlyphGroupInput,
+  b: Glyph | GlyphSignature | GlyphGroupInput,
   options: GlyphComparisonOptions = {},
 ): GlyphComparisonResult {
   if (isGlyphGroup(a) || isGlyphGroup(b)) {
@@ -72,14 +74,14 @@ export function Compare(
 }
 
 function asGroup(
-  value: Glyph | GlyphSignature | GlyphGroup,
+  value: Glyph | GlyphSignature | GlyphGroupInput,
 ): GlyphGroup {
-  if (isGlyphGroup(value)) {
-    return value;
+  if (isGlyphGroup(value) || isGlyph(value)) {
+    return NormalizeGroup(value);
   }
 
-  if (isGlyph(value) || IsGlyphSignature(value)) {
-    return [resolveGlyph(value)];
+  if (IsGlyphSignature(value)) {
+    return NormalizeGroup(resolveGlyph(value));
   }
 
   throw new Error("Unsupported compare input");

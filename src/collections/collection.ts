@@ -2,12 +2,13 @@ import type {
   Glyph,
   GlyphCollectionInstance,
   GlyphCollectionOptions,
+  GlyphGroupInput,
   GlyphIndexInstance,
   GlyphQueryOptions,
   GlyphQueryResult,
 } from "../types";
 import { Create } from "../core/create";
-import { isGlyph } from "../core/utils";
+import { isGlyph, NormalizeGroup } from "../core/utils";
 import { CollectionQuery } from "./query";
 
 function createCollection(
@@ -30,25 +31,31 @@ function createCollection(
       store[key] = example;
     },
 
-    AddGroup(group: Record<string, Glyph>) {
-      if (Array.isArray(group)) {
+    AddGroup(group: GlyphGroupInput) {
+      if (group === null || typeof group !== "object") {
         throw new Error(
-          "Collection.AddGroup expects a Record<string, Glyph>, not an array",
+          "Collection.AddGroup expects a Glyph[] or Record<string, Glyph>",
         );
       }
 
-      if (typeof group !== "object" || group === null) {
+      if (Array.isArray(group) && !group.every(isGlyph)) {
         throw new Error(
-          "Collection.AddGroup expects a Record<string, Glyph>",
+          "Collection.AddGroup array values must all be Glyphs",
         );
       }
 
-      for (const [key, glyph] of Object.entries(group)) {
-        if (!isGlyph(glyph)) {
-          throw new Error(
-            `Collection.AddGroup value for key "${key}" is not a Glyph`,
-          );
+      if (!Array.isArray(group)) {
+        for (const [key, glyph] of Object.entries(group)) {
+          if (!isGlyph(glyph)) {
+            throw new Error(
+              `Collection.AddGroup value for key "${key}" is not a Glyph`,
+            );
+          }
         }
+      }
+
+      const normalized = NormalizeGroup(group);
+      for (const [key, glyph] of Object.entries(normalized)) {
         store[key] = glyph;
       }
     },

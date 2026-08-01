@@ -25,6 +25,7 @@ export { completions } from "./completions/index";
 export type {
   Glyph,
   GlyphGroup,
+  GlyphGroupInput,
   GlyphToken,
   GlyphUnigram,
   GlyphVGram,
