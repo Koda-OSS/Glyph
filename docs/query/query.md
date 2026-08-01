@@ -4,7 +4,7 @@
 
 > Rank index entries against a probe glyph with `query()`.
 
-`query()` compares the probe to every key in the index, filters by threshold, sorts by similarity, and optionally limits and normalizes results.
+`query()` ranks `candidateKeys` from the index against the probe, filters by threshold, sorts by similarity, and optionally limits and normalizes results.
 
 ## Signature
 
@@ -36,7 +36,8 @@ const results = query(Create("Goodbye moon").glyph, idx, {
 ## Flow
 
 ```text
-for each [key, value] in index.entries():
+for each key in index.candidateKeys(queryGlyph):
+  value = index.get(key)
   comparison = Compare(queryGlyph, value, compareOptions)
   if comparison.similarity < threshold: skip
   collect { key, similarity, comparison }
@@ -58,10 +59,10 @@ Pass `aggregate` or `compare` in options. See [Query options](./options.md).
 
 ## Performance
 
-Query scans **all keys** (linear time). There is no ANN or LSH index in the current version.
+By default the index uses **LSH banding** (`mode: "bands"`). `query()` scores `candidateKeys` from band collisions, not every key. Use `index.new({ mode: "direct" })` for an exact full scan. See [Index](../core/index.md).
 
 ## See also
 
 - [Query options](./options.md)
 - [Query results](./results.md)
-- [Index](./index.md)
+- [Index](../core/index.md)

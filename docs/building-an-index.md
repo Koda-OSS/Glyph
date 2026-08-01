@@ -4,7 +4,7 @@
 
 > Create glyphs once. Query many keys in memory.
 
-An **index** maps string keys to one glyph or a **glyph group**. Use `query()` to rank all entries against a probe glyph.
+An **index** maps string keys to one glyph or a **glyph group**. Use `query()` to rank candidate entries against a probe glyph (LSH banding by default).
 
 ## Basic workflow
 
@@ -64,7 +64,7 @@ idx.add("article", Create("section two").glyph);
 // value is now { "0": glyph1, "1": glyph2 }
 ```
 
-See [Index](./query/index.md) for `add` promotion rules.
+See [Index](./core/index.md) for `add` promotion rules.
 
 ## Query options (common)
 
@@ -100,5 +100,5 @@ Output includes ingest/index time, query/complete time, and ranked results.
 | Topic | Behavior |
 | --- | --- |
 | Persistence | Index lives in memory only |
-| Query algorithm | Linear scan over all keys |
+| Query algorithm | LSH banding by default; exact scan with `mode: "direct"` |
 | Key type | String only |

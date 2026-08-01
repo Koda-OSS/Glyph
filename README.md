@@ -24,12 +24,12 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Serialize](./docs/core/serialize.md) | `Serialize()`, `Deserialize()`, string formats |
 | [Tokenize](./docs/core/tokenize.md) | Tokens, unigrams, vgrams |
 | [Text normalization](./docs/core/text-normalization.md) | `TextFilter`, `TextStrip` |
+| [Index](./docs/core/index.md) | `index.new()`, bands (default) or direct store |
 
 ![Glyph Query](/docs/media/RibbonQuery.png)
 
 | Doc | Topic |
 | --- | --- |
-| [Index](./docs/query/index.md) | `index.new()`, store and manage entries |
 | [Query](./docs/query/query.md) | `query()` ranked search |
 | [Query options](./docs/query/options.md) | `limit`, `threshold`, `normalize`, `aggregate` |
 | [Query results](./docs/query/results.md) | `GlyphQueryResult` shape |
@@ -55,11 +55,11 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | Feature | Status |
 | --- | --- |
 | In-memory index | Implemented |
-| Linear scan query | Implemented |
+| LSH banding index (default) | Implemented |
+| Direct (exact) scan via `mode: "direct"` | Implemented |
 | Collections (example probes) | Implemented |
 | Glyph completions (Markov + rank) | Implemented |
 | Disk persistence | Not implemented |
-| Approximate nearest neighbor (ANN) | Not implemented |
 | Chain persistence | Not implemented |
 
 ### License

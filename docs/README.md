@@ -25,12 +25,12 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Serialize](./core/serialize.md) | `Serialize()`, `Deserialize()`, string formats |
 | [Tokenize](./core/tokenize.md) | Tokens, unigrams, vgrams |
 | [Text normalization](./core/text-normalization.md) | `TextFilter`, `TextStrip` |
+| [Index](./core/index.md) | `index.new()`, bands (default) or direct store |
 
 ![Glyph Query](/docs/media/RibbonQuery.png)
 
 | Doc | Topic |
 | --- | --- |
-| [Index](./query/index.md) | `index.new()`, store and manage entries |
 | [Query](./query/query.md) | `query()` ranked search |
 | [Query options](./query/options.md) | `limit`, `threshold`, `normalize`, `aggregate` |
 | [Query results](./query/results.md) | `GlyphQueryResult` shape |
@@ -56,11 +56,11 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | Feature | Status |
 | --- | --- |
 | In-memory index | Implemented |
-| Linear scan query | Implemented |
+| LSH banding index (default) | Implemented |
+| Direct (exact) scan via `mode: "direct"` | Implemented |
 | Collections (example probes) | Implemented |
 | Glyph completions (Markov + rank) | Implemented |
 | Disk persistence | Not implemented |
-| Approximate nearest neighbor (ANN) | Not implemented |
 | Chain persistence | Not implemented |
 
 ### License

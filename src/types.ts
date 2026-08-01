@@ -61,8 +61,18 @@ export type GroupAggregate = (context: GroupAggregateContext) => number;
 
 export type GlyphGroupComparisonResult = GlyphComparisonResult;
 
-// Glyph Query types
+// Glyph Index types (Core)
+export type GlyphIndexMode = "bands" | "direct";
+
+export interface GlyphIndexOptions {
+  mode?: GlyphIndexMode;
+  bands?: number;
+  rows?: number;
+  glyphSize?: number;
+}
+
 export interface GlyphIndexInstance {
+  readonly mode: GlyphIndexMode;
   get(key: string): Glyph | GlyphGroup | undefined;
   set(key: string, glyphs?: Glyph | GlyphGroupInput): void;
   add(key: string, glyphs: Glyph | GlyphGroupInput): void;
@@ -73,8 +83,12 @@ export interface GlyphIndexInstance {
   keys(): IterableIterator<string>;
   values(): IterableIterator<Glyph | GlyphGroup>;
   entries(): IterableIterator<[string, Glyph | GlyphGroup]>;
+  candidateKeys(
+    probe: Glyph | GlyphSignature | GlyphGroupInput,
+  ): IterableIterator<string>;
 }
 
+// Glyph Query types
 export interface GlyphQueryOptions {
   limit?: number;
   threshold?: number;

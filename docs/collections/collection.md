@@ -58,5 +58,5 @@ col.AddGroup([
 ## See also
 
 - [Collection query](./query.md)
-- [Index](../query/index.md)
+- [Index](../core/index.md)
 - [Groups](../core/groups.md)

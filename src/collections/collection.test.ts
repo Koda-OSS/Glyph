@@ -70,7 +70,7 @@ describe("glyph collections", () => {
 
   it("Query ranks index hits and rejects empty collections", () => {
     const col = collections.new({ create: { size: 64 } });
-    const idx = index.new();
+    const idx = index.new({ mode: "direct" });
 
     expect(() => col.Query(idx)).toThrow(/empty collection/);
 
@@ -90,7 +90,7 @@ describe("glyph collections", () => {
 
   it("CollectionQuery matches collection.Query", () => {
     const col = collections.new({ create: { size: 64 } });
-    const idx = index.new();
+    const idx = index.new({ mode: "direct" });
 
     col.Add("probe", "the quick brown fox");
     idx.set("a", Create("the quick brown fox jumps", { size: 64 }).glyph);

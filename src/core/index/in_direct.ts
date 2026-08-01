@@ -1,18 +1,26 @@
 import type {
   Glyph,
-  GlyphGroup,
   GlyphGroupInput,
   GlyphIndexInstance,
-} from "../types";
-import { isGlyph, NormalizeGroup } from "../core/utils";
+  GlyphSignature,
+} from "../../types";
+import { isGlyph, NormalizeGroup } from "../utils";
+import {
+  type IndexInput,
+  type IndexValue,
+  mergeRecordGroup,
+  normalizeStoredValue,
+} from "./shared";
 
-type IndexValue = Glyph | GlyphGroup;
-type IndexInput = Glyph | GlyphGroupInput;
-
-function createIndex(): GlyphIndexInstance {
+/**
+ * Exact Map-backed index. candidateKeys yields every stored key.
+ */
+export function createDirectIndex(): GlyphIndexInstance {
   const store = new Map<string, IndexValue>();
 
   return {
+    mode: "direct",
+
     get(key: string) {
       return store.get(key);
     },
@@ -27,9 +35,7 @@ function createIndex(): GlyphIndexInstance {
     },
 
     add(key: string, glyphs: IndexInput) {
-      const incoming = NormalizeGroup(
-        isGlyph(glyphs) ? [glyphs] : glyphs,
-      );
+      const incoming = NormalizeGroup(isGlyph(glyphs) ? [glyphs] : glyphs);
       const incomingKeys = Object.keys(incoming);
       if (incomingKeys.length === 0) {
         return;
@@ -46,7 +52,10 @@ function createIndex(): GlyphIndexInstance {
       }
 
       if (isGlyph(existing)) {
-        store.set(key, mergeRecordGroup({ "0": existing }, Object.values(incoming)));
+        store.set(
+          key,
+          mergeRecordGroup({ "0": existing }, Object.values(incoming)),
+        );
         return;
       }
 
@@ -80,38 +89,11 @@ function createIndex(): GlyphIndexInstance {
     entries() {
       return store.entries();
     },
+
+    *candidateKeys(
+      _probe: Glyph | GlyphSignature | GlyphGroupInput,
+    ): IterableIterator<string> {
+      yield* store.keys();
+    },
   };
 }
-
-function normalizeStoredValue(value: IndexInput): IndexValue {
-  if (isGlyph(value)) {
-    return value;
-  }
-
-  return NormalizeGroup(value);
-}
-
-function mergeRecordGroup(
-  existing: GlyphGroup,
-  incoming: Glyph[],
-): GlyphGroup {
-  const next: GlyphGroup = { ...existing };
-  let cursor = 0;
-
-  for (const glyph of incoming) {
-    while (Object.prototype.hasOwnProperty.call(next, String(cursor))) {
-      cursor += 1;
-    }
-    next[String(cursor)] = glyph;
-    cursor += 1;
-  }
-
-  return next;
-}
-
-/**
- * Glyph Query index namespace.
- */
-export const index = {
-  new: createIndex,
-};

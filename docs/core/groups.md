@@ -103,4 +103,4 @@ A lone glyph passed against a group is wrapped as `{ "0": glyph }` before group 
 ## See also
 
 - [Compare](./compare.md)
-- [Index](../query/index.md) — store groups per key
+- [Index](../core/index.md) — store groups per key

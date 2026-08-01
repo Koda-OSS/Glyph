@@ -4,7 +4,7 @@
 
 > Every public export from `glyph-ts`, grouped by layer.
 
-Deep docs live under [Core](./core/glyph.md), [Query](./query/index.md), [Collections](./collections/collection.md), and [Completions](./completions/chain.md).
+Deep docs live under [Core](./core/glyph.md), [Index](./core/index.md), [Query](./query/query.md), [Collections](./collections/collection.md), and [Completions](./completions/chain.md).
 
 ## Core
 
@@ -26,6 +26,7 @@ Deep docs live under [Core](./core/glyph.md), [Query](./query/index.md), [Collec
 | `Tokenize` | `(text, options?) => GlyphTokenizationResult` | [Tokenize](./core/tokenize.md) |
 | `TextFilter` | `(text) => string` | [Text normalization](./core/text-normalization.md) |
 | `TextStrip` | `(text) => string` | [Text normalization](./core/text-normalization.md) |
+| `index.new` | `(options?) => GlyphIndexInstance` | [Index](./core/index.md) |
 
 ### Core types
 
@@ -84,23 +85,18 @@ type GroupAggregateContext = {
 };
 
 type GroupAggregate = (context: GroupAggregateContext) => number;
-```
 
-See [Glyph](./core/glyph.md) for type notes.
+type GlyphIndexMode = "bands" | "direct";
 
-## Query
+interface GlyphIndexOptions {
+  mode?: GlyphIndexMode;   // default "bands"
+  bands?: number;          // default 64 when size is 128
+  rows?: number;           // default 2 when size is 128
+  glyphSize?: number;
+}
 
-### Functions
-
-| Export | Signature | Doc |
-| --- | --- | --- |
-| `index.new` | `() => GlyphIndexInstance` | [Index](./query/index.md) |
-| `query` | `(queryGlyph, index, options?) => GlyphQueryResult[]` | [Query](./query/query.md) |
-
-### Query types
-
-```ts
 interface GlyphIndexInstance {
+  readonly mode: GlyphIndexMode;
   get(key: string): Glyph | GlyphGroup | undefined;
   set(key: string, glyphs?: Glyph | GlyphGroupInput): void;
   add(key: string, glyphs: Glyph | GlyphGroupInput): void;
@@ -111,8 +107,25 @@ interface GlyphIndexInstance {
   keys(): IterableIterator<string>;
   values(): IterableIterator<Glyph | GlyphGroup>;
   entries(): IterableIterator<[string, Glyph | GlyphGroup]>;
+  candidateKeys(
+    probe: Glyph | GlyphSignature | GlyphGroupInput,
+  ): IterableIterator<string>;
 }
+```
 
+See [Glyph](./core/glyph.md) and [Index](./core/index.md) for type notes.
+
+## Query
+
+### Functions
+
+| Export | Signature | Doc |
+| --- | --- | --- |
+| `query` | `(queryGlyph, index, options?) => GlyphQueryResult[]` | [Query](./query/query.md) |
+
+### Query types
+
+```ts
 interface GlyphQueryOptions {
   limit?: number;
   threshold?: number;      // default 0

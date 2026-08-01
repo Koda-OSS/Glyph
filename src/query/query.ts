@@ -28,7 +28,12 @@ export function query(
 
   const results: GlyphQueryResult[] = [];
 
-  for (const [key, value] of glyphIndex.entries()) {
+  for (const key of glyphIndex.candidateKeys(queryGlyph)) {
+    const value = glyphIndex.get(key);
+    if (value === undefined) {
+      continue;
+    }
+
     const comparison = Compare(queryGlyph, value, compareOptions);
 
     if (comparison.similarity < threshold) {

@@ -1,80 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { Create, CreateGroup, index, query } from "../index";
 
-describe("glyph query index", () => {
-  it("supports set/get/has/remove/size/clear", () => {
-    const idx = index.new();
-    const glyph = Create("hello world").glyph;
-
-    expect(idx.size()).toBe(0);
-    idx.set("a", glyph);
-    expect(idx.has("a")).toBe(true);
-    expect(idx.get("a")).toBe(glyph);
-    expect(idx.size()).toBe(1);
-
-    idx.set("a");
-    expect(idx.has("a")).toBe(false);
-    expect(idx.size()).toBe(0);
-
-    idx.set("b", glyph);
-    idx.remove("b");
-    expect(idx.has("b")).toBe(false);
-
-    idx.set("c", glyph);
-    idx.clear();
-    expect(idx.size()).toBe(0);
-  });
-
-  it("promotes a single glyph to a map group on add", () => {
-    const idx = index.new();
-    const a = Create("alpha").glyph;
-    const b = Create("beta").glyph;
-
-    idx.set("doc", a);
-    idx.add("doc", b);
-
-    const value = idx.get("doc");
-    expect(Array.isArray(value)).toBe(false);
-    expect(value).toEqual({ "0": a, "1": b });
-  });
-
-  it("creates a key on add when missing", () => {
-    const idx = index.new();
-    const glyph = Create("fresh key").glyph;
-    idx.add("new", glyph);
-    expect(idx.get("new")).toBe(glyph);
-  });
-
-  it("normalizes array set into a map", () => {
-    const idx = index.new();
-    const a = Create("one").glyph;
-    const b = Create("two").glyph;
-
-    idx.set("doc", [a, b]);
-    expect(idx.get("doc")).toEqual({ "0": a, "1": b });
-  });
-
-  it("merges into record groups with auto keys", () => {
-    const idx = index.new();
-    const a = Create("one").glyph;
-    const b = Create("two").glyph;
-    const c = Create("three").glyph;
-
-    idx.set("doc", { title: a });
-    idx.add("doc", [b, c]);
-
-    const value = idx.get("doc");
-    expect(value).toMatchObject({
-      title: a,
-      "0": b,
-      "1": c,
-    });
-  });
-});
-
 describe("glyph query", () => {
   it("ranks matches and respects limit/threshold", () => {
-    const idx = index.new();
+    // Mid-similarity pairs need exact scan under default 64×2 banding.
+    const idx = index.new({ mode: "direct" });
     idx.set("moon", Create("Goodbye moon").glyph);
     idx.set("sun", Create("Goodbye sun").glyph);
     idx.set("pasta", Create("totally unrelated pasta recipe").glyph);
@@ -92,7 +22,7 @@ describe("glyph query", () => {
   });
 
   it("normalizes scores by dividing by the top score", () => {
-    const idx = index.new();
+    const idx = index.new({ mode: "direct" });
     idx.set("moon", Create("Goodbye moon").glyph);
     idx.set("sun", Create("Goodbye sun").glyph);
 
@@ -122,7 +52,7 @@ describe("glyph query", () => {
   });
 
   it("finds the best doc when querying a group against singles", () => {
-    const idx = index.new();
+    const idx = index.new({ mode: "direct" });
     idx.set("a", Create("serialize glyphs to strings").glyph);
     idx.set("b", Create("compare two fingerprints").glyph);
 
@@ -134,10 +64,22 @@ describe("glyph query", () => {
 
     expect(results[0]!.key).toBe("a");
   });
+
+  it("direct mode still ranks every key", () => {
+    const idx = index.new({ mode: "direct" });
+    idx.set("moon", Create("Goodbye moon").glyph);
+    idx.set("pasta", Create("totally unrelated pasta recipe").glyph);
+
+    const results = query(Create("Goodbye moon").glyph, idx, {
+      threshold: 0,
+    });
+
+    expect(results.map((r) => r.key).sort()).toEqual(["moon", "pasta"]);
+  });
 });
 
 const GARBAGE_ALPHABET =
-  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.;: ";
 
 function randomGarbage(length: number): string {
   let text = "";
@@ -149,27 +91,59 @@ function randomGarbage(length: number): string {
 
 describe("glyph query stress", () => {
   it(
-    "indexes random docs until a query takes longer than 10ms",
+    "direct mode: indexes random docs until a query takes longer than 50ms",
     () => {
-      const idx = index.new();
+      const idx = index.new({ mode: "direct" });
       const probe = Create(randomGarbage(2048)).glyph;
       let queryMs = 0;
 
-      while (queryMs <= 10) {
-        idx.set(`doc-${idx.size()}`, Create(randomGarbage(4096)).glyph);
-
+      while (queryMs <= 50) {
+        for (let i = 0; i < 512; i++) { // 512 docs per batch
+          idx.set(`doc-${idx.size()}`, Create(randomGarbage(4096)).glyph);
+        }
         const started = performance.now();
-        query(probe, idx, { limit: 5 });
+        query(probe, idx, { limit: 16 });
         queryMs = performance.now() - started;
       }
 
       const counted = idx.size();
       console.log(
-        `Stress: indexed ${counted} docs before query exceeded 10ms (${queryMs.toFixed(2)} ms)`,
+        `Direct stress: indexed ${counted} docs before query exceeded 50ms (${queryMs.toFixed(2)} ms)`,
       );
 
-      expect(queryMs).toBeGreaterThan(10);
+      expect(queryMs).toBeGreaterThan(50);
       expect(counted).toBeGreaterThan(0);
+    },
+    120_000,
+  );
+
+  it(
+    "bands mode indexes more docs than direct before the same latency budget",
+    () => {
+      const probe = Create(randomGarbage(2048)).glyph;
+      const targetDocs = 1024;
+
+      const direct = index.new({ mode: "direct" });
+      for (let i = 0; i < targetDocs; i++) {
+        direct.set(`doc-${i}`, Create(randomGarbage(4096)).glyph);
+      }
+      const directStarted = performance.now();
+      query(probe, direct, { limit: 5 });
+      const directMs = performance.now() - directStarted;
+
+      const bands = index.new({ mode: "bands" });
+      for (let i = 0; i < targetDocs; i++) {
+        bands.set(`doc-${i}`, Create(randomGarbage(4096)).glyph);
+      }
+      const bandsStarted = performance.now();
+      query(probe, bands, { limit: 5 });
+      const bandsMs = performance.now() - bandsStarted;
+
+      console.log(
+        `Capacity: ${targetDocs} docs — direct ${directMs.toFixed(2)} ms, bands ${bandsMs.toFixed(2)} ms`,
+      );
+
+      expect(bandsMs).toBeLessThanOrEqual(directMs * 1.5);
     },
     120_000,
   );

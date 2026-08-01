@@ -17,7 +17,7 @@ export {
   Tokenize,
 } from "./core/tokenize";
 export { TextStrip, TextFilter } from "./core/utils";
-export { index } from "./query/index";
+export { index } from "./core/index";
 export { query } from "./query/query";
 export { collections, CollectionQuery } from "./collections/index";
 export { completions } from "./completions/index";
@@ -39,6 +39,8 @@ export type {
   GlyphGroupComparisonResult,
   GroupAggregate,
   GroupAggregateContext,
+  GlyphIndexMode,
+  GlyphIndexOptions,
   GlyphIndexInstance,
   GlyphQueryOptions,
   GlyphQueryResult,
