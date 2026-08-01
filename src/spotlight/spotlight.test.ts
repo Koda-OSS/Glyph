@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   Create,
   CreateGroup,
-  GroupAggregateMax,
-  GroupAggregateSum,
+  GroupResultAggregatorMax,
+  GroupResultAggregatorSum,
   spotlight,
 } from "../index";
 import { defaultSpotlightChunker } from "./chunker";
@@ -140,10 +140,10 @@ describe("spotlight document", () => {
     ]);
 
     const withSum = doc.rank(probe);
-    const withMax = doc.rank(probe, { aggregate: GroupAggregateMax });
+    const withMax = doc.rank(probe, { aggregate: GroupResultAggregatorMax });
 
     expect(withSum[0]!.score).toBeGreaterThanOrEqual(withMax[0]!.score);
-    expect(GroupAggregateSum).toBeDefined();
+    expect(GroupResultAggregatorSum).toBeDefined();
   });
 
   it("group probe may populate matched", () => {

@@ -40,8 +40,8 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 
 | Doc | Topic |
 | --- | --- |
-| [Collections](./collections/collection.md) | `collections.new()`, add labeled examples |
-| [Collection query](./collections/query.md) | `CollectionQuery()` / `collection.Query()` |
+| [Collections](./collections/collection.md) | `collections.new()`, keyed glyphs + `glyph` |
+| [Aggregators](./collections/aggregate.md) | Slot-wise `CollectionAggregator` built-ins |
 
 ![Glyph Completions](/docs/media/RibbonCompletions.png)
 
@@ -68,7 +68,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | In-memory index | Implemented |
 | LSH banding index (default) | Implemented |
 | Direct (exact) scan via `mode: "direct"` | Implemented |
-| Collections (example probes) | Implemented |
+| Collections (slot-wise glyph aggregate) | Implemented |
 | Glyph completions (Markov + rank) | Implemented |
 | Spotlight (document chunk rank/query) | Implemented |
 | Disk persistence | Not implemented |

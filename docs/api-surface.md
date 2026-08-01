@@ -17,8 +17,8 @@ Deep docs live under [Core](./core/glyph.md), [Index](./core/index.md), [Query](
 | `CompareGlyphs` | `(a, b, options?) => GlyphComparisonResult` | [Compare](./core/compare.md) |
 | `CreateGroup` | `(glyphs: Glyph[] \| string[]) => GlyphGroup` | [Groups](./core/groups.md) |
 | `CompareGroups` | `(group1, group2, options?) => GlyphComparisonResult` | [Groups](./core/groups.md) |
-| `GroupAggregateMax` | `GroupAggregate` | [Groups](./core/groups.md) |
-| `GroupAggregateSum` | `GroupAggregate` | [Groups](./core/groups.md) |
+| `GroupResultAggregatorMax` | `GroupResultAggregator` | [Groups](./core/groups.md) |
+| `GroupResultAggregatorSum` | `GroupResultAggregator` | [Groups](./core/groups.md) |
 | `Serialize` | `(Glyph \| GlyphSignature \| GlyphRecord) => string` | [Serialize](./core/serialize.md) |
 | `Deserialize` | `(string) => Glyph` | [Serialize](./core/serialize.md) |
 | `CreateTokens` | `(text, normalize?) => GlyphToken[]` | [Tokenize](./core/tokenize.md) |
@@ -76,16 +76,16 @@ interface GlyphComparisonResult {
 
 
 interface GlyphComparisonOptions {
-  aggregate?: GroupAggregate;
+  aggregate?: GroupResultAggregator;
 }
 
-type GroupAggregateContext = {
+type GroupResultAggregatorContext = {
   scores: number[];
   left: GlyphGroup;
   right: GlyphGroup;
 };
 
-type GroupAggregate = (context: GroupAggregateContext) => number;
+type GroupResultAggregator = (context: GroupResultAggregatorContext) => number;
 
 type GlyphIndexMode = "bands" | "direct";
 
@@ -131,7 +131,7 @@ interface GlyphQueryOptions {
   limit?: number;
   threshold?: number;      // default 0
   normalize?: boolean;     // default false
-  aggregate?: GroupAggregate;
+  aggregate?: GroupResultAggregator;
   compare?: GlyphComparisonOptions;
 }
 
@@ -152,26 +152,44 @@ Result fields: [Query results](./query/results.md).
 | Export | Signature | Doc |
 | --- | --- | --- |
 | `collections.new` | `(options?) => GlyphCollectionInstance` | [Collections](./collections/collection.md) |
-| `CollectionQuery` | `(collection, index, options?) => GlyphQueryResult[]` | [Collection query](./collections/query.md) |
+| `CollectionAggregatorMin` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
+| `CollectionAggregatorMax` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
+| `CollectionAggregatorMean` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
+| `CollectionAggregatorMid` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
+| `CollectionAggregatorSum` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
+| `CollectionAggregatorSoftmax` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
 
 ### Collections types
 
 ```ts
+type CollectionAggregatorContext = {
+  collection: GlyphGroup;
+  index: number;
+};
+
+type CollectionAggregator = (
+  values: number[],
+  context?: CollectionAggregatorContext,
+) => number;
+
 interface GlyphCollectionOptions {
   create?: GlyphCreateOptions;
+  aggregator?: CollectionAggregator; // default CollectionAggregatorMin
 }
 
 interface GlyphCollectionInstance {
+  readonly glyph: Glyph;
   Add(key: string, example: string | Glyph): void;
   AddGroup(group: GlyphGroupInput): void;
   Remove(key: string): void;
   Clear(): void;
-  Examples(): GlyphGroup;
+  Collection(): GlyphGroup;
   Has(key: string): boolean;
   Count(): number;
-  Query(index: GlyphIndexInstance, options?: GlyphQueryOptions): GlyphQueryResult[];
 }
 ```
+
+See [Collections](./collections/collection.md) and [Aggregators](./collections/aggregate.md).
 
 ## Completions
 
@@ -240,7 +258,7 @@ type GlyphSpotlightCompiledChunk = {
 interface GlyphSpotlightOptions {
   normalize?: boolean;
   create?: GlyphCreateOptions;
-  aggregate?: GroupAggregate;  // default GroupAggregateSum for group probes
+  aggregate?: GroupResultAggregator;  // default GroupResultAggregatorSum for group probes
   chunker?: GlyphSpotlightChunker;
   textOutput?: boolean;        // default false
 }

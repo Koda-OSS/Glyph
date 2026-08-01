@@ -64,39 +64,39 @@ const result = Compare(probe, [pasta, moon]);
 result.matchedRight; // 1  — same as the array index you passed
 ```
 
-## Default aggregate: max
+## Default result aggregator: max
 
 ```ts
-import { GroupAggregateMax } from "glyph-ts";
+import { GroupResultAggregatorMax } from "glyph-ts";
 
 // ({ scores }) => Math.max(...scores)
 ```
 
 `[query] vs [a, b, c]` returns the best pairwise score. Use this for “does this text match any item in the set?”
 
-## Sum aggregate
+## Sum result aggregator
 
 ```ts
-import { GroupAggregateSum } from "glyph-ts";
+import { GroupResultAggregatorSum } from "glyph-ts";
 
 // ({ scores }) => scores.reduce((a, b) => a + b, 0)
 ```
 
 Spotlight uses sum by default for group probes (multi-example evidence can exceed `1`).
 
-## Custom aggregate
+## Custom result aggregator
 
 ```ts
 import { Compare } from "glyph-ts";
-import type { GroupAggregate } from "glyph-ts";
+import type { GroupResultAggregator } from "glyph-ts";
 
-const average: GroupAggregate = ({ scores }) =>
+const average: GroupResultAggregator = ({ scores }) =>
   scores.reduce((sum, n) => sum + n, 0) / scores.length;
 
 Compare(groupA, groupB, { aggregate: average });
 ```
 
-`GroupAggregateContext` receives **normalized maps** for `left` and `right` (keys preserved).
+`GroupResultAggregatorContext` receives **normalized maps** for `left` and `right` (keys preserved).
 
 ```json
 {
@@ -106,6 +106,15 @@ Compare(groupA, groupB, { aggregate: average });
 }
 ```
 
+## GroupResultAggregator vs CollectionAggregator
+
+| Type | When | Input | Output |
+| --- | --- | --- | --- |
+| `GroupResultAggregator` | After pairwise compare | Similarity scores | One similarity number |
+| `CollectionAggregator` | On collection mutation | Per-slot hash values | One aggregated `Glyph` |
+
+See [Collection aggregators](../collections/aggregate.md).
+
 ## How `Compare` wraps singles
 
 A lone glyph passed against a group is wrapped as `{ "0": glyph }` before group logic runs. You do not need to wrap manually.
@@ -114,3 +123,4 @@ A lone glyph passed against a group is wrapped as `{ "0": glyph }` before group 
 
 - [Compare](./compare.md)
 - [Index](../core/index.md) — store groups per key
+- [Collection aggregators](../collections/aggregate.md)

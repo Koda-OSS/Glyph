@@ -35,7 +35,7 @@ Results are sorted by `score` descending. Every compiled chunk appears once (no 
 
 ## Group probes
 
-When the probe is a `GlyphGroup`, pairwise scores are aggregated with `GroupAggregateSum` by default (sum of similarities). Pass `aggregate` to override (for example `GroupAggregateMax`).
+When the probe is a `GlyphGroup`, pairwise scores are aggregated with `GroupResultAggregatorSum` by default (sum of similarities). Pass `aggregate` to override (for example `GroupResultAggregatorMax`).
 
 ## textOutput
 

@@ -7,7 +7,7 @@ import type {
   GlyphSignature,
 } from "../types";
 import { Compare } from "../core/compare";
-import { GroupAggregateMax } from "../core/group";
+import { GroupResultAggregatorMax } from "../core/group";
 import { isGlyphGroup } from "../core/utils";
 
 /**
@@ -20,7 +20,7 @@ export function query(
 ): GlyphQueryResult[] {
   const threshold = options.threshold ?? 0;
   const aggregate =
-    options.aggregate ?? options.compare?.aggregate ?? GroupAggregateMax;
+    options.aggregate ?? options.compare?.aggregate ?? GroupResultAggregatorMax;
   const compareOptions = {
     ...options.compare,
     aggregate,

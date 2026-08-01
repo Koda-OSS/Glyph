@@ -3,16 +3,16 @@ import type {
   GlyphComparisonOptions,
   GlyphGroup,
   GlyphGroupComparisonResult,
-  GroupAggregate,
+  GroupResultAggregator,
 } from "../types";
 import { Create } from "./create";
 import { CompareGlyphs } from "./compare";
 import { GroupEntries, NormalizeGroup, ToMatchedKey } from "./utils";
 
 /**
- * Default group aggregate: take the maximum pairwise similarity.
+ * Default group result aggregator: take the maximum pairwise similarity.
  */
-export const GroupAggregateMax: GroupAggregate = ({ scores }) => {
+export const GroupResultAggregatorMax: GroupResultAggregator = ({ scores }) => {
   if (scores.length === 0) {
     return 0;
   }
@@ -23,7 +23,7 @@ export const GroupAggregateMax: GroupAggregate = ({ scores }) => {
 /**
  * Sum pairwise similarities (Spotlight default for group probes).
  */
-export const GroupAggregateSum: GroupAggregate = ({ scores }) => {
+export const GroupResultAggregatorSum: GroupResultAggregator = ({ scores }) => {
   let total = 0;
   for (const score of scores) {
     total += score;
@@ -82,7 +82,7 @@ export function CompareGroups(
     }
   }
 
-  const aggregate = options.aggregate ?? GroupAggregateMax;
+  const aggregate = options.aggregate ?? GroupResultAggregatorMax;
   const similarity = aggregate({
     scores,
     left,

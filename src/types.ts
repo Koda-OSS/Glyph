@@ -47,17 +47,19 @@ export interface GlyphComparisonResult {
 }
 
 export interface GlyphComparisonOptions {
-  aggregate?: GroupAggregate;
+  aggregate?: GroupResultAggregator;
 }
 
 // Group related types
-export type GroupAggregateContext = {
+export type GroupResultAggregatorContext = {
   scores: number[];
   left: GlyphGroup;
   right: GlyphGroup;
 };
 
-export type GroupAggregate = (context: GroupAggregateContext) => number;
+export type GroupResultAggregator = (
+  context: GroupResultAggregatorContext,
+) => number;
 
 export type GlyphGroupComparisonResult = GlyphComparisonResult;
 
@@ -93,7 +95,7 @@ export interface GlyphQueryOptions {
   limit?: number;
   threshold?: number;
   normalize?: boolean;
-  aggregate?: GroupAggregate;
+  aggregate?: GroupResultAggregator;
   compare?: GlyphComparisonOptions;
 }
 
@@ -105,22 +107,35 @@ export interface GlyphQueryResult {
 }
 
 // Glyph Collections types
+
+export type CollectionAggregatorContext = {
+  collection: GlyphGroup;
+  index: number;
+};
+
+export type CollectionAggregator = (
+  values: number[],
+  context?: CollectionAggregatorContext,
+) => number;
+
 export interface GlyphCollectionOptions {
   create?: GlyphCreateOptions;
+  aggregator?: CollectionAggregator;
 }
 
 export interface GlyphCollectionInstance {
+  readonly glyph: Glyph;
+
   Add(key: string, example: string | Glyph): void;
   AddGroup(group: GlyphGroupInput): void;
+
   Remove(key: string): void;
   Clear(): void;
-  Examples(): GlyphGroup;
+
+  Collection(): GlyphGroup;
+
   Has(key: string): boolean;
   Count(): number;
-  Query(
-    index: GlyphIndexInstance,
-    options?: GlyphQueryOptions,
-  ): GlyphQueryResult[];
 }
 
 // Glyph Completions types
@@ -167,7 +182,7 @@ export interface GlyphSpotlightOptions {
   normalize?: boolean;
   create?: GlyphCreateOptions;
   /** Applies only when the probe is a group. Default: sum (not max/average). */
-  aggregate?: GroupAggregate;
+  aggregate?: GroupResultAggregator;
   chunker?: GlyphSpotlightChunker;
   /** When true, rank/query return string[] ordered by score descending. */
   textOutput?: boolean;

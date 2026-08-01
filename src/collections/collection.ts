@@ -1,34 +1,67 @@
 import type {
+  CollectionAggregator,
   Glyph,
   GlyphCollectionInstance,
   GlyphCollectionOptions,
   GlyphGroupInput,
-  GlyphIndexInstance,
-  GlyphQueryOptions,
-  GlyphQueryResult,
 } from "../types";
 import { Create } from "../core/create";
 import { isGlyph, NormalizeGroup } from "../core/utils";
-import { CollectionQuery } from "./query";
+import {
+  CollectionAggregatorMin,
+  CollectionAggregatorSoftmax,
+  rebuildAggregatedGlyph,
+} from "./aggregate";
+
+const DEFAULT_GLYPH_SIZE = 128;
 
 function createCollection(
   options: GlyphCollectionOptions = {},
 ): GlyphCollectionInstance {
   const store: Record<string, Glyph> = {};
   const createOptions = options.create ?? {};
+  const aggregator: CollectionAggregator =
+    options.aggregator ?? CollectionAggregatorSoftmax;
+  const emptySize = createOptions.size ?? DEFAULT_GLYPH_SIZE;
+
+  let aggregated: Glyph = new Uint32Array(emptySize) as Glyph;
+  let establishedSize: number | undefined;
+
+  function rebuild() {
+    aggregated = rebuildAggregatedGlyph(store, aggregator, emptySize);
+  }
+
+  function assertSize(glyph: Glyph) {
+    if (establishedSize === undefined) {
+      establishedSize = glyph.length;
+      return;
+    }
+    if (glyph.length !== establishedSize) {
+      throw new Error(
+        `Collection glyph size mismatch: expected ${establishedSize}, received ${glyph.length}`,
+      );
+    }
+  }
 
   const collection: GlyphCollectionInstance = {
-    Add(key: string, example: string | Glyph) {
-      if (typeof example === "string") {
-        store[key] = Create(example, createOptions).glyph;
-        return;
-      }
+    get glyph() {
+      return aggregated;
+    },
 
-      if (!isGlyph(example)) {
+    Add(key: string, example: string | Glyph) {
+      let glyph: Glyph;
+
+      if (typeof example === "string") {
+        glyph = Create(example, createOptions).glyph;
+      } else if (isGlyph(example)) {
+        glyph = example;
+      } else {
         throw new Error("Collection.Add expects a string or Glyph");
       }
 
-      store[key] = example;
+      assertSize(glyph);
+      store[key] = glyph;
+      rebuild();
     },
 
     AddGroup(group: GlyphGroupInput) {
@@ -55,22 +88,32 @@ function createCollection(
       }
 
       const normalized = NormalizeGroup(group);
+      for (const glyph of Object.values(normalized)) {
+        assertSize(glyph);
+      }
       for (const [key, glyph] of Object.entries(normalized)) {
         store[key] = glyph;
       }
+      rebuild();
     },
 
     Remove(key: string) {
       delete store[key];
+      if (Object.keys(store).length === 0) {
+        establishedSize = undefined;
+      }
+      rebuild();
     },
 
     Clear() {
       for (const key of Object.keys(store)) {
         delete store[key];
       }
+      establishedSize = undefined;
+      rebuild();
     },
 
-    Examples() {
+    Collection() {
       return { ...store };
     },
 
@@ -80,13 +123,6 @@ function createCollection(
 
     Count() {
       return Object.keys(store).length;
-    },
-
-    Query(
-      index: GlyphIndexInstance,
-      queryOptions: GlyphQueryOptions = {},
-    ): GlyphQueryResult[] {
-      return CollectionQuery(collection, index, queryOptions);
     },
   };
 

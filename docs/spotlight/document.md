@@ -23,7 +23,7 @@ console.log(doc.size()); // chunk count
 | `chunker` | sentence / 128-word | `(text) => string[]` |
 | `create` | `{}` | Forwarded to `Create()` per chunk |
 | `normalize` | from `create` | Convenience override for create |
-| `aggregate` | `GroupAggregateSum` | Used when probe is a group |
+| `aggregate` | `GroupResultAggregatorSum` | Used when probe is a group |
 | `textOutput` | `false` | Rank/query return `string[]` when true |
 
 ## Default chunker

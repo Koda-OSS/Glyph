@@ -64,7 +64,7 @@ const hits = doc.query(
 );
 ```
 
-Group probes use `GroupAggregateSum` by default.
+Group probes use `GroupResultAggregatorSum` by default.
 
 ## textOutput
 

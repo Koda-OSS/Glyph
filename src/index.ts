@@ -7,8 +7,8 @@ export { Compare, CompareGlyphs } from "./core/compare";
 export {
   CreateGroup,
   CompareGroups,
-  GroupAggregateMax,
-  GroupAggregateSum,
+  GroupResultAggregatorMax,
+  GroupResultAggregatorSum,
 } from "./core/group";
 export { Serialize, Deserialize } from "./core/serialize";
 export {
@@ -20,7 +20,15 @@ export {
 export { TextStrip, TextFilter } from "./core/utils";
 export { index } from "./core/index";
 export { query } from "./query/query";
-export { collections, CollectionQuery } from "./collections/index";
+export {
+  collections,
+  CollectionAggregatorMin,
+  CollectionAggregatorMax,
+  CollectionAggregatorMean,
+  CollectionAggregatorMid,
+  CollectionAggregatorSum,
+  CollectionAggregatorSoftmax,
+} from "./collections/index";
 export { completions } from "./completions/index";
 export { spotlight } from "./spotlight/index";
 
@@ -39,13 +47,15 @@ export type {
   GlyphComparisonResult,
   GlyphComparisonOptions,
   GlyphGroupComparisonResult,
-  GroupAggregate,
-  GroupAggregateContext,
+  GroupResultAggregator,
+  GroupResultAggregatorContext,
   GlyphIndexMode,
   GlyphIndexOptions,
   GlyphIndexInstance,
   GlyphQueryOptions,
   GlyphQueryResult,
+  CollectionAggregator,
+  CollectionAggregatorContext,
   GlyphCollectionOptions,
   GlyphCollectionInstance,
   GlyphCompletionChainOptions,

@@ -7,7 +7,7 @@ import type {
   GlyphSpotlightResult,
 } from "../types";
 import { Compare, CompareGlyphs } from "../core/compare";
-import { GroupAggregateSum } from "../core/group";
+import { GroupResultAggregatorSum } from "../core/group";
 import { isGlyphGroup } from "../core/utils";
 
 /**
@@ -18,7 +18,7 @@ export function scoreChunks(
   compiled: readonly GlyphSpotlightCompiledChunk[],
   options: GlyphSpotlightOptions = {},
 ): GlyphSpotlightResult[] {
-  const aggregate = options.aggregate ?? GroupAggregateSum;
+  const aggregate = options.aggregate ?? GroupResultAggregatorSum;
   const groupProbe = isGlyphGroup(probe);
 
   const results: GlyphSpotlightResult[] = compiled.map((chunk) => {

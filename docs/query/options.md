@@ -9,7 +9,7 @@ interface GlyphQueryOptions {
   limit?: number;
   threshold?: number;
   normalize?: boolean;
-  aggregate?: GroupAggregate;
+  aggregate?: GroupResultAggregator;
   compare?: GlyphComparisonOptions;
 }
 ```
@@ -51,7 +51,7 @@ Skipped when:
 
 ## `aggregate`
 
-Group aggregate used when an index entry (or the probe) is a `GlyphGroup`. Default: `GroupAggregateMax` (max pairwise similarity).
+`GroupResultAggregator` used when an index entry (or the probe) is a `GlyphGroup`. Default: `GroupResultAggregatorMax` (max pairwise similarity).
 
 ```ts
 import { query } from "glyph-ts";
@@ -71,7 +71,7 @@ Extra options forwarded to `Compare()` for each entry.
 ```ts
 query(probe, idx, {
   compare: {
-    aggregate: GroupAggregateMax,
+    aggregate: GroupResultAggregatorMax,
   },
 });
 ```
