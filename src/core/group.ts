@@ -21,6 +21,17 @@ export const GroupAggregateMax: GroupAggregate = ({ scores }) => {
 };
 
 /**
+ * Sum pairwise similarities (Spotlight default for group probes).
+ */
+export const GroupAggregateSum: GroupAggregate = ({ scores }) => {
+  let total = 0;
+  for (const score of scores) {
+    total += score;
+  }
+  return total;
+};
+
+/**
  * Build a glyph group from glyphs or raw text strings.
  * Always returns a map (`{ "0": …, "1": … }`).
  */

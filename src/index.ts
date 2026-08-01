@@ -8,6 +8,7 @@ export {
   CreateGroup,
   CompareGroups,
   GroupAggregateMax,
+  GroupAggregateSum,
 } from "./core/group";
 export { Serialize, Deserialize } from "./core/serialize";
 export {
@@ -21,6 +22,7 @@ export { index } from "./core/index";
 export { query } from "./query/query";
 export { collections, CollectionQuery } from "./collections/index";
 export { completions } from "./completions/index";
+export { spotlight } from "./spotlight/index";
 
 export type {
   Glyph,
@@ -50,4 +52,12 @@ export type {
   GlyphCompletionOptions,
   GlyphCompletionResult,
   CompletionChainInstance,
+  GlyphSpotlightChunk,
+  GlyphSpotlightChunker,
+  GlyphSpotlightCompiledChunk,
+  GlyphSpotlightOptions,
+  GlyphSpotlightQueryOptions,
+  GlyphSpotlightRankOptions,
+  GlyphSpotlightResult,
+  GlyphSpotlightDocumentInstance,
 } from "./types";

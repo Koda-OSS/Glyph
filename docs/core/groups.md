@@ -74,6 +74,16 @@ import { GroupAggregateMax } from "glyph-ts";
 
 `[query] vs [a, b, c]` returns the best pairwise score. Use this for “does this text match any item in the set?”
 
+## Sum aggregate
+
+```ts
+import { GroupAggregateSum } from "glyph-ts";
+
+// ({ scores }) => scores.reduce((a, b) => a + b, 0)
+```
+
+Spotlight uses sum by default for group probes (multi-example evidence can exceed `1`).
+
 ## Custom aggregate
 
 ```ts

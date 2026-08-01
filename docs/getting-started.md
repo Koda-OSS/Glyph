@@ -62,6 +62,7 @@ You can pass a full record or `record.glyph` into `Compare` and `Serialize`.
 | Goal | Doc |
 | --- | --- |
 | Store many glyphs and search | [Building an index](./building-an-index.md) |
+| Rank chunks inside one document | [Your first spotlight](./your-first-spotlight.md) |
 | Suggest the next word | [Your first completion](./your-first-completion.md) |
 | Try it in the terminal | [Demo CLI](./demo.md) |
 | All exports | [API surface](./api-surface.md) |

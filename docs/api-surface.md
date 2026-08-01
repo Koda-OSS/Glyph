@@ -4,7 +4,7 @@
 
 > Every public export from `glyph-ts`, grouped by layer.
 
-Deep docs live under [Core](./core/glyph.md), [Index](./core/index.md), [Query](./query/query.md), [Collections](./collections/collection.md), and [Completions](./completions/chain.md).
+Deep docs live under [Core](./core/glyph.md), [Index](./core/index.md), [Query](./query/query.md), [Collections](./collections/collection.md), [Completions](./completions/chain.md), and [Spotlight](./spotlight/document.md).
 
 ## Core
 
@@ -18,6 +18,7 @@ Deep docs live under [Core](./core/glyph.md), [Index](./core/index.md), [Query](
 | `CreateGroup` | `(glyphs: Glyph[] \| string[]) => GlyphGroup` | [Groups](./core/groups.md) |
 | `CompareGroups` | `(group1, group2, options?) => GlyphComparisonResult` | [Groups](./core/groups.md) |
 | `GroupAggregateMax` | `GroupAggregate` | [Groups](./core/groups.md) |
+| `GroupAggregateSum` | `GroupAggregate` | [Groups](./core/groups.md) |
 | `Serialize` | `(Glyph \| GlyphSignature \| GlyphRecord) => string` | [Serialize](./core/serialize.md) |
 | `Deserialize` | `(string) => Glyph` | [Serialize](./core/serialize.md) |
 | `CreateTokens` | `(text, normalize?) => GlyphToken[]` | [Tokenize](./core/tokenize.md) |
@@ -213,3 +214,56 @@ interface CompletionChainInstance {
 ```
 
 Result fields: [Completion results](./completions/results.md).
+
+![Glyph Spotlight](/docs/media/RibbonSpotlight.png)
+
+## Spotlight
+
+### Functions
+
+| Export | Signature | Doc |
+| --- | --- | --- |
+| `spotlight.new` | `(content, options?) => GlyphSpotlightDocumentInstance` | [Document](./spotlight/document.md) |
+
+### Spotlight types
+
+```ts
+type GlyphSpotlightChunk = string;
+type GlyphSpotlightChunker = (text: string) => GlyphSpotlightChunk[];
+
+type GlyphSpotlightCompiledChunk = {
+  text: string;
+  glyph: Glyph;
+  length: number;
+};
+
+interface GlyphSpotlightOptions {
+  normalize?: boolean;
+  create?: GlyphCreateOptions;
+  aggregate?: GroupAggregate;  // default GroupAggregateSum for group probes
+  chunker?: GlyphSpotlightChunker;
+  textOutput?: boolean;        // default false
+}
+
+interface GlyphSpotlightQueryOptions extends GlyphSpotlightOptions {
+  limit?: number;
+  threshold?: number;          // default 0
+}
+
+interface GlyphSpotlightRankOptions extends GlyphSpotlightOptions {}
+
+interface GlyphSpotlightResult extends GlyphSpotlightCompiledChunk {
+  score: number;
+  comparison: GlyphComparisonResult;
+  matched?: string | number;
+}
+
+interface GlyphSpotlightDocumentInstance {
+  rank(probe, options?): GlyphSpotlightResult[] | string[];
+  query(probe, options?): GlyphSpotlightResult[] | string[];
+  chunks(): readonly GlyphSpotlightCompiledChunk[];
+  size(): number;
+}
+```
+
+See [Document](./spotlight/document.md), [Rank](./spotlight/rank.md), [Query](./spotlight/query.md).

@@ -1,6 +1,14 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
-import { Compare, completions, Create, index, query, Serialize } from "./src/index.ts";
+import {
+  Compare,
+  completions,
+  Create,
+  index,
+  query,
+  Serialize,
+  spotlight,
+} from "./src/index.ts";
 
 type Input = {
   label: string;
@@ -13,10 +21,12 @@ function printUsage(): never {
   console.error('  npm run demo -- "text a|text b"');
   console.error('  npm run demo -- search "your query"');
   console.error('  npm run demo -- complete "your prefix"');
+  console.error('  npm run demo -- spotlight <file-or-text> "your probe"');
   console.error("");
   console.error("Compare mode: each arg is a file path if it exists, otherwise literal text.");
   console.error("Search mode: indexes docs/**/*.md and ranks matches.");
   console.error("Complete mode: ingests docs and suggests next words for a prefix.");
+  console.error("Spotlight mode: chunks one document and ranks snippets against a probe.");
   process.exit(1);
 }
 
@@ -51,6 +61,14 @@ function loadDocs(): { key: string; text: string }[] {
     key: relative(docsDir, filePath).replaceAll("\\", "/"),
     text: readFileSync(filePath, "utf8"),
   }));
+}
+
+function truncate(text: string, max = 100): string {
+  const oneLine = text.replace(/\s+/g, " ").trim();
+  if (oneLine.length <= max) {
+    return oneLine;
+  }
+  return `${oneLine.slice(0, max - 1)}…`;
 }
 
 function runDocsComplete(prefix: string): void {
@@ -117,6 +135,38 @@ function runDocsSearch(searchText: string): void {
   for (const [i, hit] of results.entries()) {
     console.log(
       `${i + 1}. ${hit.key}  ${(hit.similarity * 100).toFixed(2)}%`,
+    );
+  }
+}
+
+function runSpotlight(contentArg: string, probeText: string): void {
+  const contentInput = resolveInput(contentArg);
+  const probe = Create(probeText).glyph;
+
+  const compileStarted = performance.now();
+  const doc = spotlight.new(contentInput.text);
+  const compileMs = performance.now() - compileStarted;
+
+  const rankStarted = performance.now();
+  const results = doc.query(probe, { limit: 5, threshold: 0 });
+  const rankMs = performance.now() - rankStarted;
+
+  console.log(`Content: ${contentInput.label}`);
+  console.log(
+    `Compiled ${doc.size()} chunks in ${compileMs.toFixed(2)} ms`,
+  );
+  console.log(`Ranked in ${rankMs.toFixed(2)} ms`);
+  console.log(`Probe: ${probeText}`);
+  console.log();
+
+  if (results.length === 0) {
+    console.log("No matches.");
+    return;
+  }
+
+  for (const [i, hit] of results.entries()) {
+    console.log(
+      `${i + 1}. ${(hit.score * 100).toFixed(2)}%  ${truncate(hit.text)}`,
     );
   }
 }
@@ -204,6 +254,17 @@ if (args[0] === "search" || args[0] === "--search") {
     printUsage();
   }
   runDocsComplete(prefix);
+} else if (args[0] === "spotlight" || args[0] === "--spotlight") {
+  const rest = args.slice(1);
+  if (rest.length < 2) {
+    printUsage();
+  }
+  const contentArg = rest[0]!;
+  const probeText = rest.slice(1).join(" ").trim();
+  if (!probeText) {
+    printUsage();
+  }
+  runSpotlight(contentArg, probeText);
 } else {
   const [leftArg, rightArg] = parseCompareArgs(process.argv);
   runCompare(leftArg, rightArg);

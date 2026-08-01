@@ -2,7 +2,7 @@
 
 # Demo CLI
 
-> Try compare, search, and complete against this repo without writing app code.
+> Try compare, search, complete, and spotlight against this repo without writing app code.
 
 The demo script is `demo.ts`. Run it with:
 
@@ -17,6 +17,7 @@ npm run demo -- <args>
 | Compare | `npm run demo -- <a> <b>` | Fingerprint two inputs and print similarity |
 | Search | `npm run demo -- search "<query>"` | Index `docs/**/*.md`, rank matches |
 | Complete | `npm run demo -- complete "<prefix>"` | Ingest docs, suggest next words |
+| Spotlight | `npm run demo -- spotlight <file-or-text> "<probe>"` | Chunk one document, rank snippets |
 
 ## Compare
 
@@ -61,18 +62,33 @@ npm run demo -- complete "how do groups"
 
 Output includes ingest time, complete time, and ranked tokens with score, count, and `source.key`.
 
+## Spotlight
+
+Chunks one document with `spotlight.new()`, then ranks snippets with `document.query()` (`limit: 5`, `threshold: 0`).
+
+The first argument after `spotlight` is a **file path** if it exists, otherwise **literal text**. Remaining args form the probe string.
+
+```bash
+npm run demo -- spotlight ./docs/core/index.md "LSH banding"
+npm run demo -- spotlight "Goodbye moon under quiet stars. Pasta recipe. Goodbye moon again." "Goodbye moon"
+```
+
+Output includes compile time, chunk count, rank time, and top snippets with scores.
+
 ## Tips
 
 | Tip | Detail |
 | --- | --- |
-| PowerShell | Prefer `search` / `complete` (not `--search`) so flags are not eaten |
+| PowerShell | Prefer `search` / `complete` / `spotlight` (not `--search`) so flags are not eaten |
 | Quoted prefixes | Wrap multi-word queries and prefixes in quotes |
-| Corpus | Both search and complete use live docs — edit docs, re-run, see new results |
+| Corpus | Search and complete use live docs — edit docs, re-run, see new results |
 
 ## See also
 
 - [Getting started](./getting-started.md)
 - [Building an index](./building-an-index.md)
 - [Your first completion](./your-first-completion.md)
+- [Your first spotlight](./your-first-spotlight.md)
+- [Spotlight document](./spotlight/document.md)
 - [Query](./query/query.md)
 - [Complete](./completions/complete.md)

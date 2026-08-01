@@ -91,6 +91,7 @@ The repo demo indexes `docs/**/*.md` and ranks matches. See [Demo CLI](./demo.md
 ```bash
 npm run demo -- search "how do groups work"
 npm run demo -- complete "how do groups"
+npm run demo -- spotlight ./docs/core/index.md "LSH banding"
 ```
 
 Output includes ingest/index time, query/complete time, and ranked results.

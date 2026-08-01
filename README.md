@@ -2,7 +2,7 @@
 
 > MinHash fingerprints for text. Compare fast. Search in memory.
 
-GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two glyphs, build an in-memory **index** and **query** it for ranked matches, or use **completions** for glyph-guided next-word suggestions.
+GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two glyphs, build an in-memory **index** and **query** it for ranked matches, use **spotlight** to rank chunks inside a document, or use **completions** for glyph-guided next-word suggestions.
 
 ![Glyph Ribbon](/docs/media/RibbonGlyph.png)
 
@@ -10,8 +10,10 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | --- | --- |
 | [Getting started](./docs/getting-started.md) | Install, first compare, mental model |
 | [Building an index](./docs/building-an-index.md) | Populate an index and run a query |
-| [Demo CLI](./docs/demo.md) | Compare, search, and complete from the terminal |
-| [API surface](./docs/api-surface.md) | Full export list (Core + Query + Collections + Completions) |
+| [Your first completion](./docs/your-first-completion.md) | Ingest docs and suggest the next word |
+| [Your first spotlight](./docs/your-first-spotlight.md) | Chunk a document and rank snippets |
+| [Demo CLI](./docs/demo.md) | Compare, search, complete, and spotlight from the terminal |
+| [API surface](./docs/api-surface.md) | Full export list (Core + Query + Collections + Completions + Spotlight) |
 
 ![Glyph Core](/docs/media/RibbonCore.png)
 
@@ -50,6 +52,15 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Completion options](./docs/completions/options.md) | `order`, `create`, `limit`, `minCount` |
 | [Completion results](./docs/completions/results.md) | `GlyphCompletionResult` shape |
 
+![Glyph Spotlight](/docs/media/RibbonSpotlight.png)
+
+| Doc | Topic |
+| --- | --- |
+| [Your first spotlight](./docs/your-first-spotlight.md) | Tutorial: chunk, rank, query |
+| [Document](./docs/spotlight/document.md) | `spotlight.new()`, chunk and fingerprint |
+| [Rank](./docs/spotlight/rank.md) | `document.rank()` score all chunks |
+| [Query](./docs/spotlight/query.md) | `document.query()` threshold + limit |
+
 ### Limits (current version)
 
 | Feature | Status |
@@ -59,6 +70,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | Direct (exact) scan via `mode: "direct"` | Implemented |
 | Collections (example probes) | Implemented |
 | Glyph completions (Markov + rank) | Implemented |
+| Spotlight (document chunk rank/query) | Implemented |
 | Disk persistence | Not implemented |
 | Chain persistence | Not implemented |
 
