@@ -5,6 +5,7 @@ import type {
   GlyphCollectionOptions,
   GlyphGroupInput,
 } from "../types";
+import { GlyphSizeMismatchError } from "../errors";
 import { Create } from "../core/create";
 import { isGlyph } from "../core/glyph";
 import { normalizeGroup } from "../core/group-input";
@@ -37,7 +38,7 @@ function createCollection(
       return;
     }
     if (glyph.length !== establishedSize) {
-      throw new Error(
+      throw new GlyphSizeMismatchError(
         `Collection glyph size mismatch: expected ${establishedSize}, received ${glyph.length}`,
       );
     }
@@ -133,5 +134,5 @@ function createCollection(
  * Glyph Collections namespace.
  */
 export const collections = {
-  new: createCollection,
+  New: createCollection,
 };

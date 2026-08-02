@@ -27,7 +27,7 @@ Deep docs live under [Core](./core/glyph.md), [Index](./core/index.md), [Query](
 | `Tokenize` | `(text, options?) => GlyphTokenizationResult` | [Tokenize](./core/tokenize.md) |
 | `TextFilter` | `(text) => string` | [Text normalization](./core/text-normalization.md) |
 | `TextStrip` | `(text) => string` | [Text normalization](./core/text-normalization.md) |
-| `index.new` | `(options?) => GlyphIndexInstance` | [Index](./core/index.md) |
+| `index.New` | `(options?) => GlyphIndexInstance` | [Index](./core/index.md) |
 
 ### Core types
 
@@ -98,17 +98,17 @@ interface GlyphIndexOptions {
 
 interface GlyphIndexInstance {
   readonly mode: GlyphIndexMode;
-  get(key: string): Glyph | GlyphGroup | undefined;
-  set(key: string, glyphs?: Glyph | GlyphGroupInput): void;
-  add(key: string, glyphs: Glyph | GlyphGroupInput): void;
-  remove(key: string): void;
-  has(key: string): boolean;
-  clear(): void;
-  size(): number;
-  keys(): IterableIterator<string>;
-  values(): IterableIterator<Glyph | GlyphGroup>;
-  entries(): IterableIterator<[string, Glyph | GlyphGroup]>;
-  candidateKeys(
+  Get(key: string): Glyph | GlyphGroup | undefined;
+  Set(key: string, glyphs?: Glyph | GlyphGroupInput): void;
+  Add(key: string, glyphs: Glyph | GlyphGroupInput): void;
+  Remove(key: string): void;
+  Has(key: string): boolean;
+  Clear(): void;
+  Size(): number;
+  Keys(): IterableIterator<string>;
+  Values(): IterableIterator<Glyph | GlyphGroup>;
+  Entries(): IterableIterator<[string, Glyph | GlyphGroup]>;
+  CandidateKeys(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
   ): IterableIterator<string>;
 }
@@ -122,11 +122,18 @@ See [Glyph](./core/glyph.md) and [Index](./core/index.md) for type notes.
 
 | Export | Signature | Doc |
 | --- | --- | --- |
-| `query` | `(queryGlyph, index, options?) => GlyphQueryResult[]` | [Query](./query/query.md) |
+| `query.New` | `(index) => GlyphQueryInstance` | [Query](./query/query.md) |
 
 ### Query types
 
 ```ts
+interface GlyphQueryInstance {
+  Search(
+    probe: Glyph | GlyphSignature | GlyphGroupInput,
+    options?: GlyphQueryOptions,
+  ): GlyphQueryResult[];
+}
+
 interface GlyphQueryOptions {
   limit?: number;
   threshold?: number;      // default 0
@@ -151,7 +158,7 @@ Result fields: [Query results](./query/results.md).
 
 | Export | Signature | Doc |
 | --- | --- | --- |
-| `collections.new` | `(options?) => GlyphCollectionInstance` | [Collections](./collections/collection.md) |
+| `collections.New` | `(options?) => GlyphCollectionInstance` | [Collections](./collections/collection.md) |
 | `CollectionAggregatorMin` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
 | `CollectionAggregatorMax` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
 | `CollectionAggregatorMean` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
@@ -197,7 +204,7 @@ See [Collections](./collections/collection.md) and [Aggregators](./collections/a
 
 | Export | Signature | Doc |
 | --- | --- | --- |
-| `completions.new` | `(options?) => CompletionChainInstance` | [Chain](./completions/chain.md) |
+| `completions.New` | `(options?) => CompletionChainInstance` | [Chain](./completions/chain.md) |
 
 ### Completions types
 
@@ -224,10 +231,10 @@ interface GlyphCompletionResult {
 }
 
 interface CompletionChainInstance {
-  ingest(key: string, text: string): void;
-  complete(prefix: string, options?: GlyphCompletionOptions): GlyphCompletionResult[];
-  clear(): void;
-  size(): number;
+  Ingest(key: string, text: string): void;
+  Complete(prefix: string, options?: GlyphCompletionOptions): GlyphCompletionResult[];
+  Clear(): void;
+  Size(): number;
 }
 ```
 
@@ -241,7 +248,7 @@ Result fields: [Completion results](./completions/results.md).
 
 | Export | Signature | Doc |
 | --- | --- | --- |
-| `spotlight.new` | `(content, options?) => GlyphSpotlightDocumentInstance` | [Document](./spotlight/document.md) |
+| `spotlight.New` | `(content, options?) => GlyphSpotlightDocumentInstance` | [Document](./spotlight/document.md) |
 
 ### Spotlight types
 
@@ -277,11 +284,21 @@ interface GlyphSpotlightResult extends GlyphSpotlightCompiledChunk {
 }
 
 interface GlyphSpotlightDocumentInstance {
-  rank(probe, options?): GlyphSpotlightResult[] | string[];
-  query(probe, options?): GlyphSpotlightResult[] | string[];
-  chunks(): readonly GlyphSpotlightCompiledChunk[];
-  size(): number;
+  Rank(probe, options?): GlyphSpotlightResult[] | string[];
+  Query(probe, options?): GlyphSpotlightResult[] | string[];
+  Chunks(): readonly GlyphSpotlightCompiledChunk[];
+  Size(): number;
 }
 ```
 
 See [Document](./spotlight/document.md), [Rank](./spotlight/rank.md), [Query](./spotlight/query.md).
+
+## Errors
+
+Named error classes exported from `glyph-ts`:
+
+| Export | When thrown |
+| --- | --- |
+| `GlyphSizeMismatchError` | Compare or collection operations receive glyphs of different lengths |
+| `EmptyGroupError` | Group compare runs on an empty group (default message: `"Cannot compare empty glyph groups"`) |
+| `InvalidSerializedGlyphError` | `Deserialize()` receives malformed or unsupported serialized glyph data |

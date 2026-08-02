@@ -11,7 +11,7 @@ import {
   TextFilter,
   TextStrip,
   Tokenize,
-} from "../index";
+} from "../main";
 
 describe("TextFilter", () => {
   it("lowercases and removes disallowed characters from tokens", () => {

@@ -1,7 +1,10 @@
 import type {
   GlyphComparisonOptions,
   GlyphComparisonResult,
+  GlyphGroupInput,
+  GlyphSignature,
   GroupResultAggregator,
+  Glyph,
 } from "./core";
 
 export interface GlyphQueryOptions {
@@ -17,4 +20,11 @@ export interface GlyphQueryResult {
   similarity: number;
   comparison: GlyphComparisonResult;
   matched?: string | number;
+}
+
+export interface GlyphQueryInstance {
+  Search(
+    probe: Glyph | GlyphSignature | GlyphGroupInput,
+    options?: GlyphQueryOptions,
+  ): GlyphQueryResult[];
 }

@@ -2,7 +2,7 @@
 
 # Completion results
 
-> Shape of each suggestion from `complete()`.
+> Shape of each suggestion from `Complete()`.
 
 ```ts
 interface GlyphCompletionResult {
@@ -57,7 +57,7 @@ Results are sorted by:
 
 ## Empty results
 
-`complete()` returns `[]` when:
+`Complete()` returns `[]` when:
 
 - Prefix has fewer than `order - 1` tokens (for `order > 1`)
 - No transitions exist for the resolved state key

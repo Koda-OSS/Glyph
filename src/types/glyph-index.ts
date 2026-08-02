@@ -11,17 +11,17 @@ export interface GlyphIndexOptions {
 
 export interface GlyphIndexInstance {
   readonly mode: GlyphIndexMode;
-  get(key: string): Glyph | GlyphGroup | undefined;
-  set(key: string, glyphs?: Glyph | GlyphGroupInput): void;
-  add(key: string, glyphs: Glyph | GlyphGroupInput): void;
-  remove(key: string): void;
-  has(key: string): boolean;
-  clear(): void;
-  size(): number;
-  keys(): IterableIterator<string>;
-  values(): IterableIterator<Glyph | GlyphGroup>;
-  entries(): IterableIterator<[string, Glyph | GlyphGroup]>;
-  candidateKeys(
+  Get(key: string): Glyph | GlyphGroup | undefined;
+  Set(key: string, glyphs?: Glyph | GlyphGroupInput): void;
+  Add(key: string, glyphs: Glyph | GlyphGroupInput): void;
+  Remove(key: string): void;
+  Has(key: string): boolean;
+  Clear(): void;
+  Size(): number;
+  Keys(): IterableIterator<string>;
+  Values(): IterableIterator<Glyph | GlyphGroup>;
+  Entries(): IterableIterator<[string, Glyph | GlyphGroup]>;
+  CandidateKeys(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
   ): IterableIterator<string>;
 }

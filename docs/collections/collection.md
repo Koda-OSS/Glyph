@@ -6,14 +6,14 @@
 
 A **collection** holds a keyed glyph group (`Record<string, Glyph>`). On every mutation it rebuilds `collection.glyph` by running a **CollectionAggregator** once per slot across all members.
 
-Collections do **not** query an index. Pass `col.glyph` or `col.Collection()` to `query()` yourself when you want search.
+Collections do **not** query an index. Pass `col.glyph` or `col.Collection()` to `query.New(idx).Search()` yourself when you want search.
 
 ## Create a collection
 
 ```ts
 import { CollectionAggregatorSoftmax, collections } from "glyph-ts";
 
-const col = collections.new({
+const col = collections.New({
   create: { size: 128, normalize: true },
   aggregator: CollectionAggregatorSoftmax, // default
 });
@@ -42,7 +42,7 @@ const col = collections.new({
 ```ts
 import { Create, collections } from "glyph-ts";
 
-const col = collections.new({ create: { size: 128 } });
+const col = collections.New({ create: { size: 128 } });
 
 col.Add("moon", "goodbye moon farewell night");
 col.Add("sun", Create("goodbye sun hello day").glyph);
@@ -61,13 +61,15 @@ When `Count() === 0`, `glyph` is a zero-filled `Uint32Array` sized from `create.
 ## Search yourself
 
 ```ts
-import { query } from "glyph-ts";
+import { index, query } from "glyph-ts";
+
+const idx = index.New();
 
 // Fast single-glyph probe (pre-aggregated)
-query(col.glyph, index, { limit: 5 });
+query.New(idx).Search(col.glyph, { limit: 5 });
 
 // Full group compare (every member vs index entries)
-query(col.Collection(), index, { limit: 5 });
+query.New(idx).Search(col.Collection(), { limit: 5 });
 ```
 
 ## See also

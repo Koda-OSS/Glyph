@@ -4,14 +4,14 @@
 
 > Build a Markov chain with document glyphs attached to each transition.
 
-`completions.new()` creates an in-memory **completion chain**. Ingest text to learn transitions. Call `complete()` to rank next-word candidates by glyph similarity.
+`completions.New()` creates an in-memory **completion chain**. Ingest text to learn transitions. Call `Complete()` to rank next-word candidates by glyph similarity.
 
 ## Create a chain
 
 ```ts
 import { completions } from "glyph-ts";
 
-const chain = completions.new({
+const chain = completions.New({
   order: 3,
   create: { size: 128, normalize: true },
 });
@@ -25,11 +25,11 @@ const chain = completions.new({
 ## Ingest documents
 
 ```ts
-chain.ingest("moon-doc", "goodbye moon farewell night");
-chain.ingest("sun-doc", "goodbye sun hello day");
+chain.Ingest("moon-doc", "goodbye moon farewell night");
+chain.Ingest("sun-doc", "goodbye sun hello day");
 ```
 
-`ingest(key, text)` requires a **key**. That key is stored on every transition and returned as `source.key` on completion results.
+`Ingest(key, text)` requires a **key**. That key is stored on every transition and returned as `source.key` on completion results.
 
 Per ingest:
 
@@ -51,16 +51,16 @@ Map<stateKey, Map<nextToken, { count, sources[] }>>
 | `count` | How many times this transition was seen |
 | `sources` | `{ key, glyph, weight }` per ingested document |
 
-Duplicate `ingest` calls with the **same key** merge weights on matching transitions.
+Duplicate `Ingest` calls with the **same key** merge weights on matching transitions.
 
 ## Chain methods
 
 | Method | Behavior |
 | --- | --- |
-| `ingest(key, text)` | Add transitions from a keyed document |
-| `complete(prefix, options?)` | Rank next-token candidates |
-| `clear()` | Remove all states |
-| `size()` | Number of distinct state keys |
+| `Ingest(key, text)` | Add transitions from a keyed document |
+| `Complete(prefix, options?)` | Rank next-token candidates |
+| `Clear()` | Remove all states |
+| `Size()` | Number of distinct state keys |
 
 ## See also
 

@@ -4,11 +4,11 @@ import {
   CollectionAggregatorMin,
   Create,
   collections,
-} from "../index";
+} from "../main";
 
 describe("glyph collections", () => {
   it("adds strings and glyphs, supports Has/Count/Remove/Clear", () => {
-    const col = collections.new({ create: { size: 32 } });
+    const col = collections.New({ create: { size: 32 } });
     const glyph = Create("prebuilt glyph", { size: 32 }).glyph;
 
     expect(col.Count()).toBe(0);
@@ -38,7 +38,7 @@ describe("glyph collections", () => {
   });
 
   it("AddGroup merges record keys and normalizes arrays", () => {
-    const col = collections.new({ create: { size: 32 } });
+    const col = collections.New({ create: { size: 32 } });
     const a = Create("alpha", { size: 32 }).glyph;
     const b = Create("beta", { size: 32 }).glyph;
     const c = Create("gamma", { size: 32 }).glyph;
@@ -59,7 +59,7 @@ describe("glyph collections", () => {
   });
 
   it("Collection returns a snapshot copy", () => {
-    const col = collections.new({ create: { size: 32 } });
+    const col = collections.New({ create: { size: 32 } });
     col.Add("x", "example text");
 
     const snap = col.Collection();
@@ -79,7 +79,7 @@ describe("glyph collections", () => {
       typeof Create
     >["glyph"];
 
-    const col = collections.new({
+    const col = collections.New({
       create: { size: 3 },
       aggregator: CollectionAggregatorMin,
     });
@@ -102,7 +102,7 @@ describe("glyph collections", () => {
       typeof Create
     >["glyph"];
 
-    const col = collections.new({
+    const col = collections.New({
       create: { size: 3 },
       aggregator: CollectionAggregatorMax,
     });
@@ -113,7 +113,7 @@ describe("glyph collections", () => {
   });
 
   it("throws on glyph size mismatch", () => {
-    const col = collections.new({ create: { size: 4 } });
+    const col = collections.New({ create: { size: 4 } });
     col.Add("a", Uint32Array.from([1, 2, 3, 4]) as ReturnType<
       typeof Create
     >["glyph"]);

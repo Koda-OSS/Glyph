@@ -18,8 +18,13 @@ export {
   Tokenize,
 } from "./core/tokenize";
 export { TextStrip, TextFilter } from "./core/text";
-export { index } from "./core/index";
-export { query } from "./query/query";
+export {
+  EmptyGroupError,
+  GlyphSizeMismatchError,
+  InvalidSerializedGlyphError,
+} from "./errors";
+export { index } from "./index/index";
+export { query } from "./query/index";
 export {
   collections,
   CollectionAggregatorMin,
@@ -54,6 +59,7 @@ export type {
   GlyphIndexInstance,
   GlyphQueryOptions,
   GlyphQueryResult,
+  GlyphQueryInstance,
   CollectionAggregator,
   CollectionAggregatorContext,
   GlyphCollectionOptions,

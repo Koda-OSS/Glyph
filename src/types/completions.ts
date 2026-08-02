@@ -26,11 +26,11 @@ export interface GlyphCompletionResult {
 }
 
 export interface CompletionChainInstance {
-  ingest(key: string, text: string): void;
-  complete(
+  Ingest(key: string, text: string): void;
+  Complete(
     prefix: string,
     options?: GlyphCompletionOptions,
   ): GlyphCompletionResult[];
-  clear(): void;
-  size(): number;
+  Clear(): void;
+  Size(): number;
 }

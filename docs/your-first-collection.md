@@ -11,7 +11,7 @@ A **collection** holds keyed examples and rebuilds `collection.glyph` on every c
 ```ts
 import { collections } from "glyph-ts";
 
-const col = collections.new({ create: { size: 128 } });
+const col = collections.New({ create: { size: 128 } });
 
 col.Add("moon", "goodbye moon farewell night");
 col.Add("sun", "goodbye sun hello day");
@@ -26,11 +26,11 @@ Pass `col.glyph` to compare or query — one probe instead of scoring every exam
 ```ts
 import { Create, index, query } from "glyph-ts";
 
-const idx = index.new({ mode: "direct" });
-idx.set("doc-a", Create("goodbye moon stars").glyph);
-idx.set("doc-b", Create("unrelated pasta").glyph);
+const idx = index.New({ mode: "direct" });
+idx.Set("doc-a", Create("goodbye moon stars").glyph);
+idx.Set("doc-b", Create("unrelated pasta").glyph);
 
-const hits = query(col.glyph, idx, { limit: 5, normalize: true });
+const hits = query.New(idx).Search(col.glyph, { limit: 5, normalize: true });
 ```
 
 For full group semantics (every member vs each index entry), pass `col.Collection()` instead.
@@ -44,7 +44,7 @@ import {
   collections,
 } from "glyph-ts";
 
-const col = collections.new({
+const col = collections.New({
   create: { size: 128 },
   aggregator: CollectionAggregatorMax,
 });

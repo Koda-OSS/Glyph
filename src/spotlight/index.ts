@@ -7,5 +7,5 @@ import { createSpotlightDocument } from "./document";
  * Glyph Spotlight namespace.
  */
 export const spotlight = {
-  new: createSpotlightDocument,
+  New: createSpotlightDocument,
 };

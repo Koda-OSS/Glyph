@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Create, index, query } from "../../index";
+import { Create, index, query } from "../main";
 import { resolveBandConfig, hashBand } from "./in_bands";
 
 describe("resolveBandConfig", () => {
@@ -32,59 +32,59 @@ describe("resolveBandConfig", () => {
 
 describe.each(["bands", "direct"] as const)("glyph index (%s)", (mode) => {
   const create = () =>
-    index.new(mode === "bands" ? { mode: "bands" } : { mode: "direct" });
+    index.New(mode === "bands" ? { mode: "bands" } : { mode: "direct" });
 
-  it("supports set/get/has/remove/size/clear", () => {
+  it("supports Set/Get/Has/Remove/Size/Clear", () => {
     const idx = create();
     expect(idx.mode).toBe(mode);
     const glyph = Create("hello world").glyph;
 
-    expect(idx.size()).toBe(0);
-    idx.set("a", glyph);
-    expect(idx.has("a")).toBe(true);
-    expect(idx.get("a")).toBe(glyph);
-    expect(idx.size()).toBe(1);
+    expect(idx.Size()).toBe(0);
+    idx.Set("a", glyph);
+    expect(idx.Has("a")).toBe(true);
+    expect(idx.Get("a")).toBe(glyph);
+    expect(idx.Size()).toBe(1);
 
-    idx.set("a");
-    expect(idx.has("a")).toBe(false);
-    expect(idx.size()).toBe(0);
+    idx.Set("a");
+    expect(idx.Has("a")).toBe(false);
+    expect(idx.Size()).toBe(0);
 
-    idx.set("b", glyph);
-    idx.remove("b");
-    expect(idx.has("b")).toBe(false);
+    idx.Set("b", glyph);
+    idx.Remove("b");
+    expect(idx.Has("b")).toBe(false);
 
-    idx.set("c", glyph);
-    idx.clear();
-    expect(idx.size()).toBe(0);
+    idx.Set("c", glyph);
+    idx.Clear();
+    expect(idx.Size()).toBe(0);
   });
 
-  it("promotes a single glyph to a map group on add", () => {
+  it("promotes a single glyph to a map group on Add", () => {
     const idx = create();
     const a = Create("alpha").glyph;
     const b = Create("beta").glyph;
 
-    idx.set("doc", a);
-    idx.add("doc", b);
+    idx.Set("doc", a);
+    idx.Add("doc", b);
 
-    const value = idx.get("doc");
+    const value = idx.Get("doc");
     expect(Array.isArray(value)).toBe(false);
     expect(value).toEqual({ "0": a, "1": b });
   });
 
-  it("creates a key on add when missing", () => {
+  it("creates a key on Add when missing", () => {
     const idx = create();
     const glyph = Create("fresh key").glyph;
-    idx.add("new", glyph);
-    expect(idx.get("new")).toBe(glyph);
+    idx.Add("new", glyph);
+    expect(idx.Get("new")).toBe(glyph);
   });
 
-  it("normalizes array set into a map", () => {
+  it("normalizes array Set into a map", () => {
     const idx = create();
     const a = Create("one").glyph;
     const b = Create("two").glyph;
 
-    idx.set("doc", [a, b]);
-    expect(idx.get("doc")).toEqual({ "0": a, "1": b });
+    idx.Set("doc", [a, b]);
+    expect(idx.Get("doc")).toEqual({ "0": a, "1": b });
   });
 
   it("merges into record groups with auto keys", () => {
@@ -93,10 +93,10 @@ describe.each(["bands", "direct"] as const)("glyph index (%s)", (mode) => {
     const b = Create("two").glyph;
     const c = Create("three").glyph;
 
-    idx.set("doc", { title: a });
-    idx.add("doc", [b, c]);
+    idx.Set("doc", { title: a });
+    idx.Add("doc", [b, c]);
 
-    const value = idx.get("doc");
+    const value = idx.Get("doc");
     expect(value).toMatchObject({
       title: a,
       "0": b,
@@ -107,55 +107,55 @@ describe.each(["bands", "direct"] as const)("glyph index (%s)", (mode) => {
 
 describe("glyph index bands", () => {
   it("defaults to bands mode", () => {
-    expect(index.new().mode).toBe("bands");
+    expect(index.New().mode).toBe("bands");
   });
 
-  it("candidateKeys finds exact and near-duplicate matches", () => {
-    const idx = index.new();
+  it("CandidateKeys finds exact and near-duplicate matches", () => {
+    const idx = index.New();
     const moon = Create("Goodbye moon under the quiet stars tonight").glyph;
     const near = Create(
       "Goodbye moon under the quiet stars tonight again",
     ).glyph;
     const pasta = Create("totally unrelated pasta recipe").glyph;
 
-    idx.set("moon", moon);
-    idx.set("near", near);
-    idx.set("pasta", pasta);
+    idx.Set("moon", moon);
+    idx.Set("near", near);
+    idx.Set("pasta", pasta);
 
-    const candidates = [...idx.candidateKeys(moon)];
+    const candidates = [...idx.CandidateKeys(moon)];
     expect(candidates).toContain("moon");
     expect(candidates).toContain("near");
   });
 
-  it("remove clears band membership", () => {
-    const idx = index.new();
+  it("Remove clears band membership", () => {
+    const idx = index.New();
     const moon = Create("Goodbye moon").glyph;
-    idx.set("moon", moon);
-    idx.remove("moon");
+    idx.Set("moon", moon);
+    idx.Remove("moon");
 
-    expect([...idx.candidateKeys(moon)]).toEqual([]);
+    expect([...idx.CandidateKeys(moon)]).toEqual([]);
   });
 
   it("rejects glyph size mismatch", () => {
-    const idx = index.new({ glyphSize: 128 });
-    idx.set("a", Create("alpha").glyph);
+    const idx = index.New({ glyphSize: 128 });
+    idx.Set("a", Create("alpha").glyph);
     expect(() =>
-      idx.set("b", Create("beta", { size: 64 }).glyph),
+      idx.Set("b", Create("beta", { size: 64 }).glyph),
     ).toThrow(/Glyph size mismatch/);
   });
 
   it("requires bands/rows for non-128 sizes", () => {
-    const idx = index.new();
+    const idx = index.New();
     expect(() =>
-      idx.set("a", Create("alpha", { size: 64 }).glyph),
+      idx.Set("a", Create("alpha", { size: 64 }).glyph),
     ).toThrow(/bands\/rows required/);
   });
 
   it("accepts explicit bands for size 64", () => {
-    const idx = index.new({ bands: 8, rows: 8 });
+    const idx = index.New({ bands: 8, rows: 8 });
     const glyph = Create("alpha", { size: 64 }).glyph;
-    idx.set("a", glyph);
-    expect([...idx.candidateKeys(glyph)]).toContain("a");
+    idx.Set("a", glyph);
+    expect([...idx.CandidateKeys(glyph)]).toContain("a");
   });
 
   it("hashBand is stable for identical slices", () => {
@@ -165,12 +165,12 @@ describe("glyph index bands", () => {
   });
 });
 
-describe("glyph index direct candidateKeys", () => {
+describe("glyph index direct CandidateKeys", () => {
   it("yields every key", () => {
-    const idx = index.new({ mode: "direct" });
-    idx.set("a", Create("a").glyph);
-    idx.set("b", Create("b").glyph);
-    expect([...idx.candidateKeys(Create("a").glyph)].sort()).toEqual([
+    const idx = index.New({ mode: "direct" });
+    idx.Set("a", Create("a").glyph);
+    idx.Set("b", Create("b").glyph);
+    expect([...idx.CandidateKeys(Create("a").glyph)].sort()).toEqual([
       "a",
       "b",
     ]);
@@ -179,16 +179,16 @@ describe("glyph index direct candidateKeys", () => {
 
 describe("bands query smoke", () => {
   it("ranks exact and near-duplicate hits via default bands index", () => {
-    const idx = index.new();
+    const idx = index.New();
     const probeText = "Goodbye moon under the quiet stars tonight";
-    idx.set("moon", Create(probeText).glyph);
-    idx.set(
+    idx.Set("moon", Create(probeText).glyph);
+    idx.Set(
       "near",
       Create("Goodbye moon under the quiet stars tonight again").glyph,
     );
-    idx.set("pasta", Create("totally unrelated pasta recipe").glyph);
+    idx.Set("pasta", Create("totally unrelated pasta recipe").glyph);
 
-    const results = query(Create(probeText).glyph, idx, {
+    const results = query.New(idx).Search(Create(probeText).glyph, {
       threshold: 0.1,
       limit: 2,
     });

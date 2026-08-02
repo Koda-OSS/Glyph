@@ -23,7 +23,7 @@ export interface GlyphSpotlightOptions {
   /** Applies only when the probe is a group. Default: sum (not max/average). */
   aggregate?: GroupResultAggregator;
   chunker?: GlyphSpotlightChunker;
-  /** When true, rank/query return string[] ordered by score descending. */
+  /** When true, Rank/Query return string[] ordered by score descending. */
   textOutput?: boolean;
 }
 
@@ -41,24 +41,24 @@ export interface GlyphSpotlightResult extends GlyphSpotlightCompiledChunk {
 }
 
 export interface GlyphSpotlightDocumentInstance {
-  rank(
+  Rank(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
     options?: GlyphSpotlightRankOptions & { textOutput?: false },
   ): GlyphSpotlightResult[];
-  rank(
+  Rank(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
     options: GlyphSpotlightRankOptions & { textOutput: true },
   ): string[];
 
-  query(
+  Query(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
     options?: GlyphSpotlightQueryOptions & { textOutput?: false },
   ): GlyphSpotlightResult[];
-  query(
+  Query(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
     options: GlyphSpotlightQueryOptions & { textOutput: true },
   ): string[];
 
-  chunks(): readonly GlyphSpotlightCompiledChunk[];
-  size(): number;
+  Chunks(): readonly GlyphSpotlightCompiledChunk[];
+  Size(): number;
 }

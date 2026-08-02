@@ -7,11 +7,11 @@
 ```ts
 import { Create, spotlight } from "glyph-ts";
 
-const doc = spotlight.new(
+const doc = spotlight.New(
   "Goodbye moon under quiet stars. Unrelated pasta recipe.",
 );
 
-const results = doc.rank(Create("Goodbye moon under quiet stars").glyph);
+const results = doc.Rank(Create("Goodbye moon under quiet stars").glyph);
 
 for (const hit of results) {
   console.log(hit.score, hit.text);
@@ -40,7 +40,7 @@ When the probe is a `GlyphGroup`, pairwise scores are aggregated with `GroupResu
 ## textOutput
 
 ```ts
-const texts = doc.rank(probe, { textOutput: true });
+const texts = doc.Rank(probe, { textOutput: true });
 // string[] — same order as full results
 ```
 

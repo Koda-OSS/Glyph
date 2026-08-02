@@ -5,7 +5,7 @@ import {
   GroupResultAggregatorMax,
   GroupResultAggregatorSum,
   spotlight,
-} from "../index";
+} from "../main";
 import { defaultSpotlightChunker } from "./chunker";
 
 describe("defaultSpotlightChunker", () => {
@@ -43,40 +43,39 @@ describe("spotlight document", () => {
   const sample =
     "Goodbye moon under quiet stars. Pasta recipe with tomato sauce. Goodbye moon again tonight.";
 
-  it("compiles chunks and reports size", () => {
-    const doc = spotlight.new(sample);
-    expect(doc.size()).toBeGreaterThan(0);
-    expect(doc.chunks().length).toBe(doc.size());
+  it("compiles chunks and reports Size", () => {
+    const doc = spotlight.New(sample);
+    expect(doc.Size()).toBeGreaterThan(0);
+    expect(doc.Chunks().length).toBe(doc.Size());
   });
 
   it("uses a custom chunker", () => {
-    const doc = spotlight.new(sample, {
+    const doc = spotlight.New(sample, {
       chunker: (text) => text.split("|").map((s) => s.trim()).filter(Boolean),
     });
-    // sample has no pipes → one chunk of whole text after custom split of one piece
-    expect(doc.size()).toBe(1);
+    expect(doc.Size()).toBe(1);
   });
 
-  it("chunks() returns a snapshot copy", () => {
-    const doc = spotlight.new(sample);
-    const snap = doc.chunks();
+  it("Chunks() returns a snapshot copy", () => {
+    const doc = spotlight.New(sample);
+    const snap = doc.Chunks();
     (snap as GlyphSpotlightCompiledChunkMutable[])[0]!.text = "mutated";
-    expect(doc.chunks()[0]!.text).not.toBe("mutated");
+    expect(doc.Chunks()[0]!.text).not.toBe("mutated");
   });
 
-  it("empty content yields empty rank/query", () => {
-    const doc = spotlight.new("   ");
-    expect(doc.size()).toBe(0);
-    expect(doc.rank(Create("anything").glyph)).toEqual([]);
-    expect(doc.query(Create("anything").glyph)).toEqual([]);
+  it("empty content yields empty Rank/Query", () => {
+    const doc = spotlight.New("   ");
+    expect(doc.Size()).toBe(0);
+    expect(doc.Rank(Create("anything").glyph)).toEqual([]);
+    expect(doc.Query(Create("anything").glyph)).toEqual([]);
   });
 
-  it("rank returns GlyphSpotlightResult[] sorted by score", () => {
-    const doc = spotlight.new(sample);
+  it("Rank returns GlyphSpotlightResult[] sorted by score", () => {
+    const doc = spotlight.New(sample);
     const probe = Create("Goodbye moon under quiet stars").glyph;
-    const results = doc.rank(probe);
+    const results = doc.Rank(probe);
 
-    expect(results.length).toBe(doc.size());
+    expect(results.length).toBe(doc.Size());
     expect(results[0]!).toMatchObject({
       text: expect.any(String),
       score: expect.any(Number),
@@ -91,36 +90,36 @@ describe("spotlight document", () => {
     expect(results[0]!.score).toBeGreaterThan(results[results.length - 1]!.score);
   });
 
-  it("rank with textOutput returns string[] sorted by score", () => {
-    const doc = spotlight.new(sample);
+  it("Rank with textOutput returns string[] sorted by score", () => {
+    const doc = spotlight.New(sample);
     const probe = Create("Goodbye moon under quiet stars").glyph;
-    const texts = doc.rank(probe, { textOutput: true });
-    const full = doc.rank(probe);
+    const texts = doc.Rank(probe, { textOutput: true });
+    const full = doc.Rank(probe);
 
     expect(Array.isArray(texts)).toBe(true);
     expect(typeof texts[0]).toBe("string");
     expect(texts).toEqual(full.map((r) => r.text));
   });
 
-  it("query respects threshold and limit", () => {
-    const doc = spotlight.new(sample);
+  it("Query respects threshold and limit", () => {
+    const doc = spotlight.New(sample);
     const probe = Create("Goodbye moon under quiet stars").glyph;
 
-    const all = doc.query(probe, { threshold: 0 });
-    expect(all.length).toBe(doc.size());
+    const all = doc.Query(probe, { threshold: 0 });
+    expect(all.length).toBe(doc.Size());
 
-    const limited = doc.query(probe, { threshold: 0, limit: 1 });
+    const limited = doc.Query(probe, { threshold: 0, limit: 1 });
     expect(limited).toHaveLength(1);
     expect(limited[0]!.score).toBe(all[0]!.score);
 
-    const high = doc.query(probe, { threshold: 0.99 });
+    const high = doc.Query(probe, { threshold: 0.99 });
     expect(high.every((r) => r.score >= 0.99)).toBe(true);
   });
 
-  it("query with textOutput returns filtered string[]", () => {
-    const doc = spotlight.new(sample);
+  it("Query with textOutput returns filtered string[]", () => {
+    const doc = spotlight.New(sample);
     const probe = Create("Goodbye moon under quiet stars").glyph;
-    const texts = doc.query(probe, {
+    const texts = doc.Query(probe, {
       threshold: 0,
       limit: 2,
       textOutput: true,
@@ -131,7 +130,7 @@ describe("spotlight document", () => {
   });
 
   it("group probe uses sum aggregate by default", () => {
-    const doc = spotlight.new(
+    const doc = spotlight.New(
       "serialize glyphs to strings please. compare two fingerprints carefully.",
     );
     const probe = CreateGroup([
@@ -139,21 +138,21 @@ describe("spotlight document", () => {
       "encode fingerprint",
     ]);
 
-    const withSum = doc.rank(probe);
-    const withMax = doc.rank(probe, { aggregate: GroupResultAggregatorMax });
+    const withSum = doc.Rank(probe);
+    const withMax = doc.Rank(probe, { aggregate: GroupResultAggregatorMax });
 
     expect(withSum[0]!.score).toBeGreaterThanOrEqual(withMax[0]!.score);
     expect(GroupResultAggregatorSum).toBeDefined();
   });
 
   it("group probe may populate matched", () => {
-    const doc = spotlight.new("Goodbye moon under quiet stars tonight.");
+    const doc = spotlight.New("Goodbye moon under quiet stars tonight.");
     const probe = {
       moon: Create("Goodbye moon under quiet stars").glyph,
       pasta: Create("totally unrelated pasta recipe").glyph,
     };
 
-    const results = doc.rank(probe);
+    const results = doc.Rank(probe);
     expect(results[0]!.matched).toBeDefined();
   });
 });

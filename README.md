@@ -25,12 +25,12 @@ console.log(Compare(a, b).similarity); // ~0–1 Jaccard estimate
 
 ## Documentation
 
-Full doc index: **[docs/README.md](./docs/README.md)** · [Changelog](./CHANGELOG.md)
+Full doc index: **[docs/README.md](./docs/README.md)** · [Changelog](./CHANGELOG.md) · [Migration 0.4 → 1.0](./docs/migration-0.4-to-1.0.md)
 
 | Start here | Topic |
 | --- | --- |
 | [Getting started](./docs/getting-started.md) | Install, first compare, mental model |
-| [Building an index](./docs/building-an-index.md) | Store glyphs and run `query()` |
+| [Building an index](./docs/building-an-index.md) | Store glyphs and run `query.New(idx).Search()` |
 | [Your first collection](./docs/your-first-collection.md) | Aggregate examples into `col.glyph` |
 | [Your first spotlight](./docs/your-first-spotlight.md) | Chunk and rank document snippets |
 | [Demo CLI](./docs/demo.md) | Try modes from the terminal |

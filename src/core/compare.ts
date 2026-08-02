@@ -6,6 +6,7 @@ import type {
   GlyphGroupInput,
   GlyphSignature,
 } from "../types";
+import { GlyphSizeMismatchError } from "../errors";
 import { CompareGroups } from "./group";
 import { isGlyph, isGlyphSignature, resolveGlyph } from "./glyph";
 import { isGlyphGroup, normalizeGroup } from "./group-input";
@@ -22,7 +23,7 @@ export function CompareGlyphs(
   const right = resolveGlyph(b);
 
   if (left.length !== right.length) {
-    throw new Error(
+    throw new GlyphSizeMismatchError(
       `Glyph size mismatch: ${left.length} vs ${right.length}`,
     );
   }

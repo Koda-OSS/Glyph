@@ -2,13 +2,14 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import {
   Compare,
+  collections,
   completions,
   Create,
   index,
   query,
   Serialize,
   spotlight,
-} from "./src/index.ts";
+} from "./src/main.ts";
 
 type Input = {
   label: string;
@@ -22,11 +23,13 @@ function printUsage(): never {
   console.error('  npm run demo -- search "your query"');
   console.error('  npm run demo -- complete "your prefix"');
   console.error('  npm run demo -- spotlight <file-or-text> "your probe"');
+  console.error('  npm run demo -- collection "example a" "example b" ...');
   console.error("");
   console.error("Compare mode: each arg is a file path if it exists, otherwise literal text.");
   console.error("Search mode: indexes docs/**/*.md and ranks matches.");
   console.error("Complete mode: ingests docs and suggests next words for a prefix.");
   console.error("Spotlight mode: chunks one document and ranks snippets against a probe.");
+  console.error("Collection mode: builds a Softmax-aggregated collection glyph from examples.");
   process.exit(1);
 }
 
@@ -73,16 +76,16 @@ function truncate(text: string, max = 100): string {
 
 function runDocsComplete(prefix: string): void {
   const docs = loadDocs();
-  const chain = completions.new();
+  const chain = completions.New();
 
   const ingestStarted = performance.now();
   for (const doc of docs) {
-    chain.ingest(doc.key, doc.text);
+    chain.Ingest(doc.key, doc.text);
   }
   const ingestMs = performance.now() - ingestStarted;
 
   const completeStarted = performance.now();
-  const results = chain.complete(prefix, { limit: 5, minCount: 1 });
+  const results = chain.Complete(prefix, { limit: 5, minCount: 1 });
   const completeMs = performance.now() - completeStarted;
 
   console.log(
@@ -106,23 +109,25 @@ function runDocsComplete(prefix: string): void {
 
 function runDocsSearch(searchText: string): void {
   const docs = loadDocs();
-  const idx = index.new();
+  const idx = index.New();
 
   const indexStarted = performance.now();
   for (const doc of docs) {
-    idx.set(doc.key, Create(doc.text).glyph);
+    idx.Set(doc.key, Create(doc.text).glyph);
   }
   const indexMs = performance.now() - indexStarted;
 
   const queryStarted = performance.now();
-  const results = query(Create(searchText).glyph, idx, {
+  const results = query.New(idx).Search(Create(searchText).glyph, {
     limit: 5,
     threshold: 0,
     normalize: true,
   });
   const queryMs = performance.now() - queryStarted;
 
-  console.log(`Indexed ${idx.size()} docs in ${indexMs.toFixed(3)} ms at ${(indexMs / idx.size()).toFixed(3)}ms per doc`);
+  console.log(
+    `Indexed ${idx.Size()} docs in ${indexMs.toFixed(3)} ms at ${(indexMs / idx.Size()).toFixed(3)}ms per doc`,
+  );
   console.log(`Queried in ${queryMs.toFixed(2)} ms`);
   console.log(`Query: ${searchText}`);
   console.log();
@@ -144,16 +149,16 @@ function runSpotlight(contentArg: string, probeText: string): void {
   const probe = Create(probeText).glyph;
 
   const compileStarted = performance.now();
-  const doc = spotlight.new(contentInput.text);
+  const doc = spotlight.New(contentInput.text);
   const compileMs = performance.now() - compileStarted;
 
   const rankStarted = performance.now();
-  const results = doc.query(probe, { limit: 5, threshold: 0 });
+  const results = doc.Query(probe, { limit: 5, threshold: 0 });
   const rankMs = performance.now() - rankStarted;
 
   console.log(`Content: ${contentInput.label}`);
   console.log(
-    `Compiled ${doc.size()} chunks in ${compileMs.toFixed(2)} ms`,
+    `Compiled ${doc.Size()} chunks in ${compileMs.toFixed(2)} ms`,
   );
   console.log(`Ranked in ${rankMs.toFixed(2)} ms`);
   console.log(`Probe: ${probeText}`);
@@ -169,6 +174,20 @@ function runSpotlight(contentArg: string, probeText: string): void {
       `${i + 1}. ${(hit.score * 100).toFixed(2)}%  ${truncate(hit.text)}`,
     );
   }
+}
+
+function runCollection(examples: string[]): void {
+  const col = collections.New();
+
+  for (const [i, example] of examples.entries()) {
+    col.Add(`ex-${i + 1}`, example);
+  }
+
+  console.log(`Collection count: ${col.Count()}`);
+  console.log(`Aggregated glyph size: ${col.glyph.length}`);
+  console.log(`First 8 slots: [${[...col.glyph.slice(0, 8)].join(", ")}]`);
+  console.log();
+  console.log("Keys:", Object.keys(col.Collection()).join(", "));
 }
 
 function parseCompareArgs(argv: string[]): [string, string] {
@@ -265,6 +284,12 @@ if (args[0] === "search" || args[0] === "--search") {
     printUsage();
   }
   runSpotlight(contentArg, probeText);
+} else if (args[0] === "collection" || args[0] === "--collection") {
+  const examples = args.slice(1).map((s) => s.trim()).filter(Boolean);
+  if (examples.length === 0) {
+    printUsage();
+  }
+  runCollection(examples);
 } else {
   const [leftArg, rightArg] = parseCompareArgs(process.argv);
   runCompare(leftArg, rightArg);

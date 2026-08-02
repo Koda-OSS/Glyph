@@ -47,7 +47,7 @@ function createChain(
   const states = new Map<StateKey, Map<GlyphToken, TransitionEntry>>();
 
   return {
-    ingest(key: string, text: string) {
+    Ingest(key: string, text: string) {
       // Stripped unigrams only — no punctuation/symbols in chain tokens.
       const tokens = CreateUnigrams(text, normalize);
       if (tokens.length === 0) {
@@ -63,7 +63,7 @@ function createChain(
       }
     },
 
-    complete(
+    Complete(
       prefix: string,
       completeOptions: GlyphCompletionOptions = {},
     ): GlyphCompletionResult[] {
@@ -116,11 +116,11 @@ function createChain(
       return results.slice(0, limit);
     },
 
-    clear() {
+    Clear() {
       states.clear();
     },
 
-    size() {
+    Size() {
       return states.size;
     },
   };
@@ -205,5 +205,5 @@ function scoreTransition(
  * Glyph Completions namespace.
  */
 export const completions = {
-  new: createChain,
+  New: createChain,
 };

@@ -2,6 +2,40 @@
 
 All notable changes to **glyph-ts** are documented here.
 
+## 1.0.0
+
+### Breaking changes
+
+- **PascalCase API** — all instance methods and factories use `New()` / PascalCase methods
+- **Query wraps an index** — `query(probe, idx, options)` → `query.New(idx).Search(probe, options)`
+- Index methods renamed: `Get`, `Set`, `Add`, `Remove`, `Has`, `Clear`, `Size`, `Keys`, `Values`, `Entries`, `CandidateKeys`
+- Completions: `Ingest`, `Complete`, `Clear`, `Size`
+- Spotlight: `Rank`, `Query`, `Chunks`, `Size`
+- Factories: `index.New`, `collections.New`, `completions.New`, `spotlight.New`, `query.New`
+
+See [Migration 0.4 → 1.0](./docs/migration-0.4-to-1.0.md).
+
+### Structure
+
+- Index module moved from `src/core/index/` to `src/index/`
+- Package barrel is `src/main.ts` (published entry remains `glyph-ts` → `dist/index.*`)
+
+### Errors
+
+- `GlyphSizeMismatchError`
+- `EmptyGroupError`
+- `InvalidSerializedGlyphError`
+
+### Other
+
+- Demo CLI: `collection` mode
+- Docs updated for 1.0 surface
+
+### Deferred (post-1.0)
+
+- Index disk persistence
+- Completion chain persistence
+
 ## 0.4.4
 
 ### Internal

@@ -1,6 +1,7 @@
-import type { Glyph, GlyphGroup, GlyphGroupInput } from "../../types";
-import { isGlyph } from "../glyph";
-import { normalizeGroup } from "../group-input";
+import type { Glyph, GlyphGroup, GlyphGroupInput } from "../types";
+import { GlyphSizeMismatchError } from "../errors";
+import { isGlyph } from "../core/glyph";
+import { normalizeGroup } from "../core/group-input";
 
 export type IndexValue = Glyph | GlyphGroup;
 export type IndexInput = Glyph | GlyphGroupInput;
@@ -64,7 +65,7 @@ export function assertUniformGlyphSize(
 
   for (const glyph of glyphs) {
     if (glyph.length !== size) {
-      throw new Error(
+      throw new GlyphSizeMismatchError(
         `Glyph size mismatch: expected ${size}, received ${glyph.length}`,
       );
     }

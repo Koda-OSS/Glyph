@@ -2,10 +2,10 @@
 
 # Complete a prefix
 
-> Rank next-word candidates with `complete()`.
+> Rank next-word candidates with `Complete()`.
 
 ```ts
-const results = chain.complete("goodbye", {
+const results = chain.Complete("goodbye", {
   limit: 5,
   minCount: 1,
 });

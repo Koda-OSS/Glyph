@@ -4,9 +4,10 @@ import type {
   GlyphIndexInstance,
   GlyphIndexOptions,
   GlyphSignature,
-} from "../../types";
-import { isGlyph, isGlyphSignature, resolveGlyph } from "../glyph";
-import { isGlyphGroup } from "../group-input";
+} from "../types";
+import { GlyphSizeMismatchError } from "../errors";
+import { isGlyph, isGlyphSignature, resolveGlyph } from "../core/glyph";
+import { isGlyphGroup } from "../core/group-input";
 import { createDirectIndex } from "./in_direct";
 import {
   assertUniformGlyphSize,
@@ -102,7 +103,7 @@ function resolveProbeGlyphs(
     return flattenToGlyphs(probe);
   }
 
-  throw new Error("Invalid probe for candidateKeys");
+  throw new Error("Invalid probe for CandidateKeys");
 }
 
 /**
@@ -135,7 +136,7 @@ export function createBandsIndex(
     if (config === null) {
       config = resolveBandConfig(size, bandOptions);
     } else if (size !== config.glyphSize) {
-      throw new Error(
+      throw new GlyphSizeMismatchError(
         `Glyph size mismatch: expected ${config.glyphSize}, received ${size}`,
       );
     }
@@ -185,28 +186,28 @@ export function createBandsIndex(
   return {
     mode: "bands",
 
-    get(key: string) {
-      return direct.get(key);
+    Get(key: string) {
+      return direct.Get(key);
     },
 
-    set(key: string, glyphs?: IndexInput) {
-      const previous = direct.get(key);
+    Set(key: string, glyphs?: IndexInput) {
+      const previous = direct.Get(key);
       if (previous !== undefined) {
         unindexGlyphs(key, flattenToGlyphs(previous));
       }
 
       if (glyphs === undefined) {
-        direct.set(key);
+        direct.Set(key);
         return;
       }
 
       const stored = flattenToGlyphs(glyphs);
       ensureConfig(stored);
-      direct.set(key, glyphs);
-      indexGlyphs(key, flattenToGlyphs(direct.get(key)!));
+      direct.Set(key, glyphs);
+      indexGlyphs(key, flattenToGlyphs(direct.Get(key)!));
     },
 
-    add(key: string, glyphs: IndexInput) {
+    Add(key: string, glyphs: IndexInput) {
       const incoming = flattenToGlyphs(glyphs);
       if (incoming.length === 0) {
         return;
@@ -214,59 +215,59 @@ export function createBandsIndex(
 
       ensureConfig(incoming);
 
-      const previous = direct.get(key);
+      const previous = direct.Get(key);
       if (previous !== undefined) {
         unindexGlyphs(key, flattenToGlyphs(previous));
       }
 
-      direct.add(key, glyphs);
+      direct.Add(key, glyphs);
 
-      const stored = direct.get(key);
+      const stored = direct.Get(key);
       if (stored !== undefined) {
         indexGlyphs(key, flattenToGlyphs(stored));
       }
     },
 
-    remove(key: string) {
-      const previous = direct.get(key);
+    Remove(key: string) {
+      const previous = direct.Get(key);
       if (previous !== undefined) {
         unindexGlyphs(key, flattenToGlyphs(previous));
       }
-      direct.remove(key);
+      direct.Remove(key);
     },
 
-    has(key: string) {
-      return direct.has(key);
+    Has(key: string) {
+      return direct.Has(key);
     },
 
-    clear() {
-      direct.clear();
+    Clear() {
+      direct.Clear();
       tables.clear();
       if (options.glyphSize === undefined) {
         config = null;
       }
     },
 
-    size() {
-      return direct.size();
+    Size() {
+      return direct.Size();
     },
 
-    keys() {
-      return direct.keys();
+    Keys() {
+      return direct.Keys();
     },
 
-    values() {
-      return direct.values();
+    Values() {
+      return direct.Values();
     },
 
-    entries() {
-      return direct.entries();
+    Entries() {
+      return direct.Entries();
     },
 
-    *candidateKeys(
+    *CandidateKeys(
       probe: Glyph | GlyphSignature | GlyphGroupInput,
     ): IterableIterator<string> {
-      if (config === null || direct.size() === 0) {
+      if (config === null || direct.Size() === 0) {
         return;
       }
 

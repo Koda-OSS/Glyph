@@ -15,6 +15,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Your first spotlight](./your-first-spotlight.md) | Chunk a document and rank snippets |
 | [Demo CLI](./demo.md) | Compare, search, complete, and spotlight from the terminal |
 | [API surface](./api-surface.md) | Full export list (Core + Query + Collections + Completions + Spotlight) |
+| [Migration 0.4 → 1.0](./migration-0.4-to-1.0.md) | PascalCase API and `query.New` changes |
 
 ![Glyph Core](/docs/media/RibbonCore.png)
 
@@ -27,13 +28,13 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Serialize](./core/serialize.md) | `Serialize()`, `Deserialize()`, string formats |
 | [Tokenize](./core/tokenize.md) | Tokens, unigrams, vgrams |
 | [Text normalization](./core/text-normalization.md) | `TextFilter`, `TextStrip` |
-| [Index](./core/index.md) | `index.new()`, bands (default) or direct store |
+| [Index](./core/index.md) | `index.New()`, bands (default) or direct store |
 
 ![Glyph Query](/docs/media/RibbonQuery.png)
 
 | Doc | Topic |
 | --- | --- |
-| [Query](./query/query.md) | `query()` ranked search |
+| [Query](./query/query.md) | `query.New(idx).Search()` ranked search |
 | [Query options](./query/options.md) | `limit`, `threshold`, `normalize`, `aggregate` |
 | [Query results](./query/results.md) | `GlyphQueryResult` shape |
 
@@ -41,7 +42,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 
 | Doc | Topic |
 | --- | --- |
-| [Collections](./collections/collection.md) | `collections.new()`, keyed glyphs + `glyph` |
+| [Collections](./collections/collection.md) | `collections.New()`, keyed glyphs + `glyph` |
 | [Your first collection](./your-first-collection.md) | Tutorial: aggregate and query |
 | [Aggregators](./collections/aggregate.md) | Slot-wise `CollectionAggregator` built-ins |
 
@@ -49,8 +50,8 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 
 | Doc | Topic |
 | --- | --- |
-| [Chain](./completions/chain.md) | `completions.new()`, ingest, storage |
-| [Complete](./completions/complete.md) | `complete()` ranked next-word suggestions |
+| [Chain](./completions/chain.md) | `completions.New()`, Ingest, storage |
+| [Complete](./completions/complete.md) | `Complete()` ranked next-word suggestions |
 | [Completion options](./completions/options.md) | `order`, `create`, `limit`, `minCount` |
 | [Completion results](./completions/results.md) | `GlyphCompletionResult` shape |
 
@@ -58,10 +59,10 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 
 | Doc | Topic |
 | --- | --- |
-| [Your first spotlight](./your-first-spotlight.md) | Tutorial: chunk, rank, query |
-| [Document](./spotlight/document.md) | `spotlight.new()`, chunk and fingerprint |
-| [Rank](./spotlight/rank.md) | `document.rank()` score all chunks |
-| [Query](./spotlight/query.md) | `document.query()` threshold + limit |
+| [Your first spotlight](./your-first-spotlight.md) | Tutorial: chunk, Rank, Query |
+| [Document](./spotlight/document.md) | `spotlight.New()`, chunk and fingerprint |
+| [Rank](./spotlight/rank.md) | `document.Rank()` score all chunks |
+| [Query](./spotlight/query.md) | `document.Query()` threshold + limit |
 
 ### Limits (current version)
 
@@ -73,8 +74,8 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | Collections (slot-wise glyph aggregate) | Implemented |
 | Glyph completions (Markov + rank) | Implemented |
 | Spotlight (document chunk rank/query) | Implemented |
-| Disk persistence | Not implemented |
-| Chain persistence | Not implemented |
+| Disk persistence | Planned post-1.0 |
+| Chain persistence | Planned post-1.0 |
 
 ### License
 

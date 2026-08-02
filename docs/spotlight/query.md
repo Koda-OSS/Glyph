@@ -9,9 +9,9 @@ Primary use case: feature extraction — probe with example glyphs (emails, URLs
 ```ts
 import { CreateGroup, spotlight } from "glyph-ts";
 
-const doc = spotlight.new(longArticleText);
+const doc = spotlight.New(longArticleText);
 
-const hits = doc.query(
+const hits = doc.Query(
   CreateGroup(["user@example.com", "https://example.com/path"]),
   { threshold: 0.2, limit: 10 },
 );
@@ -29,14 +29,14 @@ for (const hit of hits) {
 | `limit` | omitted | Keep at most N results after sort |
 | `textOutput` | `false` | Return `string[]` instead of `GlyphSpotlightResult[]` |
 | `aggregate` | sum | Group probe aggregate |
-| `chunker` / `create` | — | Only apply at `spotlight.new` (ignored if passed only to query) |
+| `chunker` / `create` | — | Only apply at `spotlight.New` (ignored if passed only to Query) |
 
-Compile-time options (`chunker`, `create`, `normalize`) belong on `spotlight.new`. Query-time options are `threshold`, `limit`, `textOutput`, and `aggregate`.
+Compile-time options (`chunker`, `create`, `normalize`) belong on `spotlight.New`. Query-time options are `threshold`, `limit`, `textOutput`, and `aggregate`.
 
 ## textOutput
 
 ```ts
-const snippets = doc.query(probe, {
+const snippets = doc.Query(probe, {
   threshold: 0.15,
   limit: 5,
   textOutput: true,

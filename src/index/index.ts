@@ -1,4 +1,4 @@
-import type { GlyphIndexInstance, GlyphIndexOptions } from "../../types";
+import type { GlyphIndexInstance, GlyphIndexOptions } from "../types";
 import { createBandsIndex } from "./in_bands";
 import { createDirectIndex } from "./in_direct";
 
@@ -21,5 +21,5 @@ export function createIndex(
  * Glyph index namespace.
  */
 export const index = {
-  new: createIndex,
+  New: createIndex,
 };

@@ -5,6 +5,7 @@ import type {
   GlyphGroupComparisonResult,
   GroupResultAggregator,
 } from "../types";
+import { EmptyGroupError } from "../errors";
 import { Create } from "./create";
 import { CompareGlyphs } from "./compare";
 import {
@@ -66,7 +67,7 @@ export function CompareGroups(
   const rightEntries = groupEntries(right);
 
   if (leftEntries.length === 0 || rightEntries.length === 0) {
-    throw new Error("Cannot compare empty glyph groups");
+    throw new EmptyGroupError();
   }
 
   const results: GlyphGroupComparisonResult[] = [];

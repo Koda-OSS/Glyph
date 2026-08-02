@@ -2,16 +2,17 @@
 
 # Query
 
-> Rank index entries against a probe glyph with `query()`.
+> Wrap an index with `query.New(idx)`, then rank entries with `Search()`.
 
-`query()` ranks `candidateKeys` from the index against the probe, filters by threshold, sorts by similarity, and optionally limits and normalizes results.
+Query is a **first-class module** that wraps a `GlyphIndexInstance`. The index owns storage and `CandidateKeys`; query owns probe → ranked results.
 
 ## Signature
 
 ```ts
-query(
-  queryGlyph: Glyph | GlyphSignature | GlyphGroup,
-  glyphIndex: GlyphIndexInstance,
+query.New(index: GlyphIndexInstance): GlyphQueryInstance
+
+instance.Search(
+  probe: Glyph | GlyphSignature | GlyphGroupInput,
   options?: GlyphQueryOptions,
 ): GlyphQueryResult[]
 ```
@@ -21,12 +22,12 @@ query(
 ```ts
 import { Create, index, query } from "glyph-ts";
 
-const idx = index.new();
-idx.set("moon", Create("Goodbye moon").glyph);
-idx.set("sun", Create("Goodbye sun").glyph);
-idx.set("pasta", Create("unrelated pasta recipe").glyph);
+const idx = index.New();
+idx.Set("moon", Create("Goodbye moon").glyph);
+idx.Set("sun", Create("Goodbye sun").glyph);
+idx.Set("pasta", Create("unrelated pasta recipe").glyph);
 
-const results = query(Create("Goodbye moon").glyph, idx, {
+const results = query.New(idx).Search(Create("Goodbye moon").glyph, {
   limit: 5,
   threshold: 0.1,
   normalize: true,
@@ -36,9 +37,10 @@ const results = query(Create("Goodbye moon").glyph, idx, {
 ## Flow
 
 ```text
-for each key in index.candidateKeys(queryGlyph):
-  value = index.get(key)
-  comparison = Compare(queryGlyph, value, compareOptions)
+q = query.New(index)
+for each key in index.CandidateKeys(probe):
+  value = index.Get(key)
+  comparison = Compare(probe, value, compareOptions)
   if comparison.similarity < threshold: skip
   collect { key, similarity, comparison }
 
@@ -59,10 +61,11 @@ Pass `aggregate` or `compare` in options. See [Query options](./options.md).
 
 ## Performance
 
-By default the index uses **LSH banding** (`mode: "bands"`). `query()` scores `candidateKeys` from band collisions, not every key. Use `index.new({ mode: "direct" })` for an exact full scan. See [Index](../core/index.md).
+By default the index uses **LSH banding** (`mode: "bands"`). `Search` scores `CandidateKeys` from band collisions, not every key. Use `index.New({ mode: "direct" })` for an exact full scan. See [Index](../core/index.md).
 
 ## See also
 
 - [Query options](./options.md)
 - [Query results](./results.md)
 - [Index](../core/index.md)
+- [Migration 0.4 → 1.0](../migration-0.4-to-1.0.md)

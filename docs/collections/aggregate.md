@@ -30,7 +30,7 @@ import {
   collections,
 } from "glyph-ts";
 
-const col = collections.new({
+const col = collections.New({
   create: { size: 128 },
   aggregator: CollectionAggregatorMax,
 });
@@ -50,7 +50,7 @@ const first: CollectionAggregator = (values, context) => {
   return values[0] ?? 0;
 };
 
-const col = collections.new({ aggregator: first });
+const col = collections.New({ aggregator: first });
 ```
 
 ## Rebuild timing
@@ -60,10 +60,11 @@ const col = collections.new({ aggregator: first });
 ## Using the result
 
 ```ts
-import { Compare, query } from "glyph-ts";
+import { Compare, index, query } from "glyph-ts";
 
+const idx = index.New();
 Compare(col.glyph, probe);
-query(col.glyph, index, { limit: 10 });
+query.New(idx).Search(col.glyph, { limit: 10 });
 ```
 
 ## See also

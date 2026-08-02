@@ -36,15 +36,15 @@ export function createSpotlightDocument(
     }),
   );
 
-  function rank(
+  function Rank(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
     rankOptions?: GlyphSpotlightRankOptions & { textOutput?: false },
   ): GlyphSpotlightResult[];
-  function rank(
+  function Rank(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
     rankOptions: GlyphSpotlightRankOptions & { textOutput: true },
   ): string[];
-  function rank(
+  function Rank(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
     rankOptions: GlyphSpotlightRankOptions = {},
   ): GlyphSpotlightResult[] | string[] {
@@ -52,15 +52,15 @@ export function createSpotlightDocument(
     return formatOutput(scored, rankOptions.textOutput);
   }
 
-  function query(
+  function Query(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
     queryOptions?: GlyphSpotlightQueryOptions & { textOutput?: false },
   ): GlyphSpotlightResult[];
-  function query(
+  function Query(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
     queryOptions: GlyphSpotlightQueryOptions & { textOutput: true },
   ): string[];
-  function query(
+  function Query(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
     queryOptions: GlyphSpotlightQueryOptions = {},
   ): GlyphSpotlightResult[] | string[] {
@@ -77,12 +77,12 @@ export function createSpotlightDocument(
   }
 
   return {
-    rank,
-    query,
-    chunks() {
+    Rank,
+    Query,
+    Chunks() {
       return compiled.map((chunk) => ({ ...chunk }));
     },
-    size() {
+    Size() {
       return compiled.length;
     },
   };

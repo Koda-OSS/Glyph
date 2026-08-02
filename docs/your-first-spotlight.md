@@ -1,10 +1,10 @@
-![Glyph Spotlight](/docs/media/GlyphSpotlightBanner.png)
+![Glyph Spotlight](/docs/media/RibbonSpotlightBanner.png)
 
 # Your first spotlight
 
 > Chunk a document. Rank snippets against a probe glyph.
 
-Spotlight compiles one document into fingerprinted chunks, then scores each chunk against a probe. Use **rank** to inspect every chunk, or **query** to filter by threshold.
+Spotlight compiles one document into fingerprinted chunks, then scores each chunk against a probe. Use **Rank** to inspect every chunk, or **Query** to filter by threshold.
 
 ## What you will build
 
@@ -18,11 +18,11 @@ Spotlight compiles one document into fingerprinted chunks, then scores each chun
 ```ts
 import { spotlight } from "glyph-ts";
 
-const doc = spotlight.new(
+const doc = spotlight.New(
   "Goodbye moon under quiet stars. Pasta recipe with tomato. Goodbye moon again.",
 );
 
-console.log(doc.size()); // number of chunks
+console.log(doc.Size()); // number of chunks
 ```
 
 ## Rank all chunks
@@ -30,10 +30,10 @@ console.log(doc.size()); // number of chunks
 ```ts
 import { Create, spotlight } from "glyph-ts";
 
-const doc = spotlight.new("...");
+const doc = spotlight.New("...");
 const probe = Create("Goodbye moon under quiet stars").glyph;
 
-const results = doc.rank(probe);
+const results = doc.Rank(probe);
 
 for (const hit of results) {
   console.log(hit.score.toFixed(2), hit.text);
@@ -45,7 +45,7 @@ Each result is a `GlyphSpotlightResult` with `text`, `glyph`, `score`, and `comp
 ## Query with threshold
 
 ```ts
-const hits = doc.query(probe, {
+const hits = doc.Query(probe, {
   threshold: 0.15,
   limit: 5,
 });
@@ -58,7 +58,7 @@ Pass a `GlyphGroup` to match multiple examples (emails, URLs, phrases):
 ```ts
 import { CreateGroup } from "glyph-ts";
 
-const hits = doc.query(
+const hits = doc.Query(
   CreateGroup(["user@example.com", "support@example.com"]),
   { threshold: 0.2, limit: 10 },
 );
@@ -71,7 +71,7 @@ Group probes use `GroupResultAggregatorSum` by default.
 Return chunk text only, sorted by score:
 
 ```ts
-const snippets = doc.query(probe, {
+const snippets = doc.Query(probe, {
   threshold: 0.1,
   limit: 3,
   textOutput: true,

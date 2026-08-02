@@ -4,18 +4,18 @@
 
 > Chunk a document, fingerprint each piece, rank against a probe.
 
-`spotlight.new(content, options?)` compiles text into fingerprinted chunks. Call `rank` or `query` on the returned document.
+`spotlight.New(content, options?)` compiles text into fingerprinted chunks. Call `Rank` or `Query` on the returned document.
 
 ## Create a document
 
 ```ts
 import { Create, spotlight } from "glyph-ts";
 
-const doc = spotlight.new(
+const doc = spotlight.New(
   "Goodbye moon under quiet stars. Pasta recipe with tomato. Goodbye moon again.",
 );
 
-console.log(doc.size()); // chunk count
+console.log(doc.Size()); // chunk count
 ```
 
 | Option | Default | Meaning |
@@ -24,7 +24,7 @@ console.log(doc.size()); // chunk count
 | `create` | `{}` | Forwarded to `Create()` per chunk |
 | `normalize` | from `create` | Convenience override for create |
 | `aggregate` | `GroupResultAggregatorSum` | Used when probe is a group |
-| `textOutput` | `false` | Rank/query return `string[]` when true |
+| `textOutput` | `false` | Rank/Query return `string[]` when true |
 
 ## Default chunker
 
@@ -39,12 +39,12 @@ Pass `chunker` to replace this entirely.
 
 | Method | Behavior |
 | --- | --- |
-| `rank(probe, options?)` | Score every chunk; sort by score descending |
-| `query(probe, options?)` | Same as rank, then filter by `threshold` / `limit` |
-| `chunks()` | Snapshot of compiled chunks (`text`, `glyph`, `length`) |
-| `size()` | Number of compiled chunks |
+| `Rank(probe, options?)` | Score every chunk; sort by score descending |
+| `Query(probe, options?)` | Same as Rank, then filter by `threshold` / `limit` |
+| `Chunks()` | Snapshot of compiled chunks (`text`, `glyph`, `length`) |
+| `Size()` | Number of compiled chunks |
 
-Both `rank` and `query` return `GlyphSpotlightResult[]` by default. With `textOutput: true`, they return `string[]` (chunk text only, same order).
+Both `Rank` and `Query` return `GlyphSpotlightResult[]` by default. With `textOutput: true`, they return `string[]` (chunk text only, same order).
 
 ## See also
 
