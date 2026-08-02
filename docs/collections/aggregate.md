@@ -17,12 +17,12 @@ This is different from a **GroupResultAggregator**, which collapses pairwise *si
 
 | Export | Formula | Notes |
 | --- | --- | --- |
-| `CollectionAggregatorMin` | `min(values)` | **Default** |
+| `CollectionAggregatorSoftmax` | `(sum(v³) / n) ** (1/3)` | Power mean, exponent 3 — **Default** |
+| `CollectionAggregatorMin` | `min(values)` | |
 | `CollectionAggregatorMax` | `max(values)` | |
 | `CollectionAggregatorMean` | `sum / n` | Rounded to uint32 |
 | `CollectionAggregatorMid` | `(min + max) / 2` | |
 | `CollectionAggregatorSum` | `sum(values)` | Clamped to `0xFFFFFFFF` |
-| `CollectionAggregatorSoftmax` | `(sum(v³) / n) ** (1/3)` | Power mean, exponent 3 |
 
 ```ts
 import {

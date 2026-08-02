@@ -174,7 +174,7 @@ type CollectionAggregator = (
 
 interface GlyphCollectionOptions {
   create?: GlyphCreateOptions;
-  aggregator?: CollectionAggregator; // default CollectionAggregatorMin
+  aggregator?: CollectionAggregator; // default CollectionAggregatorSoftmax
 }
 
 interface GlyphCollectionInstance {

@@ -11,18 +11,18 @@ Collections do **not** query an index. Pass `col.glyph` or `col.Collection()` to
 ## Create a collection
 
 ```ts
-import { CollectionAggregatorMin, collections } from "glyph-ts";
+import { CollectionAggregatorSoftmax, collections } from "glyph-ts";
 
 const col = collections.new({
   create: { size: 128, normalize: true },
-  aggregator: CollectionAggregatorMin, // default
+  aggregator: CollectionAggregatorSoftmax, // default
 });
 ```
 
 | Option | Default | Meaning |
 | --- | --- | --- |
 | `create` | `{}` | Forwarded to `Create()` when `Add` receives a string |
-| `aggregator` | `CollectionAggregatorMin` | Slot-wise function that builds `glyph` |
+| `aggregator` | `CollectionAggregatorSoftmax` | Slot-wise function that builds `glyph` |
 
 ## Methods
 

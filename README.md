@@ -1,6 +1,6 @@
 ![Glyph Banner](/docs/media/GlyphBanner.png)
 
-> MinHash fingerprints for text. Compare fast. Search in memory.
+> Compare fast. Search in memory. Spotlight documents. Aggregate collections.
 
 GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two glyphs, build an in-memory **index** and **query** it for ranked matches, use **spotlight** to rank chunks inside a document, or use **completions** for glyph-guided next-word suggestions.
 
@@ -76,7 +76,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 
 ### License
 
-Mozilla Public Licence Version 2.0
+Mozilla Public License 2.0 — see [LICENCE](./LICENCE).
 
 <div align="center">
   <table>

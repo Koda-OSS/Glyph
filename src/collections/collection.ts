@@ -8,7 +8,6 @@ import type {
 import { Create } from "../core/create";
 import { isGlyph, NormalizeGroup } from "../core/utils";
 import {
-  CollectionAggregatorMin,
   CollectionAggregatorSoftmax,
   rebuildAggregatedGlyph,
 } from "./aggregate";
