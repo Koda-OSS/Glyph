@@ -1,18 +1,20 @@
 import { describe, expect, it } from "vitest";
 import {
-  CollectionQuery,
-  collections,
+  CollectionAggregatorMax,
+  CollectionAggregatorMin,
   Create,
-  index,
-} from "../index";
+  collections,
+} from "../main";
 
 describe("glyph collections", () => {
   it("adds strings and glyphs, supports Has/Count/Remove/Clear", () => {
-    const col = collections.new({ create: { size: 32 } });
+    const col = collections.New({ create: { size: 32 } });
     const glyph = Create("prebuilt glyph", { size: 32 }).glyph;
 
     expect(col.Count()).toBe(0);
     expect(col.Has("a")).toBe(false);
+    expect(col.glyph.length).toBe(32);
+    expect([...col.glyph].every((v) => v === 0)).toBe(true);
 
     col.Add("a", "hello world");
     col.Add("b", glyph);
@@ -20,7 +22,7 @@ describe("glyph collections", () => {
     expect(col.Has("a")).toBe(true);
     expect(col.Has("b")).toBe(true);
     expect(col.Count()).toBe(2);
-    expect(col.Examples().b).toBe(glyph);
+    expect(col.Collection().b).toBe(glyph);
 
     col.Add("a", "overwrite me");
     expect(col.Count()).toBe(2);
@@ -32,10 +34,11 @@ describe("glyph collections", () => {
     col.Clear();
     expect(col.Count()).toBe(0);
     expect(col.Has("b")).toBe(false);
+    expect([...col.glyph].every((v) => v === 0)).toBe(true);
   });
 
   it("AddGroup merges record keys and normalizes arrays", () => {
-    const col = collections.new({ create: { size: 32 } });
+    const col = collections.New({ create: { size: 32 } });
     const a = Create("alpha", { size: 32 }).glyph;
     const b = Create("beta", { size: 32 }).glyph;
     const c = Create("gamma", { size: 32 }).glyph;
@@ -45,21 +48,21 @@ describe("glyph collections", () => {
     col.AddGroup({ b: c });
 
     expect(col.Count()).toBe(3);
-    expect(col.Examples().a).toBe(a);
-    expect(col.Examples().b).toBe(c);
+    expect(col.Collection().a).toBe(a);
+    expect(col.Collection().b).toBe(c);
     expect(col.Has("keep")).toBe(true);
 
     col.AddGroup([a, b]);
-    expect(col.Examples()["0"]).toBe(a);
-    expect(col.Examples()["1"]).toBe(b);
+    expect(col.Collection()["0"]).toBe(a);
+    expect(col.Collection()["1"]).toBe(b);
     expect(col.Count()).toBe(5);
   });
 
-  it("Examples returns a snapshot copy", () => {
-    const col = collections.new({ create: { size: 32 } });
+  it("Collection returns a snapshot copy", () => {
+    const col = collections.New({ create: { size: 32 } });
     col.Add("x", "example text");
 
-    const snap = col.Examples();
+    const snap = col.Collection();
     delete snap.x;
     snap.y = Create("injected", { size: 32 }).glyph;
 
@@ -68,39 +71,58 @@ describe("glyph collections", () => {
     expect(col.Count()).toBe(1);
   });
 
-  it("Query ranks index hits and rejects empty collections", () => {
-    const col = collections.new({ create: { size: 64 } });
-    const idx = index.new({ mode: "direct" });
+  it("rebuilds glyph with Min by default after mutations", () => {
+    const a = Uint32Array.from([1, 9, 5]) as ReturnType<
+      typeof Create
+    >["glyph"];
+    const b = Uint32Array.from([3, 2, 8]) as ReturnType<
+      typeof Create
+    >["glyph"];
 
-    expect(() => col.Query(idx)).toThrow(/empty collection/);
+    const col = collections.New({
+      create: { size: 3 },
+      aggregator: CollectionAggregatorMin,
+    });
 
-    col.Add("moon", "goodbye moon farewell night");
-    col.Add("sun", "goodbye sun hello day");
+    col.Add("a", a);
+    expect([...col.glyph]).toEqual([1, 9, 5]);
 
-    idx.set("doc-moon", Create("goodbye moon stars", { size: 64 }).glyph);
-    idx.set("doc-sun", Create("goodbye sun bright", { size: 64 }).glyph);
-    idx.set("pasta", Create("unrelated pasta recipe", { size: 64 }).glyph);
+    col.Add("b", b);
+    expect([...col.glyph]).toEqual([1, 2, 5]);
 
-    const results = col.Query(idx, { limit: 2, threshold: 0 });
-
-    expect(results.length).toBe(2);
-    expect(results[0]!.similarity).toBeGreaterThanOrEqual(results[1]!.similarity);
-    expect(["doc-moon", "doc-sun"]).toContain(results[0]!.key);
+    col.Remove("a");
+    expect([...col.glyph]).toEqual([3, 2, 8]);
   });
 
-  it("CollectionQuery matches collection.Query", () => {
-    const col = collections.new({ create: { size: 64 } });
-    const idx = index.new({ mode: "direct" });
+  it("supports Max aggregator", () => {
+    const a = Uint32Array.from([1, 9, 5]) as ReturnType<
+      typeof Create
+    >["glyph"];
+    const b = Uint32Array.from([3, 2, 8]) as ReturnType<
+      typeof Create
+    >["glyph"];
 
-    col.Add("probe", "the quick brown fox");
-    idx.set("a", Create("the quick brown fox jumps", { size: 64 }).glyph);
-    idx.set("b", Create("completely different text", { size: 64 }).glyph);
+    const col = collections.New({
+      create: { size: 3 },
+      aggregator: CollectionAggregatorMax,
+    });
 
-    const viaMethod = col.Query(idx, { normalize: true });
-    const viaFn = CollectionQuery(col, idx, { normalize: true });
+    col.Add("a", a);
+    col.Add("b", b);
+    expect([...col.glyph]).toEqual([3, 9, 8]);
+  });
 
-    expect(viaFn).toEqual(viaMethod);
-    expect(viaFn[0]!.key).toBe("a");
-    expect(viaFn[0]!.similarity).toBe(1);
+  it("throws on glyph size mismatch", () => {
+    const col = collections.New({ create: { size: 4 } });
+    col.Add("a", Uint32Array.from([1, 2, 3, 4]) as ReturnType<
+      typeof Create
+    >["glyph"]);
+
+    expect(() =>
+      col.Add(
+        "b",
+        Uint32Array.from([1, 2]) as ReturnType<typeof Create>["glyph"],
+      ),
+    ).toThrow(/size mismatch/);
   });
 });

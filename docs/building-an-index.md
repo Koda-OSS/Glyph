@@ -4,21 +4,22 @@
 
 > Create glyphs once. Query many keys in memory.
 
-An **index** maps string keys to one glyph or a **glyph group**. Use `query()` to rank candidate entries against a probe glyph (LSH banding by default).
+An **index** maps string keys to one glyph or a **glyph group**. Wrap it with `query.New(idx)` and call `Search()` to rank candidate entries against a probe glyph (LSH banding by default).
 
 ## Basic workflow
 
 ```ts
 import { Create, index, query } from "glyph-ts";
 
-const idx = index.new();
+const idx = index.New();
 
-idx.set("doc-a", Create("first document text").glyph);
-idx.set("doc-b", Create("second document text").glyph);
-idx.set("doc-c", Create("third document text").glyph);
+idx.Set("doc-a", Create("first document text").glyph);
+idx.Set("doc-b", Create("second document text").glyph);
+idx.Set("doc-c", Create("third document text").glyph);
 
 const probe = Create("document text").glyph;
-const hits = query(probe, idx, {
+const q = query.New(idx);
+const hits = q.Search(probe, {
   limit: 5,
   threshold: 0,
   normalize: true,
@@ -33,16 +34,16 @@ for (const hit of hits) {
 
 | Step | Action |
 | --- | --- |
-| 1 | Call `index.new()` |
+| 1 | Call `index.New()` |
 | 2 | Fingerprint source text with `Create()` |
-| 3 | Store with `idx.set(key, glyph)` or `idx.add(key, glyph)` |
+| 3 | Store with `idx.Set(key, glyph)` or `idx.Add(key, glyph)` |
 | 4 | Build a probe glyph from query text |
-| 5 | Call `query(probe, idx, options)` |
+| 5 | Call `query.New(idx).Search(probe, options)` |
 
 ## Store one glyph per key
 
 ```ts
-idx.set("readme", Create(readFileText).glyph);
+idx.Set("readme", Create(readFileText).glyph);
 ```
 
 ## Store multiple glyphs per key
@@ -50,21 +51,21 @@ idx.set("readme", Create(readFileText).glyph);
 Use a group when one key has several fingerprints (for example, many chunks).
 
 ```ts
-idx.set("article", [
+idx.Set("article", [
   Create("section one").glyph,
   Create("section two").glyph,
 ]);
 ```
 
-Or use `add` to append over time:
+Or use `Add` to append over time:
 
 ```ts
-idx.set("article", Create("section one").glyph);
-idx.add("article", Create("section two").glyph);
+idx.Set("article", Create("section one").glyph);
+idx.Add("article", Create("section two").glyph);
 // value is now { "0": glyph1, "1": glyph2 }
 ```
 
-See [Index](./core/index.md) for `add` promotion rules.
+See [Index](./core/index.md) for `Add` promotion rules.
 
 ## Query options (common)
 
@@ -80,9 +81,9 @@ Details: [Query options](./query/options.md).
 
 | Goal | API |
 | --- | --- |
-| Find similar **documents** | `query()` — [Query](./query/query.md) |
-| Search with **labeled examples** | `CollectionQuery()` — [Collections](./collections/collection.md) |
-| Suggest the **next word** in a prefix | `completions.complete()` — [Completions](./completions/complete.md) |
+| Find similar **documents** | `query.New(idx).Search()` — [Query](./query/query.md) |
+| Search with a **pre-aggregated collection glyph** | `query.New(idx).Search(col.glyph)` — [Collections](./collections/collection.md) |
+| Suggest the **next word** in a prefix | `chain.Complete()` — [Completions](./completions/complete.md) |
 
 ## Demo: search project docs
 
@@ -91,6 +92,7 @@ The repo demo indexes `docs/**/*.md` and ranks matches. See [Demo CLI](./demo.md
 ```bash
 npm run demo -- search "how do groups work"
 npm run demo -- complete "how do groups"
+npm run demo -- spotlight ./docs/core/index.md "LSH banding"
 ```
 
 Output includes ingest/index time, query/complete time, and ranked results.
@@ -99,6 +101,6 @@ Output includes ingest/index time, query/complete time, and ranked results.
 
 | Topic | Behavior |
 | --- | --- |
-| Persistence | Index lives in memory only |
+| Persistence | Index lives in memory only (disk persistence planned post-1.0) |
 | Query algorithm | LSH banding by default; exact scan with `mode: "direct"` |
 | Key type | String only |

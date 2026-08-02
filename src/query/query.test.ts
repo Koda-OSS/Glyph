@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { Create, CreateGroup, index, query } from "../index";
+import { Create, CreateGroup, index, query } from "../main";
 
 describe("glyph query", () => {
   it("ranks matches and respects limit/threshold", () => {
     // Mid-similarity pairs need exact scan under default 64×2 banding.
-    const idx = index.new({ mode: "direct" });
-    idx.set("moon", Create("Goodbye moon").glyph);
-    idx.set("sun", Create("Goodbye sun").glyph);
-    idx.set("pasta", Create("totally unrelated pasta recipe").glyph);
+    const idx = index.New({ mode: "direct" });
+    idx.Set("moon", Create("Goodbye moon").glyph);
+    idx.Set("sun", Create("Goodbye sun").glyph);
+    idx.Set("pasta", Create("totally unrelated pasta recipe").glyph);
 
-    const results = query(Create("Goodbye moon").glyph, idx, {
+    const results = query.New(idx).Search(Create("Goodbye moon").glyph, {
       threshold: 0.1,
       limit: 2,
     });
@@ -22,11 +22,11 @@ describe("glyph query", () => {
   });
 
   it("normalizes scores by dividing by the top score", () => {
-    const idx = index.new({ mode: "direct" });
-    idx.set("moon", Create("Goodbye moon").glyph);
-    idx.set("sun", Create("Goodbye sun").glyph);
+    const idx = index.New({ mode: "direct" });
+    idx.Set("moon", Create("Goodbye moon").glyph);
+    idx.Set("sun", Create("Goodbye sun").glyph);
 
-    const results = query(Create("Goodbye moon").glyph, idx, {
+    const results = query.New(idx).Search(Create("Goodbye moon").glyph, {
       normalize: true,
     });
 
@@ -36,14 +36,14 @@ describe("glyph query", () => {
   });
 
   it("sets matched for array and record groups", () => {
-    const idx = index.new();
+    const idx = index.New();
     const moon = Create("Goodbye moon").glyph;
     const pasta = Create("totally unrelated pasta recipe").glyph;
 
-    idx.set("array-doc", [pasta, moon]);
-    idx.set("record-doc", { noise: pasta, hit: moon });
+    idx.Set("array-doc", [pasta, moon]);
+    idx.Set("record-doc", { noise: pasta, hit: moon });
 
-    const results = query(moon, idx);
+    const results = query.New(idx).Search(moon);
     const arrayHit = results.find((result) => result.key === "array-doc");
     const recordHit = results.find((result) => result.key === "record-doc");
 
@@ -52,25 +52,25 @@ describe("glyph query", () => {
   });
 
   it("finds the best doc when querying a group against singles", () => {
-    const idx = index.new({ mode: "direct" });
-    idx.set("a", Create("serialize glyphs to strings").glyph);
-    idx.set("b", Create("compare two fingerprints").glyph);
+    const idx = index.New({ mode: "direct" });
+    idx.Set("a", Create("serialize glyphs to strings").glyph);
+    idx.Set("b", Create("compare two fingerprints").glyph);
 
-    const results = query(
-      CreateGroup(["how to serialize a glyph", "encode fingerprint"]),
-      idx,
-      { limit: 1 },
-    );
+    const results = query
+      .New(idx)
+      .Search(CreateGroup(["how to serialize a glyph", "encode fingerprint"]), {
+        limit: 1,
+      });
 
     expect(results[0]!.key).toBe("a");
   });
 
   it("direct mode still ranks every key", () => {
-    const idx = index.new({ mode: "direct" });
-    idx.set("moon", Create("Goodbye moon").glyph);
-    idx.set("pasta", Create("totally unrelated pasta recipe").glyph);
+    const idx = index.New({ mode: "direct" });
+    idx.Set("moon", Create("Goodbye moon").glyph);
+    idx.Set("pasta", Create("totally unrelated pasta recipe").glyph);
 
-    const results = query(Create("Goodbye moon").glyph, idx, {
+    const results = query.New(idx).Search(Create("Goodbye moon").glyph, {
       threshold: 0,
     });
 
@@ -93,20 +93,22 @@ describe("glyph query stress", () => {
   it(
     "direct mode: indexes random docs until a query takes longer than 50ms",
     () => {
-      const idx = index.new({ mode: "direct" });
+      const idx = index.New({ mode: "direct" });
+      const q = query.New(idx);
       const probe = Create(randomGarbage(2048)).glyph;
       let queryMs = 0;
 
       while (queryMs <= 50) {
-        for (let i = 0; i < 512; i++) { // 512 docs per batch
-          idx.set(`doc-${idx.size()}`, Create(randomGarbage(4096)).glyph);
+        for (let i = 0; i < 512; i++) {
+          // 512 docs per batch
+          idx.Set(`doc-${idx.Size()}`, Create(randomGarbage(4096)).glyph);
         }
         const started = performance.now();
-        query(probe, idx, { limit: 16 });
+        q.Search(probe, { limit: 16 });
         queryMs = performance.now() - started;
       }
 
-      const counted = idx.size();
+      const counted = idx.Size();
       console.log(
         `Direct stress: indexed ${counted} docs before query exceeded 50ms (${queryMs.toFixed(2)} ms)`,
       );
@@ -123,20 +125,20 @@ describe("glyph query stress", () => {
       const probe = Create(randomGarbage(2048)).glyph;
       const targetDocs = 1024;
 
-      const direct = index.new({ mode: "direct" });
+      const direct = index.New({ mode: "direct" });
       for (let i = 0; i < targetDocs; i++) {
-        direct.set(`doc-${i}`, Create(randomGarbage(4096)).glyph);
+        direct.Set(`doc-${i}`, Create(randomGarbage(4096)).glyph);
       }
       const directStarted = performance.now();
-      query(probe, direct, { limit: 5 });
+      query.New(direct).Search(probe, { limit: 5 });
       const directMs = performance.now() - directStarted;
 
-      const bands = index.new({ mode: "bands" });
+      const bands = index.New({ mode: "bands" });
       for (let i = 0; i < targetDocs; i++) {
-        bands.set(`doc-${i}`, Create(randomGarbage(4096)).glyph);
+        bands.Set(`doc-${i}`, Create(randomGarbage(4096)).glyph);
       }
       const bandsStarted = performance.now();
-      query(probe, bands, { limit: 5 });
+      query.New(bands).Search(probe, { limit: 5 });
       const bandsMs = performance.now() - bandsStarted;
 
       console.log(

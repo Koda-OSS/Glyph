@@ -4,7 +4,7 @@
 
 > Every public export from `glyph-ts`, grouped by layer.
 
-Deep docs live under [Core](./core/glyph.md), [Index](./core/index.md), [Query](./query/query.md), [Collections](./collections/collection.md), and [Completions](./completions/chain.md).
+Deep docs live under [Core](./core/glyph.md), [Index](./core/index.md), [Query](./query/query.md), [Collections](./collections/collection.md), [Completions](./completions/chain.md), and [Spotlight](./spotlight/document.md).
 
 ## Core
 
@@ -17,7 +17,8 @@ Deep docs live under [Core](./core/glyph.md), [Index](./core/index.md), [Query](
 | `CompareGlyphs` | `(a, b, options?) => GlyphComparisonResult` | [Compare](./core/compare.md) |
 | `CreateGroup` | `(glyphs: Glyph[] \| string[]) => GlyphGroup` | [Groups](./core/groups.md) |
 | `CompareGroups` | `(group1, group2, options?) => GlyphComparisonResult` | [Groups](./core/groups.md) |
-| `GroupAggregateMax` | `GroupAggregate` | [Groups](./core/groups.md) |
+| `GroupResultAggregatorMax` | `GroupResultAggregator` | [Groups](./core/groups.md) |
+| `GroupResultAggregatorSum` | `GroupResultAggregator` | [Groups](./core/groups.md) |
 | `Serialize` | `(Glyph \| GlyphSignature \| GlyphRecord) => string` | [Serialize](./core/serialize.md) |
 | `Deserialize` | `(string) => Glyph` | [Serialize](./core/serialize.md) |
 | `CreateTokens` | `(text, normalize?) => GlyphToken[]` | [Tokenize](./core/tokenize.md) |
@@ -26,7 +27,7 @@ Deep docs live under [Core](./core/glyph.md), [Index](./core/index.md), [Query](
 | `Tokenize` | `(text, options?) => GlyphTokenizationResult` | [Tokenize](./core/tokenize.md) |
 | `TextFilter` | `(text) => string` | [Text normalization](./core/text-normalization.md) |
 | `TextStrip` | `(text) => string` | [Text normalization](./core/text-normalization.md) |
-| `index.new` | `(options?) => GlyphIndexInstance` | [Index](./core/index.md) |
+| `index.New` | `(options?) => GlyphIndexInstance` | [Index](./core/index.md) |
 
 ### Core types
 
@@ -75,16 +76,16 @@ interface GlyphComparisonResult {
 
 
 interface GlyphComparisonOptions {
-  aggregate?: GroupAggregate;
+  aggregate?: GroupResultAggregator;
 }
 
-type GroupAggregateContext = {
+type GroupResultAggregatorContext = {
   scores: number[];
   left: GlyphGroup;
   right: GlyphGroup;
 };
 
-type GroupAggregate = (context: GroupAggregateContext) => number;
+type GroupResultAggregator = (context: GroupResultAggregatorContext) => number;
 
 type GlyphIndexMode = "bands" | "direct";
 
@@ -97,17 +98,17 @@ interface GlyphIndexOptions {
 
 interface GlyphIndexInstance {
   readonly mode: GlyphIndexMode;
-  get(key: string): Glyph | GlyphGroup | undefined;
-  set(key: string, glyphs?: Glyph | GlyphGroupInput): void;
-  add(key: string, glyphs: Glyph | GlyphGroupInput): void;
-  remove(key: string): void;
-  has(key: string): boolean;
-  clear(): void;
-  size(): number;
-  keys(): IterableIterator<string>;
-  values(): IterableIterator<Glyph | GlyphGroup>;
-  entries(): IterableIterator<[string, Glyph | GlyphGroup]>;
-  candidateKeys(
+  Get(key: string): Glyph | GlyphGroup | undefined;
+  Set(key: string, glyphs?: Glyph | GlyphGroupInput): void;
+  Add(key: string, glyphs: Glyph | GlyphGroupInput): void;
+  Remove(key: string): void;
+  Has(key: string): boolean;
+  Clear(): void;
+  Size(): number;
+  Keys(): IterableIterator<string>;
+  Values(): IterableIterator<Glyph | GlyphGroup>;
+  Entries(): IterableIterator<[string, Glyph | GlyphGroup]>;
+  CandidateKeys(
     probe: Glyph | GlyphSignature | GlyphGroupInput,
   ): IterableIterator<string>;
 }
@@ -121,16 +122,23 @@ See [Glyph](./core/glyph.md) and [Index](./core/index.md) for type notes.
 
 | Export | Signature | Doc |
 | --- | --- | --- |
-| `query` | `(queryGlyph, index, options?) => GlyphQueryResult[]` | [Query](./query/query.md) |
+| `query.New` | `(index) => GlyphQueryInstance` | [Query](./query/query.md) |
 
 ### Query types
 
 ```ts
+interface GlyphQueryInstance {
+  Search(
+    probe: Glyph | GlyphSignature | GlyphGroupInput,
+    options?: GlyphQueryOptions,
+  ): GlyphQueryResult[];
+}
+
 interface GlyphQueryOptions {
   limit?: number;
   threshold?: number;      // default 0
   normalize?: boolean;     // default false
-  aggregate?: GroupAggregate;
+  aggregate?: GroupResultAggregator;
   compare?: GlyphComparisonOptions;
 }
 
@@ -150,27 +158,45 @@ Result fields: [Query results](./query/results.md).
 
 | Export | Signature | Doc |
 | --- | --- | --- |
-| `collections.new` | `(options?) => GlyphCollectionInstance` | [Collections](./collections/collection.md) |
-| `CollectionQuery` | `(collection, index, options?) => GlyphQueryResult[]` | [Collection query](./collections/query.md) |
+| `collections.New` | `(options?) => GlyphCollectionInstance` | [Collections](./collections/collection.md) |
+| `CollectionAggregatorMin` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
+| `CollectionAggregatorMax` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
+| `CollectionAggregatorMean` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
+| `CollectionAggregatorMid` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
+| `CollectionAggregatorSum` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
+| `CollectionAggregatorSoftmax` | `CollectionAggregator` | [Aggregators](./collections/aggregate.md) |
 
 ### Collections types
 
 ```ts
+type CollectionAggregatorContext = {
+  collection: GlyphGroup;
+  index: number;
+};
+
+type CollectionAggregator = (
+  values: number[],
+  context?: CollectionAggregatorContext,
+) => number;
+
 interface GlyphCollectionOptions {
   create?: GlyphCreateOptions;
+  aggregator?: CollectionAggregator; // default CollectionAggregatorSoftmax
 }
 
 interface GlyphCollectionInstance {
+  readonly glyph: Glyph;
   Add(key: string, example: string | Glyph): void;
   AddGroup(group: GlyphGroupInput): void;
   Remove(key: string): void;
   Clear(): void;
-  Examples(): GlyphGroup;
+  Collection(): GlyphGroup;
   Has(key: string): boolean;
   Count(): number;
-  Query(index: GlyphIndexInstance, options?: GlyphQueryOptions): GlyphQueryResult[];
 }
 ```
+
+See [Collections](./collections/collection.md) and [Aggregators](./collections/aggregate.md).
 
 ## Completions
 
@@ -178,7 +204,7 @@ interface GlyphCollectionInstance {
 
 | Export | Signature | Doc |
 | --- | --- | --- |
-| `completions.new` | `(options?) => CompletionChainInstance` | [Chain](./completions/chain.md) |
+| `completions.New` | `(options?) => CompletionChainInstance` | [Chain](./completions/chain.md) |
 
 ### Completions types
 
@@ -205,11 +231,74 @@ interface GlyphCompletionResult {
 }
 
 interface CompletionChainInstance {
-  ingest(key: string, text: string): void;
-  complete(prefix: string, options?: GlyphCompletionOptions): GlyphCompletionResult[];
-  clear(): void;
-  size(): number;
+  Ingest(key: string, text: string): void;
+  Complete(prefix: string, options?: GlyphCompletionOptions): GlyphCompletionResult[];
+  Clear(): void;
+  Size(): number;
 }
 ```
 
 Result fields: [Completion results](./completions/results.md).
+
+![Glyph Spotlight](/docs/media/RibbonSpotlight.png)
+
+## Spotlight
+
+### Functions
+
+| Export | Signature | Doc |
+| --- | --- | --- |
+| `spotlight.New` | `(content, options?) => GlyphSpotlightDocumentInstance` | [Document](./spotlight/document.md) |
+
+### Spotlight types
+
+```ts
+type GlyphSpotlightChunk = string;
+type GlyphSpotlightChunker = (text: string) => GlyphSpotlightChunk[];
+
+type GlyphSpotlightCompiledChunk = {
+  text: string;
+  glyph: Glyph;
+  length: number;
+};
+
+interface GlyphSpotlightOptions {
+  normalize?: boolean;
+  create?: GlyphCreateOptions;
+  aggregate?: GroupResultAggregator;  // default GroupResultAggregatorSum for group probes
+  chunker?: GlyphSpotlightChunker;
+  textOutput?: boolean;        // default false
+}
+
+interface GlyphSpotlightQueryOptions extends GlyphSpotlightOptions {
+  limit?: number;
+  threshold?: number;          // default 0
+}
+
+interface GlyphSpotlightRankOptions extends GlyphSpotlightOptions {}
+
+interface GlyphSpotlightResult extends GlyphSpotlightCompiledChunk {
+  score: number;
+  comparison: GlyphComparisonResult;
+  matched?: string | number;
+}
+
+interface GlyphSpotlightDocumentInstance {
+  Rank(probe, options?): GlyphSpotlightResult[] | string[];
+  Query(probe, options?): GlyphSpotlightResult[] | string[];
+  Chunks(): readonly GlyphSpotlightCompiledChunk[];
+  Size(): number;
+}
+```
+
+See [Document](./spotlight/document.md), [Rank](./spotlight/rank.md), [Query](./spotlight/query.md).
+
+## Errors
+
+Named error classes exported from `glyph-ts`:
+
+| Export | When thrown |
+| --- | --- |
+| `GlyphSizeMismatchError` | Compare or collection operations receive glyphs of different lengths |
+| `EmptyGroupError` | Group compare runs on an empty group (default message: `"Cannot compare empty glyph groups"`) |
+| `InvalidSerializedGlyphError` | `Deserialize()` receives malformed or unsupported serialized glyph data |

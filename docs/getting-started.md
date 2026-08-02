@@ -8,8 +8,8 @@ GlyphTS builds **MinHash** signatures from text. You use `Create()` to fingerpri
 
 ## Install
 
-```typescript
-// NPM release coming soon! You can copy src into your project if you'd like.
+```bash
+npm install glyph-ts
 ```
 
 Node.js 18 or newer is required.
@@ -62,6 +62,8 @@ You can pass a full record or `record.glyph` into `Compare` and `Serialize`.
 | Goal | Doc |
 | --- | --- |
 | Store many glyphs and search | [Building an index](./building-an-index.md) |
+| Aggregate labeled examples | [Your first collection](./your-first-collection.md) |
+| Rank chunks inside one document | [Your first spotlight](./your-first-spotlight.md) |
 | Suggest the next word | [Your first completion](./your-first-completion.md) |
 | Try it in the terminal | [Demo CLI](./demo.md) |
 | All exports | [API surface](./api-surface.md) |

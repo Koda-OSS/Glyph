@@ -2,14 +2,14 @@
 
 # Query options
 
-> Control ranking, filtering, and compare behavior for `query()`.
+> Control ranking, filtering, and compare behavior for `Search()`.
 
 ```ts
 interface GlyphQueryOptions {
   limit?: number;
   threshold?: number;
   normalize?: boolean;
-  aggregate?: GroupAggregate;
+  aggregate?: GroupResultAggregator;
   compare?: GlyphComparisonOptions;
 }
 ```
@@ -51,12 +51,13 @@ Skipped when:
 
 ## `aggregate`
 
-Group aggregate used when an index entry (or the probe) is a `GlyphGroup`. Default: `GroupAggregateMax` (max pairwise similarity).
+`GroupResultAggregator` used when an index entry (or the probe) is a `GlyphGroup`. Default: `GroupResultAggregatorMax` (max pairwise similarity).
 
 ```ts
-import { query } from "glyph-ts";
+import { index, query } from "glyph-ts";
 
-query(probe, idx, {
+const idx = index.New();
+query.New(idx).Search(probe, {
   aggregate: ({ scores }) =>
     scores.reduce((a, b) => a + b, 0) / scores.length,
 });
@@ -69,9 +70,9 @@ See [Groups](../core/groups.md).
 Extra options forwarded to `Compare()` for each entry.
 
 ```ts
-query(probe, idx, {
+query.New(idx).Search(probe, {
   compare: {
-    aggregate: GroupAggregateMax,
+    aggregate: GroupResultAggregatorMax,
   },
 });
 ```

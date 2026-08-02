@@ -2,9 +2,9 @@
 
 # Completion options
 
-> Configure chain creation and `complete()` behavior.
+> Configure chain creation and `Complete()` behavior.
 
-## Chain options (`completions.new`)
+## Chain options (`completions.New`)
 
 ```ts
 interface GlyphCompletionChainOptions {
@@ -28,7 +28,7 @@ interface GlyphCompletionChainOptions {
 | `2` | `"moon"` |
 | `3` (default) | `"goodbye moon"` |
 
-## Complete options (`complete`)
+## Complete options (`Complete`)
 
 ```ts
 interface GlyphCompletionOptions {

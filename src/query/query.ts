@@ -2,25 +2,26 @@ import type {
   Glyph,
   GlyphGroupInput,
   GlyphIndexInstance,
+  GlyphQueryInstance,
   GlyphQueryOptions,
   GlyphQueryResult,
   GlyphSignature,
 } from "../types";
 import { Compare } from "../core/compare";
-import { GroupAggregateMax } from "../core/group";
-import { isGlyphGroup } from "../core/utils";
+import { GroupResultAggregatorMax } from "../core/group";
+import { isGlyphGroup } from "../core/group-input";
 
 /**
  * Search a Glyph Query index and return ranked matches.
  */
-export function query(
-  queryGlyph: Glyph | GlyphSignature | GlyphGroupInput,
+function search(
   glyphIndex: GlyphIndexInstance,
+  queryGlyph: Glyph | GlyphSignature | GlyphGroupInput,
   options: GlyphQueryOptions = {},
 ): GlyphQueryResult[] {
   const threshold = options.threshold ?? 0;
   const aggregate =
-    options.aggregate ?? options.compare?.aggregate ?? GroupAggregateMax;
+    options.aggregate ?? options.compare?.aggregate ?? GroupResultAggregatorMax;
   const compareOptions = {
     ...options.compare,
     aggregate,
@@ -28,8 +29,8 @@ export function query(
 
   const results: GlyphQueryResult[] = [];
 
-  for (const key of glyphIndex.candidateKeys(queryGlyph)) {
-    const value = glyphIndex.get(key);
+  for (const key of glyphIndex.CandidateKeys(queryGlyph)) {
+    const value = glyphIndex.Get(key);
     if (value === undefined) {
       continue;
     }
@@ -76,3 +77,21 @@ export function query(
     },
   }));
 }
+
+/**
+ * Create a query wrapper bound to an index.
+ */
+export function createQuery(glyphIndex: GlyphIndexInstance): GlyphQueryInstance {
+  return {
+    Search(probe, options) {
+      return search(glyphIndex, probe, options);
+    },
+  };
+}
+
+/**
+ * Glyph Query namespace — wraps an index for ranked search.
+ */
+export const query = {
+  New: createQuery,
+};

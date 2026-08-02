@@ -1,4 +1,6 @@
 import type { Glyph, GlyphRecord, GlyphSignature } from "../types";
+import { InvalidSerializedGlyphError } from "../errors";
+import { isGlyph } from "./glyph";
 
 const FORMAT_VERSION = 1;
 
@@ -26,7 +28,7 @@ export function Deserialize(value: string): Glyph {
   const parts = value.split(".");
 
   if (parts.length < 2) {
-    throw new Error("Invalid serialized glyph: missing parts");
+    throw new InvalidSerializedGlyphError("Invalid serialized glyph: missing parts");
   }
 
   const kind = parts[0]!;
@@ -34,39 +36,33 @@ export function Deserialize(value: string): Glyph {
   const formatVersion = Number(kind.slice(1));
 
   if (formatVersion !== FORMAT_VERSION) {
-    throw new Error(
+    throw new InvalidSerializedGlyphError(
       `Unsupported serialized glyph version: ${formatVersion}`,
     );
   }
 
   if (prefix === "g") {
     if (parts.length !== 2) {
-      throw new Error("Invalid serialized glyph");
+      throw new InvalidSerializedGlyphError("Invalid serialized glyph");
     }
     return decodeGlyph(parts[1]!);
   }
 
   if (prefix === "s") {
     if (parts.length !== 3) {
-      throw new Error("Invalid serialized glyph signature");
+      throw new InvalidSerializedGlyphError("Invalid serialized glyph signature");
     }
     return decodeGlyph(parts[2]!);
   }
 
   if (prefix === "r") {
     if (parts.length !== 4) {
-      throw new Error("Invalid serialized glyph record");
+      throw new InvalidSerializedGlyphError("Invalid serialized glyph record");
     }
     return decodeGlyph(parts[3]!);
   }
 
-  throw new Error(`Unknown serialized glyph kind: ${kind}`);
-}
-
-function isGlyph(
-  value: Glyph | GlyphSignature | GlyphRecord,
-): value is Glyph {
-  return value instanceof Uint32Array;
+  throw new InvalidSerializedGlyphError(`Unknown serialized glyph kind: ${kind}`);
 }
 
 function isRecord(
@@ -93,7 +89,7 @@ function decodeGlyph(encoded: string): Glyph {
   const bytes = Buffer.from(encoded, "base64url");
 
   if (bytes.byteLength === 0 || bytes.byteLength % 4 !== 0) {
-    throw new Error("Invalid serialized glyph payload");
+    throw new InvalidSerializedGlyphError("Invalid serialized glyph payload");
   }
 
   const copy = new Uint8Array(bytes.byteLength);

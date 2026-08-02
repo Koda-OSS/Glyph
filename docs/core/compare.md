@@ -74,7 +74,7 @@ CompareGroups(
 
 ```ts
 interface GlyphComparisonOptions {
-  aggregate?: GroupAggregate; // CompareGroups only
+  aggregate?: GroupResultAggregator; // CompareGroups only
 }
 ```
 

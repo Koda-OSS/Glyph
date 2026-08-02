@@ -1,70 +1,44 @@
 ![Glyph Banner](/docs/media/GlyphBanner.png)
 
-> MinHash fingerprints for text. Compare fast. Search in memory.
+> Compare fast. Search in memory. Spotlight documents. Aggregate collections.
 
-GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two glyphs, build an in-memory **index** and **query** it for ranked matches, or use **completions** for glyph-guided next-word suggestions.
+**GlyphTS** turns text into **glyphs** — fixed-size MinHash fingerprints. Compare similarity, search an in-memory index, rank document chunks with spotlight, pre-aggregate labeled examples into one glyph, or suggest the next word with completions.
 
-![Glyph Ribbon](/docs/media/RibbonGlyph.png)
+## Install
 
-| Doc | Purpose |
+```bash
+npm install glyph-ts
+```
+
+Node.js 18 or newer.
+
+## Quick start
+
+```ts
+import { Create, Compare } from "glyph-ts";
+
+const a = Create("the quick brown fox jumps over the lazy dog");
+const b = Create("the quick brown fox leaped over the lazy dog");
+
+console.log(Compare(a, b).similarity); // ~0–1 Jaccard estimate
+```
+
+## Documentation
+
+Full doc index: **[docs/README.md](./docs/README.md)** · [Changelog](./CHANGELOG.md) · [Migration 0.4 → 1.0](./docs/migration-0.4-to-1.0.md)
+
+| Start here | Topic |
 | --- | --- |
 | [Getting started](./docs/getting-started.md) | Install, first compare, mental model |
-| [Building an index](./docs/building-an-index.md) | Populate an index and run a query |
-| [Demo CLI](./docs/demo.md) | Compare, search, and complete from the terminal |
-| [API surface](./docs/api-surface.md) | Full export list (Core + Query + Collections + Completions) |
-
-![Glyph Core](/docs/media/RibbonCore.png)
-
-| Doc | Topic |
-| --- | --- |
-| [Glyph](./docs/core/glyph.md) | Types: `Glyph`, `GlyphRecord`, `GlyphSignature` |
-| [Create](./docs/core/create.md) | `Create()` and fingerprint options |
-| [Compare](./docs/core/compare.md) | `Compare()`, `CompareGlyphs()`, results |
-| [Groups](./docs/core/groups.md) | `GlyphGroup`, `CreateGroup()`, aggregate compare |
-| [Serialize](./docs/core/serialize.md) | `Serialize()`, `Deserialize()`, string formats |
-| [Tokenize](./docs/core/tokenize.md) | Tokens, unigrams, vgrams |
-| [Text normalization](./docs/core/text-normalization.md) | `TextFilter`, `TextStrip` |
-| [Index](./docs/core/index.md) | `index.new()`, bands (default) or direct store |
-
-![Glyph Query](/docs/media/RibbonQuery.png)
-
-| Doc | Topic |
-| --- | --- |
-| [Query](./docs/query/query.md) | `query()` ranked search |
-| [Query options](./docs/query/options.md) | `limit`, `threshold`, `normalize`, `aggregate` |
-| [Query results](./docs/query/results.md) | `GlyphQueryResult` shape |
-
-![Glyph Collections](/docs/media/RibbonCollections.png)
-
-| Doc | Topic |
-| --- | --- |
-| [Collections](./docs/collections/collection.md) | `collections.new()`, add labeled examples |
-| [Collection query](./docs/collections/query.md) | `CollectionQuery()` / `collection.Query()` |
-
-![Glyph Completions](/docs/media/RibbonCompletions.png)
-
-| Doc | Topic |
-| --- | --- |
-| [Chain](./docs/completions/chain.md) | `completions.new()`, ingest, storage |
-| [Complete](./docs/completions/complete.md) | `complete()` ranked next-word suggestions |
-| [Completion options](./docs/completions/options.md) | `order`, `create`, `limit`, `minCount` |
-| [Completion results](./docs/completions/results.md) | `GlyphCompletionResult` shape |
-
-### Limits (current version)
-
-| Feature | Status |
-| --- | --- |
-| In-memory index | Implemented |
-| LSH banding index (default) | Implemented |
-| Direct (exact) scan via `mode: "direct"` | Implemented |
-| Collections (example probes) | Implemented |
-| Glyph completions (Markov + rank) | Implemented |
-| Disk persistence | Not implemented |
-| Chain persistence | Not implemented |
+| [Building an index](./docs/building-an-index.md) | Store glyphs and run `query.New(idx).Search()` |
+| [Your first collection](./docs/your-first-collection.md) | Aggregate examples into `col.glyph` |
+| [Your first spotlight](./docs/your-first-spotlight.md) | Chunk and rank document snippets |
+| [Demo CLI](./docs/demo.md) | Try modes from the terminal |
+| [API surface](./docs/api-surface.md) | Every public export |
 
 ### License
 
-Mozilla Public Licence Version 2.0
+Mozilla Public License 2.0 — see [LICENCE](./LICENCE).
 
 <div align="center">
   <table>

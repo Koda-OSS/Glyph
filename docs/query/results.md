@@ -2,7 +2,7 @@
 
 # Query results
 
-> Shape of each hit returned by `query()`.
+> Shape of each hit returned by `Search()`.
 
 ```ts
 interface GlyphQueryResult {
@@ -54,7 +54,7 @@ Results are sorted by `similarity` descending. Index iteration order does not af
 
 ## Empty results
 
-`query()` returns `[]` when:
+`Search()` returns `[]` when:
 
 - The index has no keys, or
 - Every entry is below `threshold`

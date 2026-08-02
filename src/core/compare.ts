@@ -6,14 +6,10 @@ import type {
   GlyphGroupInput,
   GlyphSignature,
 } from "../types";
+import { GlyphSizeMismatchError } from "../errors";
 import { CompareGroups } from "./group";
-import {
-  IsGlyphSignature,
-  isGlyph,
-  isGlyphGroup,
-  NormalizeGroup,
-  resolveGlyph,
-} from "./utils";
+import { isGlyph, isGlyphSignature, resolveGlyph } from "./glyph";
+import { isGlyphGroup, normalizeGroup } from "./group-input";
 
 /**
  * Compare two individual glyphs (or signatures/records).
@@ -27,7 +23,7 @@ export function CompareGlyphs(
   const right = resolveGlyph(b);
 
   if (left.length !== right.length) {
-    throw new Error(
+    throw new GlyphSizeMismatchError(
       `Glyph size mismatch: ${left.length} vs ${right.length}`,
     );
   }
@@ -77,11 +73,11 @@ function asGroup(
   value: Glyph | GlyphSignature | GlyphGroupInput,
 ): GlyphGroup {
   if (isGlyphGroup(value) || isGlyph(value)) {
-    return NormalizeGroup(value);
+    return normalizeGroup(value);
   }
 
-  if (IsGlyphSignature(value)) {
-    return NormalizeGroup(resolveGlyph(value));
+  if (isGlyphSignature(value)) {
+    return normalizeGroup(resolveGlyph(value));
   }
 
   throw new Error("Unsupported compare input");

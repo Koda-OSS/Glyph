@@ -3,8 +3,9 @@ import type {
   GlyphGroupInput,
   GlyphIndexInstance,
   GlyphSignature,
-} from "../../types";
-import { isGlyph, NormalizeGroup } from "../utils";
+} from "../types";
+import { isGlyph } from "../core/glyph";
+import { normalizeGroup } from "../core/group-input";
 import {
   type IndexInput,
   type IndexValue,
@@ -13,7 +14,7 @@ import {
 } from "./shared";
 
 /**
- * Exact Map-backed index. candidateKeys yields every stored key.
+ * Exact Map-backed index. CandidateKeys yields every stored key.
  */
 export function createDirectIndex(): GlyphIndexInstance {
   const store = new Map<string, IndexValue>();
@@ -21,11 +22,11 @@ export function createDirectIndex(): GlyphIndexInstance {
   return {
     mode: "direct",
 
-    get(key: string) {
+    Get(key: string) {
       return store.get(key);
     },
 
-    set(key: string, glyphs?: IndexInput) {
+    Set(key: string, glyphs?: IndexInput) {
       if (glyphs === undefined) {
         store.delete(key);
         return;
@@ -34,8 +35,8 @@ export function createDirectIndex(): GlyphIndexInstance {
       store.set(key, normalizeStoredValue(glyphs));
     },
 
-    add(key: string, glyphs: IndexInput) {
-      const incoming = NormalizeGroup(isGlyph(glyphs) ? [glyphs] : glyphs);
+    Add(key: string, glyphs: IndexInput) {
+      const incoming = normalizeGroup(isGlyph(glyphs) ? [glyphs] : glyphs);
       const incomingKeys = Object.keys(incoming);
       if (incomingKeys.length === 0) {
         return;
@@ -62,35 +63,35 @@ export function createDirectIndex(): GlyphIndexInstance {
       store.set(key, mergeRecordGroup(existing, Object.values(incoming)));
     },
 
-    remove(key: string) {
+    Remove(key: string) {
       store.delete(key);
     },
 
-    has(key: string) {
+    Has(key: string) {
       return store.has(key);
     },
 
-    clear() {
+    Clear() {
       store.clear();
     },
 
-    size() {
+    Size() {
       return store.size;
     },
 
-    keys() {
+    Keys() {
       return store.keys();
     },
 
-    values() {
+    Values() {
       return store.values();
     },
 
-    entries() {
+    Entries() {
       return store.entries();
     },
 
-    *candidateKeys(
+    *CandidateKeys(
       _probe: Glyph | GlyphSignature | GlyphGroupInput,
     ): IterableIterator<string> {
       yield* store.keys();

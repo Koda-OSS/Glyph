@@ -1,6 +1,6 @@
 {
   "name": "glyph-ts",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "MinHash text fingerprints for similarity comparison",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -33,7 +33,7 @@
     "fingerprint",
     "jaccard"
   ],
-  "license": "MIT",
+  "license": "MPL-2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Koda-OSS/Glyph.git"

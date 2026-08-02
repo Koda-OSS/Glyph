@@ -4,21 +4,21 @@
 
 > Ingest documents. Suggest the next word with glyph-guided ranking.
 
-Glyph Completions builds a Markov chain from your text, then ranks next-word candidates by how close each source document’s glyph is to the user’s prefix.
+Glyph Completions builds a Markov chain from your text, then ranks next-word candidates by how close each source document's glyph is to the user's prefix.
 
 ## What you will build
 
 1. Create a completion chain.
 2. Ingest a few keyed documents.
-3. Call `complete()` on a short prefix.
+3. Call `Complete()` on a short prefix.
 4. Read `token`, `score`, and `source.key`.
 
 ## Create a chain
 
 ```ts
-import { completions } from "npm package or src location";
+import { completions } from "glyph-ts";
 
-const chain = completions.new({
+const chain = completions.New({
   order: 3, // trigrams: state = previous 2 tokens
 });
 ```
@@ -27,20 +27,20 @@ Default `order` is `3`. Prefixes need at least **two** stripped tokens for a loo
 
 ## Ingest keyed documents
 
-Each `ingest` call needs a **key**. That key comes back later as `source.key`.
+Each `Ingest` call needs a **key**. That key comes back later as `source.key`.
 
 ```ts
-chain.ingest(
+chain.Ingest(
   "moon-doc",
   "say goodbye moon farewell night under the stars",
 );
 
-chain.ingest(
+chain.Ingest(
   "sun-doc",
   "say goodbye sun hello day in the bright light",
 );
 
-chain.ingest(
+chain.Ingest(
   "moon-doc-2",
   "say goodbye moon stars shine across the sky",
 );
@@ -57,7 +57,7 @@ chain.ingest(
 ## Complete a prefix
 
 ```ts
-const results = chain.complete("say goodbye", {
+const results = chain.Complete("say goodbye", {
   limit: 5,
   minCount: 1,
 });
@@ -95,7 +95,7 @@ Example output shape:
 | `score` | Glyph-guided rank (`0`–`1`) |
 | `count` | How often this transition was seen |
 | `source.key` | Ingest key of the best-matching source document |
-| `source.glyph` | That document’s glyph |
+| `source.glyph` | That document's glyph |
 
 When several documents contribute to the same next token, the **primary source** is the one with the highest similarity to the prefix probe.
 
@@ -127,7 +127,7 @@ The demo ingests every markdown file under `docs/` (file path as key) and prints
 | --- | --- |
 | Prefix too short (`"say"` with order 3) | Pass at least `order - 1` tokens |
 | Expecting punctuation in tokens | Use stripped forms (`goodbye`, not `goodbye,`) |
-| Forgetting the ingest key | Always call `ingest(key, text)` |
+| Forgetting the ingest key | Always call `Ingest(key, text)` |
 
 ## Next steps
 

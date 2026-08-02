@@ -2,7 +2,7 @@
 
 # Index
 
-> Store glyphs under string keys with `index.new()`. Default mode uses LSH banding.
+> Store glyphs under string keys with `index.New()`. Default mode uses LSH banding.
 
 The index is an in-memory store. It does not persist to disk. Query and Collections both use this Core primitive.
 
@@ -12,13 +12,13 @@ The index is an in-memory store. It does not persist to disk. Query and Collecti
 import { index } from "glyph-ts";
 
 // Default: LSH banding (mode: "bands")
-const idx = index.new();
+const idx = index.New();
 
 // Exact linear scan over all keys
-const exact = index.new({ mode: "direct" });
+const exact = index.New({ mode: "direct" });
 
 // Custom band layout (bands * rows must equal glyph size)
-const custom = index.new({ bands: 16, rows: 8 });
+const custom = index.New({ bands: 16, rows: 8 });
 ```
 
 | Option | Default | Meaning |
@@ -35,44 +35,44 @@ For glyph sizes other than 128, pass `bands` and/or `rows` (or `mode: "direct"`)
 | Method | Signature | Behavior |
 | --- | --- | --- |
 | `mode` | `GlyphIndexMode` | `"bands"` or `"direct"` (readonly) |
-| `get` | `(key) => Glyph \| GlyphGroup \| undefined` | Read entry |
-| `set` | `(key, glyphs?) => void` | Write entry; omit `glyphs` to delete key |
-| `add` | `(key, glyphs) => void` | Append glyphs; create key if missing |
-| `remove` | `(key) => void` | Delete key |
-| `has` | `(key) => boolean` | Key exists |
-| `clear` | `() => void` | Remove all keys |
-| `size` | `() => number` | Key count |
-| `keys` | `() => IterableIterator<string>` | All keys |
-| `values` | `() => IterableIterator<Glyph \| GlyphGroup>` | All values |
-| `entries` | `() => IterableIterator<[string, Glyph \| GlyphGroup]>` | Key-value pairs |
-| `candidateKeys` | `(probe) => IterableIterator<string>` | Keys to compare for search |
+| `Get` | `(key) => Glyph \| GlyphGroup \| undefined` | Read entry |
+| `Set` | `(key, glyphs?) => void` | Write entry; omit `glyphs` to delete key |
+| `Add` | `(key, glyphs) => void` | Append glyphs; create key if missing |
+| `Remove` | `(key) => void` | Delete key |
+| `Has` | `(key) => boolean` | Key exists |
+| `Clear` | `() => void` | Remove all keys |
+| `Size` | `() => number` | Key count |
+| `Keys` | `() => IterableIterator<string>` | All keys |
+| `Values` | `() => IterableIterator<Glyph \| GlyphGroup>` | All values |
+| `Entries` | `() => IterableIterator<[string, Glyph \| GlyphGroup]>` | Key-value pairs |
+| `CandidateKeys` | `(probe) => IterableIterator<string>` | Keys to compare for search |
 
-## `candidateKeys(probe)`
+## `CandidateKeys(probe)`
 
-Used by `query()` to choose which keys to score.
+Used by `query.New(idx).Search()` to choose which keys to score.
 
 | Mode | Behavior |
 | --- | --- |
 | `bands` | Union of LSH bucket hits for the probe glyph(s) |
 | `direct` | Every stored key |
 
-`keys()` / `entries()` always reflect the full store. Only search uses `candidateKeys`.
+`Keys()` / `Entries()` always reflect the full store. Only search uses `CandidateKeys`.
 
-## `set(key, glyphs?)`
+## `Set(key, glyphs?)`
 
 ```ts
-idx.set("doc", Create("text").glyph);
-idx.set("doc", [glyphA, glyphB]); // stored as { "0": glyphA, "1": glyphB }
-idx.set("doc"); // deletes "doc"
+idx.Set("doc", Create("text").glyph);
+idx.Set("doc", [glyphA, glyphB]); // stored as { "0": glyphA, "1": glyphB }
+idx.Set("doc"); // deletes "doc"
 ```
 
 Values may be `Glyph`, `Glyph[]`, or `Record<string, Glyph>`. Arrays and records are normalized to a map on write. The index does **not** accept raw strings (call `Create()` first).
 
-`get()` always returns a bare `Glyph` or a **map** group — never an array.
+`Get()` always returns a bare `Glyph` or a **map** group — never an array.
 
-## `add(key, glyphs)` promotion
+## `Add(key, glyphs)` promotion
 
-| Existing value | You `add` | Result |
+| Existing value | You `Add` | Result |
 | --- | --- | --- |
 | (missing) | one glyph | that glyph |
 | (missing) | many glyphs | map group |
@@ -80,9 +80,9 @@ Values may be `Glyph`, `Glyph[]`, or `Record<string, Glyph>`. Arrays and records
 | map group | more glyphs | merged map; new keys `"0"`, `"1"`, … (skip collisions) |
 
 ```ts
-idx.set("doc", glyphA);
-idx.add("doc", glyphB);
-// get("doc") === { "0": glyphA, "1": glyphB }
+idx.Set("doc", glyphA);
+idx.Add("doc", glyphB);
+// Get("doc") === { "0": glyphA, "1": glyphB }
 ```
 
 ## Banding notes

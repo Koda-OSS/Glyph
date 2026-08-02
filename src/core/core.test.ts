@@ -11,7 +11,7 @@ import {
   TextFilter,
   TextStrip,
   Tokenize,
-} from "../index";
+} from "../main";
 
 describe("TextFilter", () => {
   it("lowercases and removes disallowed characters from tokens", () => {
@@ -244,23 +244,23 @@ describe("CreateGroup", () => {
 });
 
 describe("group normalization helpers", () => {
-  it("NormalizeGroup, GroupEntries, and ToMatchedKey behave as documented", async () => {
-    const { NormalizeGroup, GroupEntries, ToMatchedKey } = await import(
-      "./utils"
+  it("normalizeGroup, groupEntries, and toMatchedKey behave as documented", async () => {
+    const { normalizeGroup, groupEntries, toMatchedKey } = await import(
+      "./group-input"
     );
 
     const a = Create("a", { size: 8 }).glyph;
     const b = Create("b", { size: 8 }).glyph;
     const c = Create("c", { size: 8 }).glyph;
 
-    expect(NormalizeGroup(a)).toEqual({ "0": a });
-    expect(NormalizeGroup([a, b])).toEqual({ "0": a, "1": b });
-    expect(NormalizeGroup({ title: a, body: b })).toEqual({
+    expect(normalizeGroup(a)).toEqual({ "0": a });
+    expect(normalizeGroup([a, b])).toEqual({ "0": a, "1": b });
+    expect(normalizeGroup({ title: a, body: b })).toEqual({
       title: a,
       body: b,
     });
 
-    const entries = GroupEntries({ "10": c, "2": b, title: a, "1": a });
+    const entries = groupEntries({ "10": c, "2": b, title: a, "1": a });
     expect(entries.map((entry) => entry.key)).toEqual([
       "1",
       "2",
@@ -268,8 +268,8 @@ describe("group normalization helpers", () => {
       "title",
     ]);
 
-    expect(ToMatchedKey("1")).toBe(1);
-    expect(ToMatchedKey("10")).toBe(10);
-    expect(ToMatchedKey("title")).toBe("title");
+    expect(toMatchedKey("1")).toBe(1);
+    expect(toMatchedKey("10")).toBe(10);
+    expect(toMatchedKey("title")).toBe("title");
   });
 });
