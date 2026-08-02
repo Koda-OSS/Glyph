@@ -6,7 +6,8 @@ import type {
   GlyphGroupInput,
 } from "../types";
 import { Create } from "../core/create";
-import { isGlyph, NormalizeGroup } from "../core/utils";
+import { isGlyph } from "../core/glyph";
+import { normalizeGroup } from "../core/group-input";
 import {
   CollectionAggregatorSoftmax,
   rebuildAggregatedGlyph,
@@ -86,7 +87,7 @@ function createCollection(
         }
       }
 
-      const normalized = NormalizeGroup(group);
+      const normalized = normalizeGroup(group);
       for (const glyph of Object.values(normalized)) {
         assertSize(glyph);
       }

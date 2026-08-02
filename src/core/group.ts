@@ -7,7 +7,11 @@ import type {
 } from "../types";
 import { Create } from "./create";
 import { CompareGlyphs } from "./compare";
-import { GroupEntries, NormalizeGroup, ToMatchedKey } from "./utils";
+import {
+  groupEntries,
+  normalizeGroup,
+  toMatchedKey,
+} from "./group-input";
 
 /**
  * Default group result aggregator: take the maximum pairwise similarity.
@@ -36,7 +40,7 @@ export const GroupResultAggregatorSum: GroupResultAggregator = ({ scores }) => {
  * Always returns a map (`{ "0": …, "1": … }`).
  */
 export function CreateGroup(glyphs: Glyph[] | string[]): GlyphGroup {
-  return NormalizeGroup(
+  return normalizeGroup(
     glyphs.map((glyph) => {
       if (typeof glyph === "string") {
         return Create(glyph).glyph;
@@ -56,10 +60,10 @@ export function CompareGroups(
   group2: GlyphGroup,
   options: GlyphComparisonOptions = {},
 ): GlyphGroupComparisonResult {
-  const left = NormalizeGroup(group1);
-  const right = NormalizeGroup(group2);
-  const leftEntries = GroupEntries(left);
-  const rightEntries = GroupEntries(right);
+  const left = normalizeGroup(group1);
+  const right = normalizeGroup(group2);
+  const leftEntries = groupEntries(left);
+  const rightEntries = groupEntries(right);
 
   if (leftEntries.length === 0 || rightEntries.length === 0) {
     throw new Error("Cannot compare empty glyph groups");
@@ -73,8 +77,8 @@ export function CompareGroups(
       const result = CompareGlyphs(leftEntry.glyph, rightEntry.glyph, options);
       const paired: GlyphGroupComparisonResult = {
         ...result,
-        matchedLeft: ToMatchedKey(leftEntry.key),
-        matchedRight: ToMatchedKey(rightEntry.key),
+        matchedLeft: toMatchedKey(leftEntry.key),
+        matchedRight: toMatchedKey(rightEntry.key),
       };
 
       results.push(paired);

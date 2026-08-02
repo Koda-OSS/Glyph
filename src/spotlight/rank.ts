@@ -8,7 +8,7 @@ import type {
 } from "../types";
 import { Compare, CompareGlyphs } from "../core/compare";
 import { GroupResultAggregatorSum } from "../core/group";
-import { isGlyphGroup } from "../core/utils";
+import { isGlyphGroup } from "../core/group-input";
 
 /**
  * Score every compiled chunk against a probe; sort by score descending.

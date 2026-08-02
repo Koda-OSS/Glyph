@@ -11,6 +11,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Getting started](./getting-started.md) | Install, first compare, mental model |
 | [Building an index](./building-an-index.md) | Populate an index and run a query |
 | [Your first completion](./your-first-completion.md) | Ingest docs and suggest the next word |
+| [Your first collection](./your-first-collection.md) | Aggregate labeled glyphs into one probe |
 | [Your first spotlight](./your-first-spotlight.md) | Chunk a document and rank snippets |
 | [Demo CLI](./demo.md) | Compare, search, complete, and spotlight from the terminal |
 | [API surface](./api-surface.md) | Full export list (Core + Query + Collections + Completions + Spotlight) |
@@ -41,6 +42,7 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | Doc | Topic |
 | --- | --- |
 | [Collections](./collections/collection.md) | `collections.new()`, keyed glyphs + `glyph` |
+| [Your first collection](./your-first-collection.md) | Tutorial: aggregate and query |
 | [Aggregators](./collections/aggregate.md) | Slot-wise `CollectionAggregator` built-ins |
 
 ![Glyph Completions](/docs/media/RibbonCompletions.png)

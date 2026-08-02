@@ -2,77 +2,39 @@
 
 > Compare fast. Search in memory. Spotlight documents. Aggregate collections.
 
-GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two glyphs, build an in-memory **index** and **query** it for ranked matches, use **spotlight** to rank chunks inside a document, or use **completions** for glyph-guided next-word suggestions.
+**GlyphTS** turns text into **glyphs** — fixed-size MinHash fingerprints. Compare similarity, search an in-memory index, rank document chunks with spotlight, pre-aggregate labeled examples into one glyph, or suggest the next word with completions.
 
-![Glyph Ribbon](/docs/media/RibbonGlyph.png)
+## Install
 
-| Doc | Purpose |
+```bash
+npm install glyph-ts
+```
+
+Node.js 18 or newer.
+
+## Quick start
+
+```ts
+import { Create, Compare } from "glyph-ts";
+
+const a = Create("the quick brown fox jumps over the lazy dog");
+const b = Create("the quick brown fox leaped over the lazy dog");
+
+console.log(Compare(a, b).similarity); // ~0–1 Jaccard estimate
+```
+
+## Documentation
+
+Full doc index: **[docs/README.md](./docs/README.md)** · [Changelog](./CHANGELOG.md)
+
+| Start here | Topic |
 | --- | --- |
 | [Getting started](./docs/getting-started.md) | Install, first compare, mental model |
-| [Building an index](./docs/building-an-index.md) | Populate an index and run a query |
-| [Your first completion](./docs/your-first-completion.md) | Ingest docs and suggest the next word |
-| [Your first spotlight](./docs/your-first-spotlight.md) | Chunk a document and rank snippets |
-| [Demo CLI](./docs/demo.md) | Compare, search, complete, and spotlight from the terminal |
-| [API surface](./docs/api-surface.md) | Full export list (Core + Query + Collections + Completions + Spotlight) |
-
-![Glyph Core](/docs/media/RibbonCore.png)
-
-| Doc | Topic |
-| --- | --- |
-| [Glyph](./docs/core/glyph.md) | Types: `Glyph`, `GlyphRecord`, `GlyphSignature` |
-| [Create](./docs/core/create.md) | `Create()` and fingerprint options |
-| [Compare](./docs/core/compare.md) | `Compare()`, `CompareGlyphs()`, results |
-| [Groups](./docs/core/groups.md) | `GlyphGroup`, `CreateGroup()`, aggregate compare |
-| [Serialize](./docs/core/serialize.md) | `Serialize()`, `Deserialize()`, string formats |
-| [Tokenize](./docs/core/tokenize.md) | Tokens, unigrams, vgrams |
-| [Text normalization](./docs/core/text-normalization.md) | `TextFilter`, `TextStrip` |
-| [Index](./docs/core/index.md) | `index.new()`, bands (default) or direct store |
-
-![Glyph Query](/docs/media/RibbonQuery.png)
-
-| Doc | Topic |
-| --- | --- |
-| [Query](./docs/query/query.md) | `query()` ranked search |
-| [Query options](./docs/query/options.md) | `limit`, `threshold`, `normalize`, `aggregate` |
-| [Query results](./docs/query/results.md) | `GlyphQueryResult` shape |
-
-![Glyph Collections](/docs/media/RibbonCollections.png)
-
-| Doc | Topic |
-| --- | --- |
-| [Collections](./docs/collections/collection.md) | `collections.new()`, keyed glyphs + `glyph` |
-| [Aggregators](./docs/collections/aggregate.md) | Slot-wise `CollectionAggregator` built-ins |
-
-![Glyph Completions](/docs/media/RibbonCompletions.png)
-
-| Doc | Topic |
-| --- | --- |
-| [Chain](./docs/completions/chain.md) | `completions.new()`, ingest, storage |
-| [Complete](./docs/completions/complete.md) | `complete()` ranked next-word suggestions |
-| [Completion options](./docs/completions/options.md) | `order`, `create`, `limit`, `minCount` |
-| [Completion results](./docs/completions/results.md) | `GlyphCompletionResult` shape |
-
-![Glyph Spotlight](/docs/media/RibbonSpotlight.png)
-
-| Doc | Topic |
-| --- | --- |
-| [Your first spotlight](./docs/your-first-spotlight.md) | Tutorial: chunk, rank, query |
-| [Document](./docs/spotlight/document.md) | `spotlight.new()`, chunk and fingerprint |
-| [Rank](./docs/spotlight/rank.md) | `document.rank()` score all chunks |
-| [Query](./docs/spotlight/query.md) | `document.query()` threshold + limit |
-
-### Limits (current version)
-
-| Feature | Status |
-| --- | --- |
-| In-memory index | Implemented |
-| LSH banding index (default) | Implemented |
-| Direct (exact) scan via `mode: "direct"` | Implemented |
-| Collections (slot-wise glyph aggregate) | Implemented |
-| Glyph completions (Markov + rank) | Implemented |
-| Spotlight (document chunk rank/query) | Implemented |
-| Disk persistence | Not implemented |
-| Chain persistence | Not implemented |
+| [Building an index](./docs/building-an-index.md) | Store glyphs and run `query()` |
+| [Your first collection](./docs/your-first-collection.md) | Aggregate examples into `col.glyph` |
+| [Your first spotlight](./docs/your-first-spotlight.md) | Chunk and rank document snippets |
+| [Demo CLI](./docs/demo.md) | Try modes from the terminal |
+| [API surface](./docs/api-surface.md) | Every public export |
 
 ### License
 

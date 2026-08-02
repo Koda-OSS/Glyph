@@ -5,12 +5,8 @@ import type {
   GlyphIndexOptions,
   GlyphSignature,
 } from "../../types";
-import {
-  IsGlyphSignature,
-  isGlyph,
-  isGlyphGroup,
-  resolveGlyph,
-} from "../utils";
+import { isGlyph, isGlyphSignature, resolveGlyph } from "../glyph";
+import { isGlyphGroup } from "../group-input";
 import { createDirectIndex } from "./in_direct";
 import {
   assertUniformGlyphSize,
@@ -98,7 +94,7 @@ export function hashBand(
 function resolveProbeGlyphs(
   probe: Glyph | GlyphSignature | GlyphGroupInput,
 ): Glyph[] {
-  if (isGlyph(probe) || IsGlyphSignature(probe)) {
+  if (isGlyph(probe) || isGlyphSignature(probe)) {
     return [resolveGlyph(probe)];
   }
 

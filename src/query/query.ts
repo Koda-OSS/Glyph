@@ -8,7 +8,7 @@ import type {
 } from "../types";
 import { Compare } from "../core/compare";
 import { GroupResultAggregatorMax } from "../core/group";
-import { isGlyphGroup } from "../core/utils";
+import { isGlyphGroup } from "../core/group-input";
 
 /**
  * Search a Glyph Query index and return ranked matches.

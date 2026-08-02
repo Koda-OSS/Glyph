@@ -17,7 +17,7 @@ export {
   CreateVGrams,
   Tokenize,
 } from "./core/tokenize";
-export { TextStrip, TextFilter } from "./core/utils";
+export { TextStrip, TextFilter } from "./core/text";
 export { index } from "./core/index";
 export { query } from "./query/query";
 export {

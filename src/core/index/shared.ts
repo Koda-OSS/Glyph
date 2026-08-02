@@ -1,5 +1,6 @@
 import type { Glyph, GlyphGroup, GlyphGroupInput } from "../../types";
-import { isGlyph, NormalizeGroup } from "../utils";
+import { isGlyph } from "../glyph";
+import { normalizeGroup } from "../group-input";
 
 export type IndexValue = Glyph | GlyphGroup;
 export type IndexInput = Glyph | GlyphGroupInput;
@@ -9,7 +10,7 @@ export function normalizeStoredValue(value: IndexInput): IndexValue {
     return value;
   }
 
-  return NormalizeGroup(value);
+  return normalizeGroup(value);
 }
 
 export function mergeRecordGroup(

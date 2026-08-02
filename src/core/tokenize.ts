@@ -5,7 +5,7 @@ import type {
   GlyphUnigram,
   GlyphVGram,
 } from "../types";
-import { TextFilter, TextStrip } from "./utils";
+import { TextFilter, TextStrip } from "./text";
 
 const DefaultTokenizationOptions = {
   vgramSize: 2,

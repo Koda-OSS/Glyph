@@ -4,7 +4,8 @@ import type {
   GlyphIndexInstance,
   GlyphSignature,
 } from "../../types";
-import { isGlyph, NormalizeGroup } from "../utils";
+import { isGlyph } from "../glyph";
+import { normalizeGroup } from "../group-input";
 import {
   type IndexInput,
   type IndexValue,
@@ -35,7 +36,7 @@ export function createDirectIndex(): GlyphIndexInstance {
     },
 
     add(key: string, glyphs: IndexInput) {
-      const incoming = NormalizeGroup(isGlyph(glyphs) ? [glyphs] : glyphs);
+      const incoming = normalizeGroup(isGlyph(glyphs) ? [glyphs] : glyphs);
       const incomingKeys = Object.keys(incoming);
       if (incomingKeys.length === 0) {
         return;

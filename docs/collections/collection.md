@@ -72,6 +72,7 @@ query(col.Collection(), index, { limit: 5 });
 
 ## See also
 
+- [Your first collection](../your-first-collection.md)
 - [Collection aggregators](./aggregate.md)
 - [Groups](../core/groups.md) — `GroupResultAggregator` for pairwise score collapse
 - [Query](../query/query.md)

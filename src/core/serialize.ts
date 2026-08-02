@@ -1,4 +1,5 @@
 import type { Glyph, GlyphRecord, GlyphSignature } from "../types";
+import { isGlyph } from "./glyph";
 
 const FORMAT_VERSION = 1;
 
@@ -61,12 +62,6 @@ export function Deserialize(value: string): Glyph {
   }
 
   throw new Error(`Unknown serialized glyph kind: ${kind}`);
-}
-
-function isGlyph(
-  value: Glyph | GlyphSignature | GlyphRecord,
-): value is Glyph {
-  return value instanceof Uint32Array;
 }
 
 function isRecord(

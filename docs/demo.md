@@ -88,6 +88,7 @@ Output includes compile time, chunk count, rank time, and top snippets with scor
 - [Getting started](./getting-started.md)
 - [Building an index](./building-an-index.md)
 - [Your first completion](./your-first-completion.md)
+- [Your first collection](./your-first-collection.md)
 - [Your first spotlight](./your-first-spotlight.md)
 - [Spotlight document](./spotlight/document.md)
 - [Query](./query/query.md)
