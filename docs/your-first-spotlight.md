@@ -1,4 +1,4 @@
-![Glyph Spotlight](/docs/media/RibbonSpotlightBanner.png)
+![Glyph Spotlight](/docs/media/RibbonSpotlight.png)
 
 # Your first spotlight
 
