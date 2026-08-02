@@ -2,12 +2,12 @@
 
 > Compare fast. Search in memory. Spotlight documents. Aggregate collections.
 
-**GlyphTS** turns text into **glyphs** — fixed-size MinHash fingerprints. Compare similarity, search an in-memory index, rank document chunks with spotlight, pre-aggregate labeled examples into one glyph, or suggest the next word with completions.
+**Glyph** turns text into **glyphs** — fixed-size MinHash fingerprints. Compare similarity, search an in-memory index, rank document chunks with spotlight, pre-aggregate labeled examples into one glyph, or suggest the next word with completions.
 
 ## Install
 
-```bash
-npm install glyph-ts
+```typescript
+// NPM package coming soon! Feel free to clone the repo.
 ```
 
 Node.js 18 or newer.
