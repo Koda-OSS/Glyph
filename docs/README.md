@@ -2,7 +2,7 @@
 
 > Compare fast. Search in memory. Spotlight documents. Aggregate collections.
 
-GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two glyphs, build an in-memory **index** and **query** it for ranked matches, use **spotlight** to rank chunks inside a document, or use **completions** for glyph-guided next-word suggestions.
+Glyph turns text into **glyphs** (fixed-size signatures). You can compare two glyphs, build an in-memory **index** and **query** it for ranked matches, use **spotlight** to rank chunks inside a document, or use **completions** for glyph-guided next-word suggestions.
 
 ![Glyph Ribbon](/docs/media/RibbonGlyph.png)
 
@@ -16,6 +16,8 @@ GlyphTS turns text into **glyphs** (fixed-size signatures). You can compare two 
 | [Demo CLI](./demo.md) | Compare, search, complete, and spotlight from the terminal |
 | [API surface](./api-surface.md) | Full export list (Core + Query + Collections + Completions + Spotlight) |
 | [Migration 0.4 → 1.0](./migration-0.4-to-1.0.md) | PascalCase API and `query.New` changes |
+
+Doc pages end with a **Related** section (3–5 links, ranked by Glyph). Regenerate after editing docs: `npm run docs:related`.
 
 ![Glyph Core](/docs/media/RibbonCore.png)
 

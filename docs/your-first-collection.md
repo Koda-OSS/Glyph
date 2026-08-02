@@ -9,7 +9,7 @@ A **collection** holds keyed examples and rebuilds `collection.glyph` on every c
 ## Create a collection
 
 ```ts
-import { collections } from "glyph-ts";
+import { collections } from "@koda.oss/glyph";
 
 const col = collections.New({ create: { size: 128 } });
 
@@ -24,7 +24,7 @@ console.log(col.Count()); // 2
 Pass `col.glyph` to compare or query — one probe instead of scoring every example pairwise.
 
 ```ts
-import { Create, index, query } from "glyph-ts";
+import { Create, index, query } from "@koda.oss/glyph";
 
 const idx = index.New({ mode: "direct" });
 idx.Set("doc-a", Create("goodbye moon stars").glyph);
@@ -42,7 +42,7 @@ import {
   CollectionAggregatorMax,
   CollectionAggregatorMin,
   collections,
-} from "glyph-ts";
+} from "@koda.oss/glyph";
 
 const col = collections.New({
   create: { size: 128 },
@@ -52,9 +52,14 @@ const col = collections.New({
 
 Built-ins: Min, Max, Mean, Mid, Sum, Softmax. See [Aggregators](./collections/aggregate.md).
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
 - [Collections](./collections/collection.md)
-- [Aggregators](./collections/aggregate.md)
+- [Collection aggregators](./collections/aggregate.md)
+- [Query](./query/query.md)
 - [Building an index](./building-an-index.md)
-- [Groups](./core/groups.md) — `GroupResultAggregator` vs `CollectionAggregator`
+- [Query options](./query/options.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

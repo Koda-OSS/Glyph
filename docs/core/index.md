@@ -9,7 +9,7 @@ The index is an in-memory store. It does not persist to disk. Query and Collecti
 ## Create an index
 
 ```ts
-import { index } from "glyph-ts";
+import { index } from "@koda.oss/glyph";
 
 // Default: LSH banding (mode: "bands")
 const idx = index.New();
@@ -91,8 +91,14 @@ idx.Add("doc", glyphB);
 - Stronger near-duplicate search: raise `rows` (e.g. `{ bands: 32, rows: 4 }` or `{ bands: 16, rows: 8 }`).
 - Banding can miss weak true matches (false negatives). Use `mode: "direct"` when you need exhaustive scoring.
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
+- [Collections](../collections/collection.md)
+- [Completions chain](../completions/chain.md)
 - [Building an index](../building-an-index.md)
 - [Query](../query/query.md)
-- [Groups](./groups.md)
+- [Create](./create.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

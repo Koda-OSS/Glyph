@@ -4,12 +4,12 @@
 
 > Fingerprint text. Compare similarity in one call.
 
-GlyphTS builds **MinHash** signatures from text. You use `Create()` to fingerprint, then `Compare()` to score overlap.
+Glyph builds **MinHash** signatures from text. You use `Create()` to fingerprint, then `Compare()` to score overlap.
 
 ## Install
 
 ```bash
-npm install glyph-ts
+npm install @koda.oss/glyph
 ```
 
 Node.js 18 or newer is required.
@@ -17,7 +17,7 @@ Node.js 18 or newer is required.
 ## First compare
 
 ```ts
-import { Create, Compare } from "glyph-ts";
+import { Create, Compare } from "@koda.oss/glyph";
 
 const a = Create("the quick brown fox jumps over the lazy dog");
 const b = Create("the quick brown fox leaped over the lazy dog");
@@ -57,15 +57,14 @@ Identical normalized text gives `similarity: 1`. Unrelated text is near `0`.
 
 You can pass a full record or `record.glyph` into `Compare` and `Serialize`.
 
-## Next steps
+## Related
 
-| Goal | Doc |
-| --- | --- |
-| Store many glyphs and search | [Building an index](./building-an-index.md) |
-| Aggregate labeled examples | [Your first collection](./your-first-collection.md) |
-| Rank chunks inside one document | [Your first spotlight](./your-first-spotlight.md) |
-| Suggest the next word | [Your first completion](./your-first-completion.md) |
-| Try it in the terminal | [Demo CLI](./demo.md) |
-| All exports | [API surface](./api-surface.md) |
-| Fingerprint options | [Create](./core/create.md) |
-| Group compare | [Groups](./core/groups.md) |
+<!-- glyph-related:start -->
+- [Compare](./core/compare.md)
+- [Create](./core/create.md)
+- [Query results](./query/results.md)
+- [Your first spotlight](./your-first-spotlight.md)
+- [Serialize](./core/serialize.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

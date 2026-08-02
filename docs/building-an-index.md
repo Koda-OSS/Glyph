@@ -9,7 +9,7 @@ An **index** maps string keys to one glyph or a **glyph group**. Wrap it with `q
 ## Basic workflow
 
 ```ts
-import { Create, index, query } from "glyph-ts";
+import { Create, index, query } from "@koda.oss/glyph";
 
 const idx = index.New();
 
@@ -104,3 +104,15 @@ Output includes ingest/index time, query/complete time, and ranked results.
 | Persistence | Index lives in memory only (disk persistence planned post-1.0) |
 | Query algorithm | LSH banding by default; exact scan with `mode: "direct"` |
 | Key type | String only |
+
+## Related
+
+<!-- glyph-related:start -->
+- [Collections](./collections/collection.md)
+- [Query](./query/query.md)
+- [Query options](./query/options.md)
+- [Your first collection](./your-first-collection.md)
+- [Demo CLI](./demo.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

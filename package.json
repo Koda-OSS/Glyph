@@ -1,7 +1,7 @@
 {
-  "name": "glyph-ts",
+  "name": "@koda.oss/glyph",
   "version": "1.0.0",
-  "description": "MinHash text fingerprints for similarity comparison",
+  "description": "Glyph — MinHash text fingerprints for similarity comparison",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -24,15 +24,21 @@
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist",
     "demo": "tsx demo.ts",
+    "docs:related": "tsx scripts/docs-related.ts --write",
+    "docs:related:check": "tsx scripts/docs-related.ts --check",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "keywords": [
+    "glyph",
     "typescript",
     "minhash",
     "similarity",
     "fingerprint",
     "jaccard"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MPL-2.0",
   "repository": {
     "type": "git",

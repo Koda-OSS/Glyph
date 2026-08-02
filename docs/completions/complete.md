@@ -47,8 +47,14 @@ glyphScore = sum(weight_i * CompareGlyphs(probe, source_i).similarity) / sum(wei
 | Find similar **documents** | [Query](../query/query.md) |
 | Suggest the **next word** in a prefix | Completions |
 
-## See also
+## Related
 
-- [Chain](./chain.md)
-- [Options](./options.md)
-- [Results](./results.md)
+<!-- glyph-related:start -->
+- [Your first completion](../your-first-completion.md)
+- [Query](../query/query.md)
+- [Your first spotlight](../your-first-spotlight.md)
+- [Create](../core/create.md)
+- [Spotlight query](../spotlight/query.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

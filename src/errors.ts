@@ -1,5 +1,5 @@
 /**
- * Named errors for common GlyphTS failure modes.
+ * Named errors for common Glyph failure modes.
  */
 
 export class GlyphSizeMismatchError extends Error {

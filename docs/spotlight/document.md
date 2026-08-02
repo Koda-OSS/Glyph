@@ -9,7 +9,7 @@
 ## Create a document
 
 ```ts
-import { Create, spotlight } from "glyph-ts";
+import { Create, spotlight } from "@koda.oss/glyph";
 
 const doc = spotlight.New(
   "Goodbye moon under quiet stars. Pasta recipe with tomato. Goodbye moon again.",
@@ -46,8 +46,14 @@ Pass `chunker` to replace this entirely.
 
 Both `Rank` and `Query` return `GlyphSpotlightResult[]` by default. With `textOutput: true`, they return `string[]` (chunk text only, same order).
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
 - [Your first spotlight](../your-first-spotlight.md)
-- [Rank](./rank.md)
-- [Query](./query.md)
+- [Spotlight rank](./rank.md)
+- [Compare](../core/compare.md)
+- [Spotlight query](./query.md)
+- [Collections](../collections/collection.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

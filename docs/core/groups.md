@@ -9,7 +9,7 @@ A **glyph group** is stored as `Record<string, Glyph>` (a map). You can still pa
 ## Build a group
 
 ```ts
-import { Create, CreateGroup } from "glyph-ts";
+import { Create, CreateGroup } from "@koda.oss/glyph";
 
 // from strings (calls Create internally) → { "0": glyph, "1": glyph }
 const fromText = CreateGroup(["chunk one", "chunk two"]);
@@ -42,7 +42,7 @@ You do not need to convert arrays yourself. Pass whichever form is convenient.
 Explicit group compare. `Compare()` calls this when either side is a group.
 
 ```ts
-import { CompareGroups, CreateGroup } from "glyph-ts";
+import { CompareGroups, CreateGroup } from "@koda.oss/glyph";
 
 CompareGroups(
   CreateGroup(["alpha beta", "gamma delta"]),
@@ -67,7 +67,7 @@ result.matchedRight; // 1  — same as the array index you passed
 ## Default result aggregator: max
 
 ```ts
-import { GroupResultAggregatorMax } from "glyph-ts";
+import { GroupResultAggregatorMax } from "@koda.oss/glyph";
 
 // ({ scores }) => Math.max(...scores)
 ```
@@ -77,7 +77,7 @@ import { GroupResultAggregatorMax } from "glyph-ts";
 ## Sum result aggregator
 
 ```ts
-import { GroupResultAggregatorSum } from "glyph-ts";
+import { GroupResultAggregatorSum } from "@koda.oss/glyph";
 
 // ({ scores }) => scores.reduce((a, b) => a + b, 0)
 ```
@@ -87,8 +87,8 @@ Spotlight uses sum by default for group probes (multi-example evidence can excee
 ## Custom result aggregator
 
 ```ts
-import { Compare } from "glyph-ts";
-import type { GroupResultAggregator } from "glyph-ts";
+import { Compare } from "@koda.oss/glyph";
+import type { GroupResultAggregator } from "@koda.oss/glyph";
 
 const average: GroupResultAggregator = ({ scores }) =>
   scores.reduce((sum, n) => sum + n, 0) / scores.length;
@@ -119,8 +119,14 @@ See [Collection aggregators](../collections/aggregate.md).
 
 A lone glyph passed against a group is wrapped as `{ "0": glyph }` before group logic runs. You do not need to wrap manually.
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
 - [Compare](./compare.md)
-- [Index](../core/index.md) — store groups per key
+- [Query results](../query/results.md)
 - [Collection aggregators](../collections/aggregate.md)
+- [Query options](../query/options.md)
+- [Spotlight rank](../spotlight/rank.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

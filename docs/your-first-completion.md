@@ -16,7 +16,7 @@ Glyph Completions builds a Markov chain from your text, then ranks next-word can
 ## Create a chain
 
 ```ts
-import { completions } from "glyph-ts";
+import { completions } from "@koda.oss/glyph";
 
 const chain = completions.New({
   order: 3, // trigrams: state = previous 2 tokens
@@ -129,12 +129,14 @@ The demo ingests every markdown file under `docs/` (file path as key) and prints
 | Expecting punctuation in tokens | Use stripped forms (`goodbye`, not `goodbye,`) |
 | Forgetting the ingest key | Always call `Ingest(key, text)` |
 
-## Next steps
+## Related
 
-| Goal | Doc |
-| --- | --- |
-| Chain storage and methods | [Chain](./completions/chain.md) |
-| Ranking flow in detail | [Complete](./completions/complete.md) |
-| Options (`order`, `limit`, `minCount`) | [Completion options](./completions/options.md) |
-| Result shape | [Completion results](./completions/results.md) |
-| Document search instead of next-word | [Building an index](./building-an-index.md) |
+<!-- glyph-related:start -->
+- [Completion results](./completions/results.md)
+- [Complete a prefix](./completions/complete.md)
+- [Completions chain](./completions/chain.md)
+- [Collections](./collections/collection.md)
+- [Demo CLI](./demo.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

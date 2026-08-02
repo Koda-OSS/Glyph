@@ -88,8 +88,14 @@ Results are sorted by `similarity` descending. Index iteration order does not af
 ]
 ```
 
-## See also
+## Related
 
-- [Query](./query.md)
-- [Query options](./options.md)
-- [Groups](../core/groups.md)
+<!-- glyph-related:start -->
+- [Completion results](../completions/results.md)
+- [Compare](../core/compare.md)
+- [Collections](../collections/collection.md)
+- [Create](../core/create.md)
+- [Glyph](../core/glyph.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

@@ -1,4 +1,4 @@
-![Glyph Spotlight](/docs/media/RibbonSpotlightBanner.png)
+![Glyph Spotlight](/docs/media/RibbonSpotlight.png)
 
 # Your first spotlight
 
@@ -16,7 +16,7 @@ Spotlight compiles one document into fingerprinted chunks, then scores each chun
 ## Create a document
 
 ```ts
-import { spotlight } from "glyph-ts";
+import { spotlight } from "@koda.oss/glyph";
 
 const doc = spotlight.New(
   "Goodbye moon under quiet stars. Pasta recipe with tomato. Goodbye moon again.",
@@ -28,7 +28,7 @@ console.log(doc.Size()); // number of chunks
 ## Rank all chunks
 
 ```ts
-import { Create, spotlight } from "glyph-ts";
+import { Create, spotlight } from "@koda.oss/glyph";
 
 const doc = spotlight.New("...");
 const probe = Create("Goodbye moon under quiet stars").glyph;
@@ -56,7 +56,7 @@ const hits = doc.Query(probe, {
 Pass a `GlyphGroup` to match multiple examples (emails, URLs, phrases):
 
 ```ts
-import { CreateGroup } from "glyph-ts";
+import { CreateGroup } from "@koda.oss/glyph";
 
 const hits = doc.Query(
   CreateGroup(["user@example.com", "support@example.com"]),
@@ -85,9 +85,14 @@ const snippets = doc.Query(probe, {
 npm run demo -- spotlight ./docs/core/index.md "LSH banding"
 ```
 
-## See also
+## Related
 
-- [Spotlight document](./spotlight/document.md)
-- [Rank](./spotlight/rank.md)
-- [Query](./spotlight/query.md)
-- [Demo CLI](./demo.md)
+<!-- glyph-related:start -->
+- [Spotlight](./spotlight/document.md)
+- [Spotlight query](./spotlight/query.md)
+- [Spotlight rank](./spotlight/rank.md)
+- [Complete a prefix](./completions/complete.md)
+- [Collections](./collections/collection.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

@@ -9,7 +9,7 @@
 ## Usage
 
 ```ts
-import { Create } from "glyph-ts";
+import { Create } from "@koda.oss/glyph";
 
 const record = Create("hello world", {
   size: 128,
@@ -66,8 +66,14 @@ glyph = bagMinHash(bag, size)
 | `size < 1` | Throws |
 | `vgramSize < 1` | Throws |
 
-## See also
+## Related
 
-- [Glyph](./glyph.md)
+<!-- glyph-related:start -->
 - [Tokenize](./tokenize.md)
-- [Text normalization](./text-normalization.md)
+- [Getting started](../getting-started.md)
+- [Compare](./compare.md)
+- [Query](../query/query.md)
+- [Query results](../query/results.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

@@ -2,7 +2,7 @@
 
 # API surface
 
-> Every public export from `glyph-ts`, grouped by layer.
+> Every public export from `@koda.oss/glyph`, grouped by layer.
 
 Deep docs live under [Core](./core/glyph.md), [Index](./core/index.md), [Query](./query/query.md), [Collections](./collections/collection.md), [Completions](./completions/chain.md), and [Spotlight](./spotlight/document.md).
 
@@ -295,7 +295,7 @@ See [Document](./spotlight/document.md), [Rank](./spotlight/rank.md), [Query](./
 
 ## Errors
 
-Named error classes exported from `glyph-ts`:
+Named error classes exported from `@koda.oss/glyph`:
 
 | Export | When thrown |
 | --- | --- |

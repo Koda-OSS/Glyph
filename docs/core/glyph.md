@@ -51,8 +51,14 @@ Pass either form at API boundaries. Internally, groups are always maps. `matched
 | `createdAt` changes | Each `Create()` call gets a new timestamp |
 | Compare needs equal `size` | Mismatched signature lengths throw |
 
-## See also
+## Related
 
-- [Create](./create.md) — build a glyph from text
-- [Compare](./compare.md) — score two glyphs
-- [Groups](./groups.md) — score glyph collections
+<!-- glyph-related:start -->
+- [Serialize](./serialize.md)
+- [Query results](../query/results.md)
+- [Completion results](../completions/results.md)
+- [Getting started](../getting-started.md)
+- [Collections](../collections/collection.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

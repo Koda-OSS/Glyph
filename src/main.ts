@@ -1,5 +1,5 @@
 /**
- * GlyphTS — MinHash text fingerprints for similarity comparison.
+ * Glyph — MinHash text fingerprints for similarity comparison.
  */
 
 export { Create } from "./core/create";

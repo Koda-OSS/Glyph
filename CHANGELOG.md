@@ -1,11 +1,15 @@
 # Changelog
 
-All notable changes to **glyph-ts** are documented here.
+All notable changes to **@koda.oss/glyph** are documented here.
 
 ## 1.0.0
 
 ### Breaking changes
 
+- **Package rename** — npm package is now `@koda.oss/glyph` (was `glyph-ts` in docs/pre-release)
+  - Install: `npm install @koda.oss/glyph`
+  - Import: `import { Create } from "@koda.oss/glyph"`
+- **Product branding** — official name is **Glyph** (not GlyphTS)
 - **PascalCase API** — all instance methods and factories use `New()` / PascalCase methods
 - **Query wraps an index** — `query(probe, idx, options)` → `query.New(idx).Search(probe, options)`
 - Index methods renamed: `Get`, `Set`, `Add`, `Remove`, `Has`, `Clear`, `Size`, `Keys`, `Values`, `Entries`, `CandidateKeys`
@@ -18,7 +22,7 @@ See [Migration 0.4 → 1.0](./docs/migration-0.4-to-1.0.md).
 ### Structure
 
 - Index module moved from `src/core/index/` to `src/index/`
-- Package barrel is `src/main.ts` (published entry remains `glyph-ts` → `dist/index.*`)
+- Package barrel is `src/main.ts` (published entry: `@koda.oss/glyph` → `dist/index.*`)
 
 ### Errors
 
@@ -30,6 +34,7 @@ See [Migration 0.4 → 1.0](./docs/migration-0.4-to-1.0.md).
 
 - Demo CLI: `collection` mode
 - Docs updated for 1.0 surface
+- `publishConfig.access: "public"` for scoped npm publish
 
 ### Deferred (post-1.0)
 
@@ -50,7 +55,7 @@ See [Migration 0.4 → 1.0](./docs/migration-0.4-to-1.0.md).
 ### Documentation
 
 - Slim root `README.md` — full index lives in `docs/README.md`
-- Real `npm install glyph-ts` in getting started
+- Real `npm install glyph-ts` in getting started (renamed to `@koda.oss/glyph` in 1.0.0)
 - Added [Your first collection](./docs/your-first-collection.md)
 - Removed stale `docs/collections/query.md` and root `other.md`
 

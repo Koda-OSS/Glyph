@@ -11,7 +11,7 @@ Collections do **not** query an index. Pass `col.glyph` or `col.Collection()` to
 ## Create a collection
 
 ```ts
-import { CollectionAggregatorSoftmax, collections } from "glyph-ts";
+import { CollectionAggregatorSoftmax, collections } from "@koda.oss/glyph";
 
 const col = collections.New({
   create: { size: 128, normalize: true },
@@ -40,7 +40,7 @@ const col = collections.New({
 ## Add examples
 
 ```ts
-import { Create, collections } from "glyph-ts";
+import { Create, collections } from "@koda.oss/glyph";
 
 const col = collections.New({ create: { size: 128 } });
 
@@ -61,7 +61,7 @@ When `Count() === 0`, `glyph` is a zero-filled `Uint32Array` sized from `create.
 ## Search yourself
 
 ```ts
-import { index, query } from "glyph-ts";
+import { index, query } from "@koda.oss/glyph";
 
 const idx = index.New();
 
@@ -72,10 +72,14 @@ query.New(idx).Search(col.glyph, { limit: 5 });
 query.New(idx).Search(col.Collection(), { limit: 5 });
 ```
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
 - [Your first collection](../your-first-collection.md)
 - [Collection aggregators](./aggregate.md)
-- [Groups](../core/groups.md) — `GroupResultAggregator` for pairwise score collapse
+- [Building an index](../building-an-index.md)
 - [Query](../query/query.md)
 - [Index](../core/index.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

@@ -5,7 +5,7 @@
 > Score every chunk in a compiled document against a probe.
 
 ```ts
-import { Create, spotlight } from "glyph-ts";
+import { Create, spotlight } from "@koda.oss/glyph";
 
 const doc = spotlight.New(
   "Goodbye moon under quiet stars. Unrelated pasta recipe.",
@@ -44,8 +44,14 @@ const texts = doc.Rank(probe, { textOutput: true });
 // string[] — same order as full results
 ```
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
+- [Spotlight](./document.md)
 - [Your first spotlight](../your-first-spotlight.md)
-- [Document](./document.md)
-- [Query](./query.md)
+- [Completion results](../completions/results.md)
+- [Spotlight query](./query.md)
+- [Collections](../collections/collection.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

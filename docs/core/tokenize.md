@@ -23,7 +23,7 @@ import {
   CreateUnigrams,
   CreateVGrams,
   Tokenize,
-} from "glyph-ts";
+} from "@koda.oss/glyph";
 
 CreateTokens("Hello, world!");
 CreateUnigrams("Hello, world!");
@@ -75,7 +75,14 @@ CreateVGrams("one two three four five", 3, true);
 
 Short text still fingerprints via tokens and unigrams inside `Create()`.
 
-## See also
+## Related
 
-- [Text normalization](./text-normalization.md)
+<!-- glyph-related:start -->
 - [Create](./create.md)
+- [Complete a prefix](../completions/complete.md)
+- [Compare](./compare.md)
+- [Query results](../query/results.md)
+- [Getting started](../getting-started.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

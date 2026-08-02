@@ -42,7 +42,14 @@ interface GlyphCompletionOptions {
 | `limit` | `5` | Max results returned after sort |
 | `minCount` | `1` | Drop transitions seen fewer than N times |
 
-## See also
+## Related
 
-- [Complete](./complete.md)
-- [Results](./results.md)
+<!-- glyph-related:start -->
+- [Create](../core/create.md)
+- [Completion results](./results.md)
+- [Spotlight rank](../spotlight/rank.md)
+- [Collections](../collections/collection.md)
+- [Completions chain](./chain.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

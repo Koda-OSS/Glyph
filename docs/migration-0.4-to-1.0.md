@@ -1,13 +1,24 @@
 # Migration: 0.4.x → 1.0.0
 
-> Breaking API changes for GlyphTS 1.0.
+> Breaking API changes for Glyph 1.0.
 
 ## Summary
 
-1. **PascalCase** on all instance methods and factory `New()` calls
-2. **Query wraps an index** — `query(probe, idx)` becomes `query.New(idx).Search(probe)`
-3. Index module lives at `src/index/` (package barrel is `src/main.ts`; published entry stays `glyph-ts`)
-4. Named error classes for common failures
+1. **Package rename** — install/import `@koda.oss/glyph` (was documented as `glyph-ts`)
+2. **PascalCase** on all instance methods and factory `New()` calls
+3. **Query wraps an index** — `query(probe, idx)` becomes `query.New(idx).Search(probe)`
+4. Index module lives at `src/index/` (package barrel is `src/main.ts`)
+5. Named error classes for common failures
+6. Product branding is **Glyph** (not GlyphTS)
+
+## Package rename
+
+| 0.4.x | 1.0 |
+| --- | --- |
+| `npm install glyph-ts` | `npm install @koda.oss/glyph` |
+| `import { … } from "glyph-ts"` | `import { … } from "@koda.oss/glyph"` |
+
+Unscoped `glyph` is taken on npm; the scoped `@koda.oss/glyph` name is intentional.
 
 ## Factory renames
 

@@ -54,7 +54,7 @@ Skipped when:
 `GroupResultAggregator` used when an index entry (or the probe) is a `GlyphGroup`. Default: `GroupResultAggregatorMax` (max pairwise similarity).
 
 ```ts
-import { index, query } from "glyph-ts";
+import { index, query } from "@koda.oss/glyph";
 
 const idx = index.New();
 query.New(idx).Search(probe, {
@@ -89,7 +89,14 @@ If both `aggregate` and `compare.aggregate` are set, the top-level `aggregate` w
 | 4 | Apply `limit` |
 | 5 | Apply `normalize` (if `true`) |
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
 - [Query](./query.md)
-- [Query results](./results.md)
+- [Building an index](../building-an-index.md)
+- [Collection aggregators](../collections/aggregate.md)
+- [Collections](../collections/collection.md)
+- [Your first collection](../your-first-collection.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

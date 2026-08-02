@@ -9,7 +9,7 @@
 Accepts `Glyph`, `GlyphSignature`, or `GlyphRecord`.
 
 ```ts
-import { Create, Serialize } from "glyph-ts";
+import { Create, Serialize } from "@koda.oss/glyph";
 
 const record = Create("some text");
 
@@ -36,7 +36,7 @@ Payload = raw little-endian `Uint32Array` bytes, base64url-encoded.
 Always returns a **`Glyph`**. Metadata on records and signatures is not restored.
 
 ```ts
-import { Create, Serialize, Deserialize, Compare } from "glyph-ts";
+import { Create, Serialize, Deserialize, Compare } from "@koda.oss/glyph";
 
 const record = Create("some text");
 const glyph = Deserialize(Serialize(record));
@@ -60,7 +60,14 @@ Compare(record, glyph); // similarity: 1
 | Wire transfer | Send compact fingerprint string |
 | Logging | Print signature without hex dumps |
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
 - [Glyph](./glyph.md)
-- [Create](./create.md)
+- [Collections](../collections/collection.md)
+- [Getting started](../getting-started.md)
+- [Compare](./compare.md)
+- [Complete a prefix](../completions/complete.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

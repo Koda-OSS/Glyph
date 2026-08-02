@@ -16,7 +16,7 @@ Routes automatically:
 | `GlyphGroup` / `GlyphGroupInput` (map or array) | `CompareGroups` |
 
 ```ts
-import { Create, Compare } from "glyph-ts";
+import { Create, Compare } from "@koda.oss/glyph";
 
 const a = Create("Goodbye moon");
 const b = Create("Goodbye sun");
@@ -32,7 +32,7 @@ Accepts `Glyph`, `GlyphSignature`, `GlyphRecord`, or `GlyphGroupInput` (map or a
 Pairwise compare only. Use when both sides are single glyphs (or signatures/records).
 
 ```ts
-import { Create, CompareGlyphs } from "glyph-ts";
+import { Create, CompareGlyphs } from "@koda.oss/glyph";
 
 CompareGlyphs(Create("a"), Create("b"));
 ```
@@ -44,7 +44,7 @@ CompareGlyphs(Create("a"), Create("b"));
 Explicit group compare. Scores every pair, then aggregates (default: max).
 
 ```ts
-import { CreateGroup, CompareGroups } from "glyph-ts";
+import { CreateGroup, CompareGroups } from "@koda.oss/glyph";
 
 CompareGroups(
   CreateGroup(["alpha beta", "gamma delta"]),
@@ -98,7 +98,14 @@ interface GlyphComparisonOptions {
 
 > MinHash estimates set similarity. It is not edit distance or embedding cosine similarity.
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
 - [Groups](./groups.md)
-- [Query](../query/query.md)
+- [Getting started](../getting-started.md)
+- [Query results](../query/results.md)
+- [Create](./create.md)
+- [Spotlight](../spotlight/document.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

@@ -46,7 +46,13 @@ TextStrip("foo-bar baz 123"); // "foobarbaz123"
 
 Set `normalize: false` in `Create()` or `Tokenize()` to skip both helpers.
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
+- [Complete a prefix](../completions/complete.md)
 - [Tokenize](./tokenize.md)
-- [Create](./create.md)
+- [Query results](../query/results.md)
+- [Your first spotlight](../your-first-spotlight.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

@@ -100,8 +100,14 @@ Results are sorted by:
 ]
 ```
 
-## See also
+## Related
 
-- [Complete](./complete.md)
-- [Options](./options.md)
-- [Chain](./chain.md)
+<!-- glyph-related:start -->
+- [Your first completion](../your-first-completion.md)
+- [Query results](../query/results.md)
+- [Spotlight rank](../spotlight/rank.md)
+- [Collections](../collections/collection.md)
+- [Your first spotlight](../your-first-spotlight.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

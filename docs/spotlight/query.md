@@ -7,7 +7,7 @@
 Primary use case: feature extraction — probe with example glyphs (emails, URLs, etc.) and keep chunks that clear a threshold.
 
 ```ts
-import { CreateGroup, spotlight } from "glyph-ts";
+import { CreateGroup, spotlight } from "@koda.oss/glyph";
 
 const doc = spotlight.New(longArticleText);
 
@@ -43,8 +43,14 @@ const snippets = doc.Query(probe, {
 });
 ```
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
 - [Your first spotlight](../your-first-spotlight.md)
-- [Document](./document.md)
-- [Rank](./rank.md)
+- [Query](../query/query.md)
+- [Spotlight rank](./rank.md)
+- [Complete a prefix](../completions/complete.md)
+- [Query options](../query/options.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

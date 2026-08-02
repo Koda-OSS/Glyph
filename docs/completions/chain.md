@@ -9,7 +9,7 @@
 ## Create a chain
 
 ```ts
-import { completions } from "glyph-ts";
+import { completions } from "@koda.oss/glyph";
 
 const chain = completions.New({
   order: 3,
@@ -62,8 +62,14 @@ Duplicate `Ingest` calls with the **same key** merge weights on matching transit
 | `Clear()` | Remove all states |
 | `Size()` | Number of distinct state keys |
 
-## See also
+## Related
 
-- [Complete](./complete.md)
-- [Options](./options.md)
-- [Results](./results.md)
+<!-- glyph-related:start -->
+- [Collections](../collections/collection.md)
+- [Your first completion](../your-first-completion.md)
+- [Complete a prefix](./complete.md)
+- [Create](../core/create.md)
+- [Index](../core/index.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

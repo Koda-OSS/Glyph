@@ -20,7 +20,7 @@ instance.Search(
 ## Example
 
 ```ts
-import { Create, index, query } from "glyph-ts";
+import { Create, index, query } from "@koda.oss/glyph";
 
 const idx = index.New();
 idx.Set("moon", Create("Goodbye moon").glyph);
@@ -63,9 +63,14 @@ Pass `aggregate` or `compare` in options. See [Query options](./options.md).
 
 By default the index uses **LSH banding** (`mode: "bands"`). `Search` scores `CandidateKeys` from band collisions, not every key. Use `index.New({ mode: "direct" })` for an exact full scan. See [Index](../core/index.md).
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
 - [Query options](./options.md)
-- [Query results](./results.md)
-- [Index](../core/index.md)
-- [Migration 0.4 → 1.0](../migration-0.4-to-1.0.md)
+- [Your first collection](../your-first-collection.md)
+- [Collections](../collections/collection.md)
+- [Building an index](../building-an-index.md)
+- [Collection aggregators](../collections/aggregate.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

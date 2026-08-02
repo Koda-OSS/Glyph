@@ -4,7 +4,7 @@
 
 > Collapse member glyphs into one fingerprint, slot by slot.
 
-A **CollectionAggregator** runs once per signature index. For a collection of 11 glyphs of length 128, GlyphTS calls your aggregator **128 times**, each time with an array of 11 slot values.
+A **CollectionAggregator** runs once per signature index. For a collection of 11 glyphs of length 128, Glyph calls your aggregator **128 times**, each time with an array of 11 slot values.
 
 This is different from a **GroupResultAggregator**, which collapses pairwise *similarity scores* after `CompareGroups`. Collections aggregate *hash values* into a single glyph.
 
@@ -28,7 +28,7 @@ This is different from a **GroupResultAggregator**, which collapses pairwise *si
 import {
   CollectionAggregatorMax,
   collections,
-} from "glyph-ts";
+} from "@koda.oss/glyph";
 
 const col = collections.New({
   create: { size: 128 },
@@ -41,8 +41,8 @@ Outputs are rounded and clamped to the uint32 range before writing each slot.
 ## Custom aggregator
 
 ```ts
-import type { CollectionAggregator } from "glyph-ts";
-import { collections } from "glyph-ts";
+import type { CollectionAggregator } from "@koda.oss/glyph";
+import { collections } from "@koda.oss/glyph";
 
 const first: CollectionAggregator = (values, context) => {
   // context.collection — current GlyphGroup snapshot
@@ -60,14 +60,21 @@ const col = collections.New({ aggregator: first });
 ## Using the result
 
 ```ts
-import { Compare, index, query } from "glyph-ts";
+import { Compare, index, query } from "@koda.oss/glyph";
 
 const idx = index.New();
 Compare(col.glyph, probe);
 query.New(idx).Search(col.glyph, { limit: 10 });
 ```
 
-## See also
+## Related
 
+<!-- glyph-related:start -->
+- [Your first collection](../your-first-collection.md)
 - [Collections](./collection.md)
-- [Groups](../core/groups.md) — `GroupResultAggregator`
+- [Query](../query/query.md)
+- [Query options](../query/options.md)
+- [Building an index](../building-an-index.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._

@@ -94,13 +94,14 @@ Output includes collection count, aggregated glyph size, first eight slots, and 
 | Quoted prefixes | Wrap multi-word queries and prefixes in quotes |
 | Corpus | Search and complete use live docs — edit docs, re-run, see new results |
 
-## See also
+## Related
 
-- [Getting started](./getting-started.md)
+<!-- glyph-related:start -->
 - [Building an index](./building-an-index.md)
+- [Spotlight rank](./spotlight/rank.md)
 - [Your first completion](./your-first-completion.md)
-- [Your first collection](./your-first-collection.md)
 - [Your first spotlight](./your-first-spotlight.md)
-- [Spotlight document](./spotlight/document.md)
-- [Query](./query/query.md)
-- [Complete](./completions/complete.md)
+- [Complete a prefix](./completions/complete.md)
+<!-- glyph-related:end -->
+
+_Related links ranked by [Glyph](https://github.com/Koda-OSS/Glyph)._
