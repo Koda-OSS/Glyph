@@ -87,6 +87,8 @@ function mix(seed: number, index: number): number {
   return x >>> 0;
 }
 
+// Originally we intended to implement bagminhash, but we opted instead for traditional set minhash.
+// TODO: Rename function
 function bagMinHash(
   items: (GlyphToken | GlyphUnigram | GlyphVGram)[],
   size: number,
