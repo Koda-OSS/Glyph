@@ -1,4 +1,4 @@
 # These are supported funding model platforms
 
-polar: kodash
+polar: #kodash # Why does our org not have a landing page :'(
 custom: ['https://buy.polar.sh/polar_cl_rNUAqUggk3qIfhFbYbFPH0La0m95z0qi27lB30p5XWd']
