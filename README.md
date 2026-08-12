@@ -5,6 +5,7 @@
 [![Discord](https://shieldcn.dev/badge/discord-community-808BC3.svg?variant=secondary&size=xs&logo=discord)](https://discord.gg/Uc2Dnyb3Ej)
 [![GitHub (koda oss)](https://shieldcn.dev/badge/github-Koda%20OSS-2C40FF.svg?variant=secondary&size=xs&logo=github)](https://github.com/Koda-OSS)
 [![GitHub (koda sh)](https://shieldcn.dev/badge/github-Koda-2C40FF.svg?variant=secondary&size=xs&logo=github)](https://github.com/Koda-sh)
+[![badge](https://shieldcn.dev/badge/Sponsor-Koda%20OSS-abcde3.svg?size=xs&logo=ri%3ATbMoneybag&color=b2e2da)](https://buy.polar.sh/polar_cl_rNUAqUggk3qIfhFbYbFPH0La0m95z0qi27lB30p5XWd)
 
 > Compare fast. Search in memory. Spotlight documents. Aggregate collections.
 
